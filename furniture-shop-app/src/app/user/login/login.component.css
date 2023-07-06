@@ -1,17 +1,29 @@
 .login-container {
     width: 80%;
-    margin: 1rem auto;
+    margin: 1rem auto 8rem;
+}
+
+.login-container .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.login-container .header a {
+    text-decoration: none;
+    color: rgba(var(--bs-info-rgb));
+    font-weight: 600;
 }
 
 form {
-    padding: 3rem;
+    padding: 2rem 3rem;
 }
 
 .row {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     margin-top: calc(-1 * var(--bs-gutter-y));
     margin-right: calc(-.5 * var(--bs-gutter-x));
     margin-left: calc(-.5 * var(--bs-gutter-x));
@@ -22,6 +34,7 @@ form {
     padding-right: calc(var(--bs-gutter-x) * .5);
     padding-left: calc(var(--bs-gutter-x) * .5);
     margin-top: var(--bs-gutter-y);
+    flex-grow: 1;
 }
 
 @media (min-width:768px) {
@@ -34,6 +47,11 @@ form {
         flex: 0 0 auto;
         width: 100%;
     }
+}
+
+.col-md-12,
+.col-md-6 {
+    position: relative;
 }
 
 .row form {
@@ -99,9 +117,11 @@ form {
     padding: 1rem !important;
 }
 
-.text-danger {
+.text-danger,
+.error,
+.server-error {
     --bs-text-opacity: 1;
-    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity));
 }
 
 .text-black {
@@ -118,6 +138,7 @@ form {
     height: 50px;
     border-radius: 10px;
     font-family: "Inter", sans-serif;
+    margin-bottom: 1.5rem;
 }
 
 .form-control:active,
@@ -130,6 +151,14 @@ form {
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
+.form-control.ng-touched.ng-invalid {
+    border-color: rgba(var(--bs-danger-rgb));
+}
+
+.form-control.ng-touched.ng-valid.ng-dirty {
+    border-color: rgba(var(--bs-success-rgb));
+}
+
 .btn-container {
     margin-top: 20px;
     display: flex;
@@ -138,4 +167,17 @@ form {
 
 .btn-container app-primary-btn {
     flex-basis: 40%;
+}
+
+.error {
+    position: absolute;
+    bottom: 0.4rem;
+    line-height: 1;
+}
+
+.server-error {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
 }

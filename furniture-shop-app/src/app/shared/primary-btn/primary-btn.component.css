@@ -48,3 +48,11 @@
     left: calc(100% + 100px);
     opacity: .3;
 }
+
+.primary-btn:disabled{
+    cursor: not-allowed;
+}
+
+.primary-btn.loading{
+    cursor: wait;
+}

@@ -1,29 +1,54 @@
 <div class="login-container">
-    <h2 class="h3 mb-3 text-black">Log in</h2>
+    <div class="header">
+        <h2 class="h3 text-black">Log in</h2>
+        <p>Don't have an account? <a routerLink="/user/register">Register</a></p>
+    </div>
 
     <div class="p-3 p-lg-5 border bg-white">
-        <form>
+
+        <p *ngIf="!!serverError" class="server-error">
+            {{serverError}}
+        </p>
+        
+        <form #loginForm="ngForm" (ngSubmit)="loginHandler()">
 
             <div class="form-group row">
-                <div class="col-md-6">
-                    <label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_fname" name="c_fname">
-                </div>
-                <div class="col-md-6">
-                    <label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="c_lname" name="c_lname">
+                <div class="col-md-12">
+                    <label for="email" class="text-black">Email <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="dan_jon@gmail.com"
+                        ngModel #emailInput="ngModel" required [appEmail] [disabled]="loginForm.submitted">
+
+                    <ng-container *ngIf="emailInput.touched">
+                        <p *ngIf="emailInput.errors?.['required']" class="error">
+                            Email is required!
+                        </p>
+                        <p *ngIf="emailInput.errors?.['emailValidator']" class="error">
+                            Email is not valid!
+                        </p>
+                    </ng-container>
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-md-12">
-                    <label for="c_companyname" class="text-black">Company Name </label>
-                    <input type="text" class="form-control" id="c_companyname" name="c_companyname">
+                    <label for="username" class="text-black">Password <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="username" name="username" placeholder="****" ngModel
+                        #passwordInput="ngModel" required minlength="4" [disabled]="loginForm.submitted">
+
+                    <ng-container *ngIf="passwordInput.touched">
+                        <p *ngIf="passwordInput.errors?.['required']" class="error">
+                            Password is required!
+                        </p>
+                        <p *ngIf="passwordInput.errors?.['minlength']" class="error">
+                            Password must be at least {{passwordInput.errors?.['minlength'].requiredLength}} characters!
+                        </p>
+                    </ng-container>
                 </div>
             </div>
 
             <div class="btn-container">
-                <app-primary-btn text="Log in"></app-primary-btn>
+                <app-primary-btn type="submit" text="Log in"
+                    [isDisabled]="loginForm.invalid! || loginForm.submitted"></app-primary-btn>
             </div>
 
         </form>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -7,4 +8,17 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
 
+  serverError = '';
+
+  @ViewChild('loginForm') loginForm!: NgForm;
+
+  loginHandler(): void {
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    console.log(this.loginForm.value);
+
+  }
 }
