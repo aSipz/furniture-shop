@@ -34,14 +34,14 @@
                 <div class="col-md-12">
                     <label for="username" class="text-black">Username <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="username" name="username" placeholder="danny" ngModel
-                        #usernameInput="ngModel" required minlength="4" [disabled]="registerForm.submitted">
+                        #usernameInput="ngModel" required [appUsername] [disabled]="registerForm.submitted">
 
                     <ng-container *ngIf="usernameInput.touched">
                         <p *ngIf="usernameInput.errors?.['required']" class="error">
                             Username is required!
                         </p>
-                        <p *ngIf="usernameInput.errors?.['minlength']" class="error">
-                            Username must be at least {{usernameInput.errors?.['minlength'].requiredLength}} characters!
+                        <p *ngIf="usernameInput.errors?.['usernameValidator']" class="error">
+                            Username should be at least 4 characters and contain only latin letters and digits!
                         </p>
                     </ng-container>
                 </div>
@@ -51,30 +51,28 @@
                 <div class="col-md-6">
                     <label for="firstName" class="text-black">First Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Daniel" ngModel
-                        #firstNameInput="ngModel" required minlength="2" [disabled]="registerForm.submitted">
+                        #firstNameInput="ngModel" required [appName] [disabled]="registerForm.submitted">
 
                     <ng-container *ngIf="firstNameInput.touched">
                         <p *ngIf="firstNameInput.errors?.['required']" class="error">
                             First Name is required!
                         </p>
-                        <p *ngIf="firstNameInput.errors?.['minlength']" class="error">
-                            First Name must be at least {{firstNameInput.errors?.['minlength'].requiredLength}}
-                            characters!
+                        <p *ngIf="firstNameInput.errors?.['nameValidator']" class="error">
+                            First Name should contain only latin letters!
                         </p>
                     </ng-container>
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="text-black">Last Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Jones" ngModel
-                        #lastNameInput="ngModel" required minlength="2" [disabled]="registerForm.submitted">
+                        #lastNameInput="ngModel" required [appName] [disabled]="registerForm.submitted">
 
                     <ng-container *ngIf="lastNameInput.touched">
                         <p *ngIf="lastNameInput.errors?.['required']" class="error">
                             Last Name is required!
                         </p>
-                        <p *ngIf="lastNameInput.errors?.['minlength']" class="error">
-                            Last Name must be at least {{lastNameInput.errors?.['minlength'].requiredLength}}
-                            characters!
+                        <p *ngIf="lastNameInput.errors?.['nameValidator']" class="error">
+                            Last Name should contain only latin letters!
                         </p>
                     </ng-container>
                 </div>
@@ -92,7 +90,7 @@
                             Password is required!
                         </p>
                         <p *ngIf="passInput.errors?.['minlength']" class="error">
-                            Password must be at least {{passInput.errors?.['minlength'].requiredLength}}
+                            Password should be at least {{passInput.errors?.['minlength'].requiredLength}}
                             characters!
                         </p>
                     </ng-container>
@@ -114,9 +112,9 @@
 
             <div class="btn-container">
                 <app-primary-btn type="submit" text="Register"
-                    [isDisabled]="registerForm.invalid! || registerForm.submitted"></app-primary-btn>
+                    [isDisabled]="registerForm.invalid! || registerForm.pending!"></app-primary-btn>
             </div>
-            
+
         </form>
 
     </div>

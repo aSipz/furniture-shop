@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrimaryBtnComponent } from './primary-btn/primary-btn.component';
-import { EmailDirective, SameValueDirective } from './validators';
+import { EmailDirective, NameDirective, SameValueDirective, UsernameDirective } from './validators';
 
 
 
@@ -9,6 +9,8 @@ import { EmailDirective, SameValueDirective } from './validators';
   declarations: [
     PrimaryBtnComponent,
     EmailDirective,
+    UsernameDirective,
+    NameDirective,
     SameValueDirective
   ],
   imports: [
@@ -17,6 +19,8 @@ import { EmailDirective, SameValueDirective } from './validators';
   exports: [
     PrimaryBtnComponent,
     EmailDirective,
+    UsernameDirective,
+    NameDirective,
     SameValueDirective
   ]
 })

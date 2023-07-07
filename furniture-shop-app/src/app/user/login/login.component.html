@@ -40,7 +40,7 @@
                             Password is required!
                         </p>
                         <p *ngIf="passwordInput.errors?.['minlength']" class="error">
-                            Password must be at least {{passwordInput.errors?.['minlength'].requiredLength}} characters!
+                            Password should be at least {{passwordInput.errors?.['minlength'].requiredLength}} characters!
                         </p>
                     </ng-container>
                 </div>
