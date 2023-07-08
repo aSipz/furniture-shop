@@ -1,7 +1,9 @@
 const router = require('express').Router();
 
 const userManager = require('../managers/userManager');
-const { normalizeObjectValues } = require('../utils');
+const tokenManager = require('../managers/tokenManager');
+const { normalizeObjectValues, removePassword } = require('../utils');
+const { privateGuard, guestGuard } = require('../middlewares/authMiddleware');
 
 
 const register = async (req, res, next) => {
@@ -36,9 +38,12 @@ const login = async (req, res, next) => {
 
     try {
 
-        const result = await userManager.login(email, password);
+        const { token, user } = await userManager.login(email, password);
 
-        res.json(result);
+        res.cookie('auth', token, { httpOnly: true });
+
+        res.status(200)
+            .send(user);
 
     } catch (error) {
         console.log(error);
@@ -46,12 +51,32 @@ const login = async (req, res, next) => {
     }
 };
 
-const logout = (req, res) => {
-    res.json({ ok: true });
+const logout = async (req, res, next) => {
+
+    const token = req.cookies['auth'];
+
+    try {
+        await tokenManager.createToken(token);
+
+        res.clearCookie('auth')
+            .status(204)
+            .send({ message: 'Logged out!' });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
 };
 
-router.post('/register', register);
-router.post('/login', login);
-router.get('/logout', logout);
+const getProfile = async (req, res, next) => {
+
+    res.status(200)
+        .send(removePassword(req.user));
+
+};
+
+router.post('/register', guestGuard, register);
+router.post('/login', guestGuard, login);
+router.post('/logout', privateGuard, logout);
+router.get('/profile', privateGuard, getProfile);
 
 module.exports = router;

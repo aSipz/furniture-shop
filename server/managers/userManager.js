@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
-
 const User = require('../models/User');
 const { jwt, removePassword } = require('../utils');
 
 exports.getUserByEmail = (email) => User.findOne({ email });
+
+exports.getUserById = (userId) => User.findById(userId);
 
 exports.checkIfExist = (email, username) => User.findOne({ $or: [{ email }, { username }] });
 
@@ -22,29 +22,28 @@ exports.register = async (email, username, firstName, lastName, password) => {
 };
 
 exports.login = async (email, password) => {
-    const user = await this.getUserByEmail(email);
+    let user = await this.getUserByEmail(email);
 
     if (!user) {
-        const error = new Error('No such user or wrong password!');
-        error.statusCode = 400;
+        const error = new Error('Wrong email or password!');
+        error.statusCode = 401;
         throw error;
     }
 
-    const hash = user.password;
-
-    const isCorrectPassword = await bcrypt.compare(password, hash);
+    const isCorrectPassword = await user.matchPassword(password);
 
     if (!isCorrectPassword) {
-        const error = new Error('No such user or wrong password!');
-        error.statusCode = 400;
+        const error = new Error('Wrong email or password!');
+        error.statusCode = 401;
         throw error;
     }
 
-    const token = await jwt.encodeToken({ email, _id: user._id });
+    const token = await jwt.encodeToken({ id: user._id });
+
+    user = removePassword(user);
 
     return {
-        accessToken: token,
-        _id: user._id.toString(),
-        email
+        token,
+        user
     };
 }

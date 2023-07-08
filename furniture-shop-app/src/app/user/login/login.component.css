@@ -151,11 +151,12 @@ form {
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-.form-control.ng-touched.ng-invalid {
+.form-control.ng-touched.ng-invalid,
+.form-control.ng-touched.input-error {
     border-color: rgba(var(--bs-danger-rgb));
 }
 
-.form-control.ng-touched.ng-valid.ng-dirty {
+.form-control.ng-touched.ng-valid.ng-dirty:not(.input-error) {
     border-color: rgba(var(--bs-success-rgb));
 }
 

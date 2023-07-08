@@ -338,3 +338,11 @@ button.nav-link img {
 .subnavbtn:hover~.subnav-content {
     opacity: 1;
 }
+
+/* .subnavbtn:hover .subnav-content {
+    opacity: 1;
+} */
+
+.subnav-content:hover {
+    opacity: 1;
+}

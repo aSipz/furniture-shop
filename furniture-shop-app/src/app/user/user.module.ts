@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { RegisterComponent } from './register/register.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserRoutingModule } from './user-routing.module';
 
 
@@ -17,6 +17,7 @@ import { UserRoutingModule } from './user-routing.module';
     CommonModule,
     UserRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     SharedModule
   ],
   exports: []

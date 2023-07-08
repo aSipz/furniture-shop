@@ -1,10 +1,9 @@
-import { Component, Inject, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs';
 import { UserService } from '../user.service';
-import { API_ERROR } from 'src/app/shared/constants';
+import { emailValidator, nameValidator, sameValueGroupValidator, usernameValidator } from 'src/app/shared/validators';
 
 @Component({
   selector: 'app-register',
@@ -15,12 +14,24 @@ export class RegisterComponent {
 
   serverError = '';
 
-  @ViewChild('registerForm') registerForm!: NgForm;
+  registerForm = this.fb.group({
+    email: ['', [Validators.required, emailValidator()]],
+    username: ['', [Validators.required, usernameValidator()]],
+    firstName: ['', [Validators.required, nameValidator()]],
+    lastName: ['', [Validators.required, nameValidator()]],
+    passGroup: this.fb.group({
+      pass: ['', [Validators.required, Validators.minLength(4)]],
+      rePass: []
+    }, {
+      validator: [sameValueGroupValidator('pass', 'rePass')]
+    })
+  });
 
   constructor(
+    private fb: FormBuilder,
     private userService: UserService,
-    private router: Router,
-    @Inject(API_ERROR) private apiError: BehaviorSubject<Error | null>) { }
+    private router: Router
+  ) { }
 
   registerHandler(): void {
 
@@ -28,15 +39,18 @@ export class RegisterComponent {
       return;
     }
 
+    this.registerForm.disable();
+
     const { username, email, firstName, lastName, passGroup: { pass: password } } = this.registerForm.value;
 
-    this.userService.register(username, email, password, firstName, lastName).subscribe({
+    this.userService.register(username!, email!, password, firstName!, lastName!).subscribe({
       next: () => {
         this.router.navigate(['/']);
       },
       error: err => {
         console.log(err);
         this.serverError = err.error.message;
+        this.registerForm.enable();
       }
 
     });

@@ -10,19 +10,19 @@
             {{serverError}}
         </p>
 
-        <form #registerForm="ngForm" (ngSubmit)="registerHandler()">
+        <form [formGroup]="registerForm" (ngSubmit)="registerHandler()">
 
             <div class="form-group row">
                 <div class="col-md-12">
                     <label for="email" class="text-black">Email <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="email" name="email" placeholder="dan_jon@gmail.com"
-                        ngModel #emailInput="ngModel" required [appEmail] [disabled]="registerForm.submitted">
+                        [ngClass]="{'input-error': !!serverError}" formControlName="email">
 
-                    <ng-container *ngIf="emailInput.touched">
-                        <p *ngIf="emailInput.errors?.['required']" class="error">
+                    <ng-container *ngIf="registerForm.get('email')?.touched">
+                        <p *ngIf="registerForm.get('email')?.errors?.['required']" class="error">
                             Email is required!
                         </p>
-                        <p *ngIf="emailInput.errors?.['emailValidator']" class="error">
+                        <p *ngIf="registerForm.get('email')?.errors?.['emailValidator']" class="error">
                             Email is not valid!
                         </p>
                     </ng-container>
@@ -33,14 +33,14 @@
             <div class="form-group row">
                 <div class="col-md-12">
                     <label for="username" class="text-black">Username <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="danny" ngModel
-                        #usernameInput="ngModel" required [appUsername] [disabled]="registerForm.submitted">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="danny"
+                        [ngClass]="{'input-error': !!serverError}" formControlName="username">
 
-                    <ng-container *ngIf="usernameInput.touched">
-                        <p *ngIf="usernameInput.errors?.['required']" class="error">
+                    <ng-container *ngIf="registerForm.get('username')?.touched">
+                        <p *ngIf="registerForm.get('username')?.errors?.['required']" class="error">
                             Username is required!
                         </p>
-                        <p *ngIf="usernameInput.errors?.['usernameValidator']" class="error">
+                        <p *ngIf="registerForm.get('username')?.errors?.['usernameValidator']" class="error">
                             Username should be at least 4 characters and contain only latin letters and digits!
                         </p>
                     </ng-container>
@@ -50,47 +50,47 @@
             <div class="form-group row">
                 <div class="col-md-6">
                     <label for="firstName" class="text-black">First Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Daniel" ngModel
-                        #firstNameInput="ngModel" required [appName] [disabled]="registerForm.submitted">
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Daniel"
+                        formControlName="firstName">
 
-                    <ng-container *ngIf="firstNameInput.touched">
-                        <p *ngIf="firstNameInput.errors?.['required']" class="error">
+                    <ng-container *ngIf="registerForm.get('firstName')?.touched">
+                        <p *ngIf="registerForm.get('firstName')?.errors?.['required']" class="error">
                             First Name is required!
                         </p>
-                        <p *ngIf="firstNameInput.errors?.['nameValidator']" class="error">
+                        <p *ngIf="registerForm.get('firstName')?.errors?.['nameValidator']" class="error">
                             First Name should contain only latin letters!
                         </p>
                     </ng-container>
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="text-black">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Jones" ngModel
-                        #lastNameInput="ngModel" required [appName] [disabled]="registerForm.submitted">
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Jones"
+                        formControlName="lastName">
 
-                    <ng-container *ngIf="lastNameInput.touched">
-                        <p *ngIf="lastNameInput.errors?.['required']" class="error">
+                    <ng-container *ngIf="registerForm.get('lastName')?.touched">
+                        <p *ngIf="registerForm.get('lastName')?.errors?.['required']" class="error">
                             Last Name is required!
                         </p>
-                        <p *ngIf="lastNameInput.errors?.['nameValidator']" class="error">
+                        <p *ngIf="registerForm.get('lastName')?.errors?.['nameValidator']" class="error">
                             Last Name should contain only latin letters!
                         </p>
                     </ng-container>
                 </div>
             </div>
 
-            <div class="form-group row" ngModelGroup="passGroup" #passGroup="ngModelGroup"
-                [sameValue]="['pass', 'repass']">
+            <div class="form-group row" formGroupName="passGroup">
                 <div class="col-md-6">
                     <label for="pass" class="text-black">Password <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" id="pass" name="pass" placeholder="****" ngModel
-                        #passInput="ngModel" required minlength="4" [disabled]="registerForm.submitted">
+                    <input type="password" class="form-control" id="pass" name="pass" placeholder="****"
+                        formControlName="pass">
 
-                    <ng-container *ngIf="passInput.touched">
-                        <p *ngIf="passInput.errors?.['required']" class="error">
+                    <ng-container *ngIf="registerForm.get('passGroup')?.get('pass')?.touched">
+                        <p *ngIf="registerForm.get('passGroup')?.get('pass')?.errors?.['required']" class="error">
                             Password is required!
                         </p>
-                        <p *ngIf="passInput.errors?.['minlength']" class="error">
-                            Password should be at least {{passInput.errors?.['minlength'].requiredLength}}
+                        <p *ngIf="registerForm.get('passGroup')?.get('pass')?.errors?.['minlength']" class="error">
+                            Password should be at least
+                            {{registerForm.get('passGroup')?.get('pass')?.errors?.['minlength'].requiredLength}}
                             characters!
                         </p>
                     </ng-container>
@@ -98,12 +98,12 @@
                 <div class="col-md-6">
                     <label for="repass" class="text-black">Retype Password <span class="text-danger">*</span></label>
                     <input type="password" class="form-control"
-                        [ngClass]="{'input-error': passGroup.errors?.['sameValueValidator']}" id="repass" name="repass"
-                        placeholder="****" ngModel #repassInput="ngModel" [disabled]="registerForm.submitted" required>
+                        [ngClass]="{'input-error': registerForm.get('passGroup')?.errors?.['sameValueValidator']}"
+                        id="repass" name="repass" placeholder="****" formControlName="rePass">
 
-                    <ng-container *ngIf="repassInput.touched">
-                        <p *ngIf="passGroup.errors?.['sameValueValidator'] || repassInput.errors?.['required']"
-                            class="error">
+                    <ng-container
+                        *ngIf="registerForm.get('passGroup')?.get('rePass')?.touched && registerForm.get('passGroup')?.get('pass')?.touched">
+                        <p *ngIf="registerForm.get('passGroup')?.errors?.['sameValueValidator']" class="error">
                             Passwords should match!
                         </p>
                     </ng-container>
@@ -112,7 +112,7 @@
 
             <div class="btn-container">
                 <app-primary-btn type="submit" text="Register"
-                    [isDisabled]="registerForm.invalid! || registerForm.pending!"></app-primary-btn>
+                    [isDisabled]="registerForm.invalid! || registerForm.disabled!"></app-primary-btn>
             </div>
 
         </form>
