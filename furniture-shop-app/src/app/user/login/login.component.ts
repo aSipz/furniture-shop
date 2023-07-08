@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../user.service';
 import { emailValidator } from 'src/app/shared/validators';
+import { LoaderService } from 'src/app/shared/loader.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private loaderService: LoaderService
   ) { }
 
   loginHandler(): void {
@@ -33,16 +35,20 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.value;
 
+    this.loaderService.showLoader();
+
     this.loginForm.disable();
 
     this.userService.login(email!, password!).subscribe({
       next: () => {
         this.router.navigate(['/']);
+        this.loaderService.hideLoader();
       },
       error: err => {
         console.log(err);
-        this.serverError = err.error.message;
+        this.serverError = err.error?.message;
         this.loginForm.enable();
+        this.loaderService.hideLoader();
       }
     });
 

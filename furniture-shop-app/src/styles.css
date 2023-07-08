@@ -148,7 +148,7 @@ body {
     margin: 0;
 }
 
-app-root {
+app-authenticate {
     min-height: 100vh;
     display: flex;
     flex-direction: column;

@@ -49,7 +49,7 @@ export class RegisterComponent {
       },
       error: err => {
         console.log(err);
-        this.serverError = err.error.message;
+        this.serverError = err.error?.message;
         this.registerForm.enable();
       }
 

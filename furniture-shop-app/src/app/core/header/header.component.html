@@ -32,13 +32,19 @@
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <li>
-                    
+
                     <button class="nav-link subnavbtn"><img src="assets/images/user.svg"></button>
                     <div class="subnav-content">
-                        <a routerLink="/user/login">Log in</a>
-                        <a routerLink="/user/register">Register</a>
-                        <!-- <a href="#link3">Profile</a> -->
-                        <!-- <a href="#link4">Logout</a> -->
+                        
+                        <ng-container *ngIf="isLoggedIn">
+                            <a href="/user/profile">Profile</a>
+                            <a href="/user/logout">Logout</a>
+                        </ng-container>
+                        <ng-container *ngIf="!isLoggedIn">
+                            <a routerLink="/user/login">Log in</a>
+                            <a routerLink="/user/register">Register</a>
+                        </ng-container>
+
                     </div>
                 </li>
                 <li>
