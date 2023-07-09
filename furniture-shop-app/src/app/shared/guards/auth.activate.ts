@@ -23,7 +23,7 @@ export const authActivate: CanActivateFn = (
             const returnUrl = state.url;
 
             return !!user
-                ? router.createUrlTree(['/themes'])
+                ? router.createUrlTree(['/'])
                 : router.createUrlTree(['/user/login'], { queryParams: { returnUrl } });
         })
     )

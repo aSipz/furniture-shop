@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../user.service';
 import { emailValidator } from 'src/app/shared/validators';
-import { LoaderService } from 'src/app/shared/loader.service';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-login',

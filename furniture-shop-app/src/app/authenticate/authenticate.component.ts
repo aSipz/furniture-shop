@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserService } from '../user/user.service';
-import { LoaderService } from '../shared/loader.service';
+import { LoaderService } from '../core/services/loader.service';
 
 @Component({
   selector: 'app-authenticate',

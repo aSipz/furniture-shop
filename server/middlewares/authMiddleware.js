@@ -7,9 +7,8 @@ exports.authentication = async (req, res, next) => {
 
     if (token) {
         try {
+            
             const [data, blacklistedToken] = await Promise.all([jwt.verifyToken(token), tokenManager.checkIfExists(token)]);
-
-            console.log(data);
 
             if (blacklistedToken) {
                 throw new Error('blacklisted token');

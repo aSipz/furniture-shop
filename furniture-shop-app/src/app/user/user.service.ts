@@ -1,7 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { IUser } from '../shared/interfaces';
 import { HttpClient } from '@angular/common/http';
+
 import { BehaviorSubject, Subscription, catchError, filter, tap, throwError } from 'rxjs';
+
+import { IUser } from '../shared/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +44,7 @@ export class UserService implements OnDestroy {
   }
 
   logout() {
-    return this.http.post<void>('/api/logout', {})
+    return this.http.post<void>('/api/users/logout', {})
       .pipe(tap(() => this.user$$.next(null)));
   }
 

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrimaryBtnComponent } from './primary-btn/primary-btn.component';
 import { EmailDirective, NameDirective, SameValueDirective, UsernameDirective } from './validators';
-import { LoaderComponent } from './loader/loader.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 
 
@@ -13,14 +13,14 @@ import { LoaderComponent } from './loader/loader.component';
     UsernameDirective,
     NameDirective,
     SameValueDirective,
-    LoaderComponent
+    SpinnerComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
     PrimaryBtnComponent,
-    LoaderComponent,
+    SpinnerComponent,
     EmailDirective,
     UsernameDirective,
     NameDirective,

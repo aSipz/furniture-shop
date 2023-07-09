@@ -26,7 +26,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'logout',
+    path: 'user/logout',
     component: LogoutComponent,
     canActivate: [authActivate],
     data: {

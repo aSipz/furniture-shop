@@ -4,21 +4,28 @@ import { RouterModule } from '@angular/router';
 
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { GlobalLoaderComponent } from './global-loader/global-loader.component';
+import { SharedModule } from '../shared/shared.module';
+import { HomeComponent } from './home/home.component';
 
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    GlobalLoaderComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    SharedModule
   ],
   exports: [
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    GlobalLoaderComponent
   ]
 })
 export class CoreModule { }
