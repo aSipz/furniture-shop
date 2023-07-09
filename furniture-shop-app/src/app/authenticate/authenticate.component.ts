@@ -12,16 +12,16 @@ export class AuthenticateComponent {
   isAuthenticating = true;
 
   constructor(private userService: UserService, private loaderService: LoaderService) {
-    this.loaderService.showLoader()
+    this.loaderService.showLoader();
     this.userService.getProfile().subscribe({
       next: () => {
         this.isAuthenticating = false;
         this.loaderService.hideLoader();
       },
-      error: () => {
+      error: (err) => {
         this.isAuthenticating = false;
         this.loaderService.hideLoader();
-      }
+      },
     });
   }
 

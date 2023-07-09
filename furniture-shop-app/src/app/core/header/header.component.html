@@ -33,9 +33,9 @@
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <li>
 
-                    <button class="nav-link subnavbtn"><img src="assets/images/user.svg"></button>
-                    <div class="subnav-content">
-                        
+                    <button class="nav-link subnavbtn" (mouseenter)="show()" (mouseleave)="hideWithDelay()"><img src="assets/images/user.svg"></button>
+                    <div class="subnav-content" [@openClose]="isOpen ? 'open' : 'closed'" (mouseenter)="stayOpened()" (mouseleave)="hide()">
+
                         <ng-container *ngIf="isLoggedIn">
                             <a href="/user/profile">Profile</a>
                             <a href="/user/logout">Logout</a>

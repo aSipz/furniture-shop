@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from '../user.service';
 import { emailValidator, nameValidator, sameValueGroupValidator, usernameValidator } from 'src/app/shared/validators';
+import { LoaderService } from 'src/app/core/services/loader.service';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +31,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private loaderService: LoaderService
   ) { }
 
   registerHandler(): void {
@@ -39,6 +41,8 @@ export class RegisterComponent {
       return;
     }
 
+    this.loaderService.showLoader();
+
     this.registerForm.disable();
 
     const { username, email, firstName, lastName, passGroup: { pass: password } } = this.registerForm.value;
@@ -46,11 +50,13 @@ export class RegisterComponent {
     this.userService.register(username!, email!, password, firstName!, lastName!).subscribe({
       next: () => {
         this.router.navigate(['/']);
+        this.loaderService.hideLoader();
       },
       error: err => {
         console.log(err);
         this.serverError = err.error?.message;
         this.registerForm.enable();
+        this.loaderService.hideLoader();
       }
 
     });
