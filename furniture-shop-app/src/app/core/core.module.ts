@@ -6,7 +6,8 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { GlobalLoaderComponent } from './global-loader/global-loader.component';
 import { SharedModule } from '../shared/shared.module';
-import { HomeComponent } from './home/home.component';
+import { ErrorComponent } from './error/error.component';
+import { ProfileSubmenuComponent } from './profile-submenu/profile-submenu.component';
 
 
 
@@ -15,7 +16,8 @@ import { HomeComponent } from './home/home.component';
     HeaderComponent,
     FooterComponent,
     GlobalLoaderComponent,
-    HomeComponent
+    ErrorComponent,
+    ProfileSubmenuComponent
   ],
   imports: [
     CommonModule,

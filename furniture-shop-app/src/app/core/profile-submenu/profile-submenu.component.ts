@@ -1,20 +1,28 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../user.service';
-import { LoaderService } from 'src/app/core/services/loader.service';
+
+import { UserService } from 'src/app/user/user.service';
+import { LoaderService } from '../services/loader.service';
 
 @Component({
-  selector: 'app-logout',
-  templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.css']
+  selector: 'app-profile-submenu',
+  templateUrl: './profile-submenu.component.html',
+  styleUrls: ['./profile-submenu.component.css']
 })
-export class LogoutComponent {
+export class ProfileSubmenuComponent {
+
+  get isLoggedIn() {
+    return this.userService.isLoggedIn;
+  }
 
   constructor(
-    private router: Router,
     private userService: UserService,
-    private loaderService: LoaderService
-  ) {
+    private loaderService: LoaderService,
+    private router: Router
+  ) { }
+
+
+  logoutHandler() {
     this.loaderService.showLoader();
     this.userService.logout().subscribe({
       next: () => {
@@ -28,5 +36,4 @@ export class LogoutComponent {
       }
     });
   }
-
 }

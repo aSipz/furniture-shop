@@ -1,8 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 
-import { UserService } from 'src/app/user/user.service';
-
 @Component({
   selector: 'app-header',
   animations: [
@@ -32,11 +30,7 @@ export class HeaderComponent {
 
   isOpen = false;
 
-  get isLoggedIn() {
-    return this.userService.isLoggedIn;
-  }
-
-  constructor(private userService: UserService) { }
+  constructor() { }
 
   show() {
     this.stayOpened();

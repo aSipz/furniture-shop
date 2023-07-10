@@ -1,0 +1,5 @@
+.body-container {
+    max-height: calc(100vh - 111px - 98px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}

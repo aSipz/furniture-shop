@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { authActivate } from '../shared/guards/auth.activate';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { LogoutComponent } from './logout/logout.component';
 
 const routes: Routes = [
   {
@@ -26,15 +25,7 @@ const routes: Routes = [
       loginRequired: false,
       animation: 'registerPage'
     }
-  },
-  {
-    path: 'user/logout',
-    component: LogoutComponent,
-    canActivate: [authActivate],
-    data: {
-      loginRequired: true,
-    }
-  },
+  }
 ];
 
 @NgModule({

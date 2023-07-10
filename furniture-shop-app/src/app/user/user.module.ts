@@ -5,7 +5,6 @@ import { SharedModule } from '../shared/shared.module';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserRoutingModule } from './user-routing.module';
-import { LogoutComponent } from './logout/logout.component';
 
 
 
@@ -13,7 +12,6 @@ import { LogoutComponent } from './logout/logout.component';
   declarations: [
     LoginComponent,
     RegisterComponent,
-    LogoutComponent
   ],
   imports: [
     CommonModule,

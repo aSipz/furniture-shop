@@ -12,20 +12,26 @@ import { UserModule } from './user/user.module';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { appInterceptorProvider } from './app.interceptor';
 import { API_ERROR } from './shared/constants';
+import { ProductsModule } from './products/products.module';
+import { RouterModule } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthenticateComponent
+    AuthenticateComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppRoutingModule,
+    RouterModule,
     SharedModule,
     CoreModule,
-    UserModule
+    UserModule,
+    ProductsModule,
+    AppRoutingModule,
   ],
   providers: [
     appInterceptorProvider,

@@ -1,0 +1,11 @@
+<div class="container">
+    <ng-container *ngIf="isLoggedIn">
+        <a href="/user/profile">Profile</a>
+        <button (click)="logoutHandler()">Logout</button>
+        <!-- <a href="/user/logout">Logout</a> -->
+    </ng-container>
+    <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/user/login">Log in</a>
+        <a routerLink="/user/register">Register</a>
+    </ng-container>
+</div>

@@ -1,0 +1,17 @@
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn1 {
+    text-align: center;
+    width: 45%;
+    margin: 2rem auto 0;
+}
+
+.error-text {
+    text-align: center;
+    padding: 20px;
+    font-family: 'Inter', sans-serif;
+}
