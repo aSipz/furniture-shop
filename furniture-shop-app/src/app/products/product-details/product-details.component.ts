@@ -13,6 +13,7 @@ export class ProductDetailsComponent {
   solidStarIcon = faSolidStar;
   starIcon = faStar;
   circleIcon = faCircle;
+  rating = 3.5;
 
   slides: ISlideInterface[] = [
     { url: 'assets/images/product-1.png' },

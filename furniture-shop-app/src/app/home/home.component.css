@@ -484,6 +484,11 @@ a:hover {
     transition: .3s all ease;
 }
 
+.product-section .product-item .icon-cross:hover {
+    background-color: #f9bf29;
+    ;
+}
+
 .product-section .product-item .icon-cross img {
     position: absolute;
     left: 50%;

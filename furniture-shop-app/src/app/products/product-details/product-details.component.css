@@ -1,5 +1,3 @@
-
-
 h6 {
     margin-bottom: .5rem;
     font-family: inherit;
@@ -101,11 +99,6 @@ h6 {
     padding: 0;
 }
 
-body {
-    font-family: "helveticaneuemedium";
-    font-size: 16px;
-}
-
 h6 {
     color: #242424;
     line-height: 1.3;
@@ -123,34 +116,10 @@ a {
     -webkit-transition: all 500ms ease 0s;
     transition: all 500ms ease 0s;
     text-decoration: none;
-    outline: 0 solid transparent;
+    outline: none;
     color: #131212;
     font-weight: 400;
     font-size: 12px;
-}
-
-a:hover,
-a:focus {
-    -webkit-transition: all 500ms ease 0s;
-    transition: all 500ms ease 0s;
-    text-decoration: none;
-    outline: 0 solid transparent;
-    color: #131212;
-    font-weight: 400;
-    font-size: 12px;
-}
-
-ol {
-    margin: 0;
-}
-
-ol li {
-    list-style: none;
-}
-
-img {
-    height: auto;
-    max-width: 100%;
 }
 
 .mb-15 {
@@ -166,11 +135,20 @@ img {
     padding-bottom: 100px;
 }
 
-.avaibility{
+.availability {
     vertical-align: middle;
 }
 
-.avaibility fa-icon {
+.availability .status {
     color: forestgreen;
-    font-size: 12px;
+    font-size: 22px;
+}
+
+.product-price {
+    font-size: 24px;
+}
+
+app-primary-btn {
+    width: 50%;
+    display: block;
 }

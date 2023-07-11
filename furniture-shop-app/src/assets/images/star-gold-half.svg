@@ -1,1 +1,9 @@
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" viewBox="0 0 512 512"><path fill="gold" d="M258.672 64l-62.384 126.4-139.504 20.272 100.944 98.384-23.84 138.928 124.768-65.6v-318.4z"></path></svg>') center / cover no-repeat, url('/assets/images/star-light-grey.svg
+<?xml version="1.0"?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" version="1.1">
+ <g class="layer">
+  <title>Layer 1</title>
+  <path d="m457.09,210.67l-139.51,-20.27l-62.38,-126.4l-62.38,126.4l-139.51,20.27l100.95,98.39l-23.84,138.92l124.76,-65.6l124.77,65.6l-23.84,-138.92c0,0 100.95,-98.39 100.95,-98.39l0.03,0z" fill="#ddd" id="svg_3"/>
+  <path d="m255,64l-62.38,126.4l-139.51,20.27l100.95,98.39l-23.84,138.92l124.76,-65.6l0.02,-318.38z" fill="gold" id="svg_1"/>
+  <line fill="none" id="svg_2" x1="192.5" x2="200.5" y1="181" y2="417.75"/>
+ </g>
+</svg>
