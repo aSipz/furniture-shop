@@ -6,12 +6,12 @@ import { Component } from '@angular/core';
   animations: [
     trigger('openClose', [
       state('open', style({
-        opacity: 1,
-        'z-index': 1
+        transform: 'translateY(100%)',
+        'z-index': 0,
       })),
       state('closed', style({
-        opacity: 0,
-        'z-index': -1
+        transform: 'translateY(0%)',
+        // 'z-index': -3
       })),
       transition('open => closed', [
         animate('0.5s 0s ease-in-out')

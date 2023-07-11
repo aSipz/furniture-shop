@@ -199,7 +199,7 @@ button.nav-link img {
     background: #3b5d50;
     padding-top: 20px;
     padding-bottom: 20px;
-    z-index: 3;
+    /* z-index: 3; */
 }
 
 .custom-navbar .navbar-brand {
@@ -308,4 +308,5 @@ button.nav-link img {
     position: absolute;
     bottom: 0;
     background-color: #3b5d50;
+    z-index: -1;
 }
