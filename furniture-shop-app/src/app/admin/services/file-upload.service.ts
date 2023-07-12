@@ -32,6 +32,8 @@ export class FileUploadService {
   }
 
   private saveFileData(fileUpload: FileUpload): void {
+    console.log(fileUpload);
+
     this.db.list(this.basePath).push(fileUpload);
   }
 

@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UploadFormComponent } from './upload-form/upload-form.component';
 import { UploadListComponent } from './upload-list/upload-list.component';
 import { UploadDetailsComponent } from './upload-details/upload-details.component';
+import { UploadImagesComponent } from './upload-images/upload-images.component';
 
 
 
@@ -16,7 +17,8 @@ import { UploadDetailsComponent } from './upload-details/upload-details.componen
     AddNewItemComponent,
     UploadFormComponent,
     UploadListComponent,
-    UploadDetailsComponent
+    UploadDetailsComponent,
+    UploadImagesComponent
   ],
   imports: [
     CommonModule,
