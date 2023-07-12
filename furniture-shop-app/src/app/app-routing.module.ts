@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './core/error/error.component';
+import { adminMatch } from './shared/guards/admin.match';
 
 const routes: Routes = [
   {
@@ -9,6 +11,22 @@ const routes: Routes = [
     pathMatch: 'full',
     component: HomeComponent,
     data: { animation: 'homePage' }
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then(m => m.UserModule)
+  },
+  {
+    path: 'products',
+    loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
+  },
+  {
+    path: 'admin',
+    canMatch: [adminMatch],
+    data: {
+      adminRequired: true
+    },
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
   },
   {
     path: 'error',
@@ -21,7 +39,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

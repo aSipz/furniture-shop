@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserRoutingModule } from './user-routing.module';
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -17,8 +18,9 @@ import { UserRoutingModule } from './user-routing.module';
     CommonModule,
     UserRoutingModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
   ],
+  providers: [CookieService],
   exports: []
 })
 export class UserModule { }

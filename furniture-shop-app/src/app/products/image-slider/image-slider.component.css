@@ -65,10 +65,10 @@
 /* style the arrows */
 .arrow {
     display: block;
-    border-left: 0.1em solid white;
-    border-bottom: 0.1em solid white;
-    width: 0.5em;
-    height: 0.5em;
+    border-left: 6px solid white;
+    border-bottom: 6px solid white;
+    width: 24px;
+    height: 24px;
 
     &.left {
         transform: rotate(45deg);
@@ -99,7 +99,7 @@
 .dot {
     margin: 0 3px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 24px;
     color: #fff;
     -webkit-transition: .3s all ease;
     -o-transition: .3s all ease;

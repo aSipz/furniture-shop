@@ -4,7 +4,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
 
 const routes: Routes = [
   {
-    path: 'products/:id/details',
+    path: ':id/details',
     component: ProductDetailsComponent,
     data: {
       title: 'Product Details',

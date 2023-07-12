@@ -6,3 +6,4 @@ export * from './name-validator';
 export * from './name.directive';
 export * from './same-value-group-validator';
 export * from './same-value-group.directive';
+export * from './category-validator';

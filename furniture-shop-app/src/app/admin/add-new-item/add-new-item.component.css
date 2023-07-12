@@ -1,15 +1,15 @@
-.login-container {
+.add-new-container {
     width: 80%;
     margin: 1rem auto 8rem;
 }
 
-.login-container .header {
+.add-new-container .header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.5rem;
 }
 
-.login-container .header a {
+.add-new-container .header a {
     text-decoration: none;
     color: rgba(var(--bs-info-rgb));
     font-weight: 600;
@@ -134,8 +134,11 @@ form {
     background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
 }
 
-.form-control {
+.form-control:not(textarea) {
     height: 50px;
+}
+
+.form-control {
     border-radius: 10px;
     font-family: "Inter", sans-serif;
     margin-bottom: 1.5rem;
@@ -172,12 +175,8 @@ form {
 
 .error {
     position: absolute;
-    bottom: 0.4rem;
+    bottom: 0.2rem;
     line-height: 1;
-}
-
-.p-3.p-lg-5.border.bg-white {
-    position: relative;
 }
 
 .server-error {
@@ -185,4 +184,8 @@ form {
     left: 50%;
     transform: translateX(-50%);
     font-size: 16px;
+}
+
+.p-3.p-lg-5.border.bg-white {
+    position: relative;
 }

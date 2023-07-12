@@ -7,7 +7,7 @@ import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   {
-    path: 'user/login',
+    path: 'login',
     component: LoginComponent,
     canActivate: [authActivate],
     data: {
@@ -17,7 +17,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'user/register',
+    path: 'register',
     component: RegisterComponent,
     canActivate: [authActivate],
     data: {

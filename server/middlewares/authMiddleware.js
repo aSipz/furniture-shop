@@ -14,7 +14,7 @@ exports.authentication = async (req, res, next) => {
                 throw new Error('blacklisted token');
             }
 
-            const user = await userManager.getUserById(data.id);
+            const user = await userManager.getUserById(data.id).lean();
             req.user = user;
         } catch (error) {
             if (error.message === 'blacklisted token') {

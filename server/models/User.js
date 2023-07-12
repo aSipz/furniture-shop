@@ -27,7 +27,10 @@ const userSchema = new Schema({
         required: [true, '{PATH} is required'],
         minLength: [4, '{PATH} should be at least 4 characters long!']
     },
-
+    userRights: {
+        type: String,
+        default: 'user'
+    },
 },
     { timestamps: true });
 

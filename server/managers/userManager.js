@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { jwt, removePassword } = require('../utils');
+const { jwt, removePassword, toJSON } = require('../utils');
 
 exports.getUserByEmail = (email) => User.findOne({ email });
 
@@ -13,7 +13,7 @@ exports.register = async (email, username, firstName, lastName, password) => {
 
     const token = await jwt.encodeToken({ id: newUser._id });
 
-    const user = removePassword(newUser);
+    const user = removePassword(toJSON(newUser));
 
     return {
         token,
@@ -40,7 +40,7 @@ exports.login = async (email, password) => {
 
     const token = await jwt.encodeToken({ id: user._id });
 
-    user = removePassword(user);
+    user = removePassword(toJSON(user));
 
     return {
         token,

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Subscription, catchError, filter, tap, throwError } from 'rxjs';
 
 import { IUser } from '../shared/interfaces';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,16 @@ export class UserService implements OnDestroy {
     return this.user !== null;
   }
 
+  get isAdmin() {
+    return this.user?.userRights === 'admin';
+  }
+
   subscription: Subscription;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private cookieService: CookieService
+  ) {
     this.subscription = this.user$.subscribe(user => this.user = user);
   }
 
@@ -44,6 +52,7 @@ export class UserService implements OnDestroy {
   }
 
   logout() {
+    this.cookieService.delete('auth');
     return this.http.post<void>('/api/users/logout', {})
       .pipe(tap(() => this.user$$.next(null)));
   }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from '../user.service';
 import { emailValidator } from 'src/app/shared/validators';
@@ -24,7 +24,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   loginHandler(): void {
@@ -41,7 +42,9 @@ export class LoginComponent {
 
     this.userService.login(email!, password!).subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+        this.router.navigate([returnUrl]);
+        // this.router.navigate(['/']);
         this.loaderService.hideLoader();
       },
       error: err => {

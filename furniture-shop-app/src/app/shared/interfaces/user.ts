@@ -6,4 +6,5 @@ export interface IUser {
     lastName: string;
     createdAt: string;
     updatedAt: string;
+    userRights: string;
 }
