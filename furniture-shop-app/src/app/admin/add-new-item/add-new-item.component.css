@@ -179,6 +179,12 @@ form {
     line-height: 1;
 }
 
+.error.images{
+    position: absolute;
+    top: 24px;
+    bottom: unset;
+}
+
 .server-error {
     position: absolute;
     left: 50%;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { min } from 'rxjs';
@@ -7,35 +7,28 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 import { productCategories } from 'src/app/shared/constants';
 import { emailValidator, usernameValidator, nameValidator, sameValueGroupValidator, categoryValidator } from 'src/app/shared/validators';
 import { UserService } from 'src/app/user/user.service';
+import { FileUploadService } from '../services/file-upload.service';
 
 @Component({
   selector: 'app-add-new-item',
   templateUrl: './add-new-item.component.html',
   styleUrls: ['./add-new-item.component.css']
 })
-export class AddNewItemComponent {
+export class AddNewItemComponent implements OnDestroy {
+
+  ngOnDestroy(): void {
+    if (!this.submitSuccess) {
+      this.images.forEach(i => {
+        this.uploadService.deleteFileStorage(i.name);
+      })
+    }
+  }
 
   serverError = '';
   categories: string[] = productCategories;
+  submitSuccess = false;
 
-  // console.log(this.categories);
-
-
-  // _id: string;
-  //   name: string;
-  //   description: string;
-  //   category: string;
-  //   color: string;
-  //   material: string;
-  //   price: number;
-  //   discount: number;
-  //   quantity: number;
-  //   images?: string[];
-  //   reviews?: IReview[];
-  //   ratings?: IRating[];
-  //   createdAt: string;
-  //   updatedAt: string;
-  //   ownerId?: string;
+  images: any[] = [];
 
   addNewForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(4)]],
@@ -52,12 +45,17 @@ export class AddNewItemComponent {
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
+    private uploadService: FileUploadService,
     private loaderService: LoaderService
   ) { }
 
+  addImages(e: any): void {
+    this.images = e;
+  }
+
   addNewHandler(): void {
 
-    if (this.addNewForm.invalid) {
+    if (this.addNewForm.invalid || this.images.length === 0) {
       return;
     }
 

@@ -146,13 +146,24 @@
             <!-- <app-upload-form></app-upload-form>
 
             <app-upload-list></app-upload-list> -->
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="name" class="text-black images">Images <span class="text-danger">*</span></label>
 
-            <app-upload-images></app-upload-images>
+                    <p *ngIf="images.length === 0" class="error images">
+                        At least one image is required!
+                    </p>
+
+                    <app-upload-images (imageEvent)="addImages($event)"></app-upload-images>
+
+                </div>
+
+            </div>
 
 
             <div class="btn-container">
                 <app-primary-btn type="submit" text="Add"
-                    [isDisabled]="addNewForm.invalid! || addNewForm.disabled!"></app-primary-btn>
+                    [isDisabled]="addNewForm.invalid! || addNewForm.disabled! "></app-primary-btn>
             </div>
 
         </form>

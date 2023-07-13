@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable, finalize } from 'rxjs';
+import { Observable, catchError, finalize, firstValueFrom } from 'rxjs';
 import { FileUpload } from 'src/app/shared/constants';
+
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,8 @@ export class FileUploadService {
   constructor(private db: AngularFireDatabase, private storage: AngularFireStorage) { }
 
   pushFileToStorage(fileUpload: FileUpload): Observable<number | undefined> {
-    const filePath = `${this.basePath}/${fileUpload.file.name}`;
+    const uuid = uuidv4();
+    const filePath = `${this.basePath}/${uuid}-${fileUpload.file.name}`;
     const storageRef = this.storage.ref(filePath);
     const uploadTask = this.storage.upload(filePath, fileUpload.file);
 
@@ -22,7 +26,7 @@ export class FileUploadService {
       finalize(() => {
         storageRef.getDownloadURL().subscribe(downloadURL => {
           fileUpload.url = downloadURL;
-          fileUpload.name = fileUpload.file.name;
+          fileUpload.name = `${uuid}-${fileUpload.file.name}`;
           this.saveFileData(fileUpload);
         });
       })
@@ -32,30 +36,35 @@ export class FileUploadService {
   }
 
   private saveFileData(fileUpload: FileUpload): void {
-    console.log(fileUpload);
 
     this.db.list(this.basePath).push(fileUpload);
   }
 
-  getFiles(numberItems: number): AngularFireList<FileUpload> {
-    return this.db.list(this.basePath, ref =>
-      ref.limitToLast(numberItems));
+  getFiles(): AngularFireList<FileUpload> {
+    return this.db.list(this.basePath);
   }
 
-  deleteFile(fileUpload: FileUpload): void {
-    this.deleteFileDatabase(fileUpload.key)
+  deleteFile(fileUpload: FileUpload): Promise<void> {
+    return this.deleteFileDatabase(fileUpload.key)
       .then(() => {
-        this.deleteFileStorage(fileUpload.name);
+        return firstValueFrom(this.deleteFileStorage(fileUpload.name))
       })
-      .catch(error => console.log(error));
+      .catch(err => {
+        console.log(err);
+        throw err;
+      })
   }
 
-  private deleteFileDatabase(key: string): Promise<void> {
+  deleteFileDatabase(key: string): Promise<void> {
     return this.db.list(this.basePath).remove(key);
   }
 
-  private deleteFileStorage(name: string): void {
+  deleteFileStorage(name: string): Observable<any> {
     const storageRef = this.storage.ref(this.basePath);
-    storageRef.child(name).delete();
+    return storageRef.child(name).delete().pipe(
+      catchError((error) => {
+        throw error;
+      })
+    )
   }
 }

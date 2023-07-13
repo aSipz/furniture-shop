@@ -1,4 +1,4 @@
-<div *ngFor="let progressInfo of progressInfos" class="mb-2">
+<div *ngFor="let progressInfo of progressInfos" class="mb-2 image">
     <span>{{ progressInfo.fileName }}</span>
     <div class="progress">
         <div class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ progressInfo.value }}"
@@ -6,12 +6,15 @@
             {{ progressInfo.value }}%
         </div>
     </div>
+    <div class="alert alert-secondary my-3" role="alert">
+        <p>{{progressInfo.msg}}</p>
+    </div>
 </div>
 
 <div class="row">
     <div class="col-8">
         <label class="btn btn-default p-0">
-            <input type="file" accept="image/*" multiple (change)="selectFiles($event)" />
+            <input #fileInput type="file" accept="image/*" multiple (change)="selectFiles($event)" />
         </label>
     </div>
 
@@ -19,27 +22,29 @@
         <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="uploadFiles()">
             Upload
         </button>
+        <button class="btn btn-cancel btn-sm" *ngIf="selectedFiles" (click)="reset()">
+            Cancel
+        </button>
     </div>
 </div>
 
-<div>
-    <img *ngFor="let preview of previews" [src]="preview" class="preview" />
-</div>
-
-<div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
-    <ul *ngFor="let msg of message; let i = index">
-        <li>{{ msg }}</li>
-    </ul>
+<div class="images-preview-container">
+    <div class="image-container" *ngFor="let preview of previews">
+        <img [src]="preview" class="preview" />
+    </div>
 </div>
 
 <div class="card mt-3">
     <div class="card-header">List of Images</div>
     <ul class="list-group list-group-flush" *ngFor="let image of imageInfos">
-        <li class="list-group-item">
+        <li class="list-group-item" [appLoading]="true">
             <p>
                 <a href="{{ image.url }}">{{ image.name }}</a>
             </p>
             <img src="{{ image.url }}" alt="{{ image.name }}" height="80px" />
+            <button (click)="deleteFileUpload(image)" class="btn btn-danger btn-sm" style="float: right">
+                Delete
+            </button>
         </li>
     </ul>
 </div>
