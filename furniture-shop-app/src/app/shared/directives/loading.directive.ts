@@ -30,7 +30,8 @@ export class LoadingDirective implements OnInit, OnChanges {
     this.renderer.addClass(loadingContainer, this.uid);
     this.renderer.setStyle(loadingContainer, "position", "absolute");
     this.renderer.setStyle(loadingContainer, "top", "0");
-    this.renderer.setStyle(loadingContainer, "background", "#e4e4e4");
+    this.renderer.setStyle(loadingContainer, "left", "0");
+    this.renderer.setStyle(loadingContainer, "background", "rgba(100, 100, 100, 0.2");
     this.renderer.setStyle(loadingContainer, "width", "100%");
     this.renderer.setStyle(loadingContainer, "height", "100%");
 
@@ -54,7 +55,7 @@ export class LoadingDirective implements OnInit, OnChanges {
   ngOnChanges(simpleChanges: SimpleChanges) {
     if (simpleChanges['appLoading']) {
       const container = this.targetEl.nativeElement;
-      const div = container.querySelector("." + this.uid);
+      const div = container.children[1];
       if (div) {
         this.renderer.setStyle(
           div,

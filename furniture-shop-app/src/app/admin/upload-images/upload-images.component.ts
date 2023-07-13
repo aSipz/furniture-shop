@@ -23,15 +23,19 @@ export class UploadImagesComponent implements OnInit, OnDestroy {
   timerIds: ReturnType<typeof setTimeout>[] = [];
   fileReaders: FileReader[] = [];
 
+
   constructor(private uploadService: FileUploadService) { }
 
   ngOnInit(): void {
     this.uploadService.getFiles().snapshotChanges().pipe(
       map(changes =>
-        // store the key
-        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+      // store the key
+      {
+        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+      }
       )
     ).subscribe(fileUploads => {
+
       this.imageEvent.emit(fileUploads);
       this.imageInfos = fileUploads;
     });
@@ -118,14 +122,24 @@ export class UploadImagesComponent implements OnInit, OnDestroy {
   }
 
   deleteFileUpload(fileUpload: FileUpload): void {
-    this.uploadService.deleteFile(fileUpload)
-      .then(() => {
-        if (this.imageInfos) {
-          this.imageInfos = this.imageInfos.filter(e => e !== fileUpload);
-        }
-      })
-      .catch(err => console.log(err)
-      );
+
+    fileUpload.isLoading = true;
+
+    setTimeout(() => {
+
+      this.uploadService.deleteFile(fileUpload)
+        .then(() => {
+
+          if (this.imageInfos) {
+            this.imageInfos = this.imageInfos.filter(e => e !== fileUpload);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          fileUpload.isLoading = false;
+        });
+    }, 0);
+
   }
 
   private hideMsg(progressIndex: number, time: number): void {
@@ -135,4 +149,5 @@ export class UploadImagesComponent implements OnInit, OnDestroy {
     }, time);
     this.timerIds.push(tId);
   }
+
 }

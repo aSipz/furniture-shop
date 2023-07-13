@@ -36,8 +36,8 @@
 
 <div class="card mt-3">
     <div class="card-header">List of Images</div>
-    <ul class="list-group list-group-flush" *ngFor="let image of imageInfos">
-        <li class="list-group-item" [appLoading]="true">
+    <ul class="list-group list-group-flush" *ngFor="let image of imageInfos" [appLoading]="image.isLoading">
+        <li class="list-group-item">
             <p>
                 <a href="{{ image.url }}">{{ image.name }}</a>
             </p>

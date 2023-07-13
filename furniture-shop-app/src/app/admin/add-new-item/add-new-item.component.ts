@@ -1,13 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { min } from 'rxjs';
-
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { productCategories } from 'src/app/shared/constants';
 import { emailValidator, usernameValidator, nameValidator, sameValueGroupValidator, categoryValidator } from 'src/app/shared/validators';
-import { UserService } from 'src/app/user/user.service';
 import { FileUploadService } from '../services/file-upload.service';
+import { ProductsService } from 'src/app/products/products.service';
 
 @Component({
   selector: 'app-add-new-item',
@@ -43,7 +41,7 @@ export class AddNewItemComponent implements OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
+    private productsService: ProductsService,
     private router: Router,
     private uploadService: FileUploadService,
     private loaderService: LoaderService
@@ -63,7 +61,21 @@ export class AddNewItemComponent implements OnDestroy {
 
     this.addNewForm.disable();
 
-    // const {  } = this.addNewForm.value;
+    const { name, description, category, color, material, price, discount = 0, quantity } = this.addNewForm.value;
+
+    this.images = this.images.map(i => {
+      const { isLoading, ...img } = i;
+      return img;
+    });
+
+    this.productsService.addNewProduct(name!, description!, category!, color!, material!, price!, discount!, quantity!, this.images).subscribe({
+      error: err => {
+        console.log(err);
+        this.serverError = err.error?.message ? err.error?.message : 'Something went wrong!';
+        this.addNewForm.enable();
+        this.loaderService.hideLoader();
+      }
+    })
 
     // this.userService.register().subscribe({
     //   next: () => {
