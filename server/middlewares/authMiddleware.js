@@ -43,6 +43,15 @@ exports.privateGuard = (req, res, next) => {
     next();
 };
 
+exports.adminGuard = (req, res, next) => {
+
+    if (req.user?.userRights !== 'admin') {
+        return res.status(401).end();
+    }
+
+    next();
+};
+
 exports.guestGuard = (req, res, next) => {
 
     if (req.user) {

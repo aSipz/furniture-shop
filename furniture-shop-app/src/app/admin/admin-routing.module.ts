@@ -3,26 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddNewItemComponent } from './add-new-item/add-new-item.component';
 
 const routes: Routes = [
-  // {
-  //   path: 'user/login',
-  //   component: LoginComponent,
-  //   canActivate: [authActivate],
-  //   data: {
-  //     title: 'Login',
-  //     loginRequired: false,
-  //     animation: 'loginPage'
-  //   }
-  // },
-  // {
-  //   path: 'user/register',
-  //   component: RegisterComponent,
-  //   canActivate: [authActivate],
-  //   data: {
-  //     title: 'Register',
-  //     loginRequired: false,
-  //     animation: 'registerPage'
-  //   }
-  // }
   {
     path: 'add-item',
     component: AddNewItemComponent,
@@ -30,7 +10,15 @@ const routes: Routes = [
       title: 'Add New Product',
       animation: 'addItemPage'
     }
-  }
+  },
+  {
+    path: ':id/edit',
+    component: AddNewItemComponent,
+    data: {
+      title: 'Edit Product',
+      animation: 'editPage'
+    }
+  },
 ];
 
 @NgModule({

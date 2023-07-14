@@ -69,8 +69,6 @@ const logout = async (req, res, next) => {
 
 const getProfile = async (req, res, next) => {
 
-    console.log(req.user);
-
     res.status(200)
         .send(removePassword(req.user));
 

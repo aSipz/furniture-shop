@@ -10,6 +10,7 @@ export class FileUpload {
     url!: string;
     file: File;
     isLoading?: boolean;
+    _id?: string;
 
     constructor(file: File) {
         this.file = file;

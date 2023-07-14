@@ -29,10 +29,11 @@ export class AppInterceptor implements HttpInterceptor {
                 catchError(err => of(err)
                     .pipe(
                         switchMap(err => {
-                            if (err.status === 0) {
+                            if (err.status === 0 || err.status === 500) {
                                 this.apiError.next(err);
                                 this.router.navigate(['/error']);
-                                return throwError(() => 'Unable to connect to server!');
+                                const msg = err.status === 0 ? 'Unable to connect to server!' : 'Internal Server Error';
+                                return throwError(() => msg);
                             }
 
                             if (err.status === 401) {

@@ -15,7 +15,8 @@
                 <div class="col-md-12">
                     <label for="name" class="text-black">Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="Ergonomic chair"
-                        [ngClass]="{'input-error': !!serverError}" formControlName="name">
+                        [ngClass]="{'input-error': serverError === 'There is already a product with this name!'}"
+                        formControlName="name">
 
                     <ng-container *ngIf="addNewForm.get('name')?.touched">
                         <p *ngIf="addNewForm.get('name')?.errors?.['required']" class="error">

@@ -1,3 +1,4 @@
+import { IImageEntry } from "./imageEntry";
 import { IRating } from "./rating";
 import { IReview } from "./review";
 
@@ -11,10 +12,11 @@ export interface IProduct {
     price: number;
     discount: number;
     quantity: number;
-    images?: string[];
+    images?: IImageEntry[];
     reviews?: IReview[];
     ratings?: IRating[];
     createdAt: string;
     updatedAt: string;
     ownerId?: string;
+    deleted?: boolean;
 }

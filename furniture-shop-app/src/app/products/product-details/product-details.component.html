@@ -1,9 +1,10 @@
 <div class="single-product-area section-padding-100 clearfix">
-    <div class="container-fluid">
+    <div class="container-fluid" *ngIf="product">
 
         <div class="row">
 
-            <app-image-slider [slides]="slides" [changeInterval]="5000" [animationType]="'scale'"></app-image-slider>
+            <app-image-slider [slides]="product.images!" [changeInterval]="5000"
+                [animationType]="'scale'"></app-image-slider>
 
             <div class="col-12 col-lg-5">
                 <div class="single_product_desc">

@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ISlideInterface } from '../interfaces';
 import { AnimationType, fadeIn, fadeOut, flipIn, flipOut, jackIn, jackOut, scaleIn, scaleOut} from './image-slider.animations';
 import { trigger, transition, useAnimation } from '@angular/animations';
+import { IImageEntry } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'app-image-slider',
@@ -44,7 +44,7 @@ import { trigger, transition, useAnimation } from '@angular/animations';
   ]
 })
 export class ImageSliderComponent implements OnDestroy, OnInit {
-  @Input() slides: ISlideInterface[] = [];
+  @Input() slides: IImageEntry[] = [];
   @Input() changeInterval: number = 3000;
   @Input() animationType: string = AnimationType.Scale;
 

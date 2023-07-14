@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IImageEntry } from '../shared/interfaces';
+import { IImageEntry, IProduct } from '../shared/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,33 @@ export class ProductsService {
     quantity: number | string,
     images: IImageEntry[]
   ) {
-    return this.http.post('/api/products', {});
+    return this.http.post('/api/products', {
+      name,
+      description,
+      category,
+      color,
+      material,
+      price,
+      discount,
+      quantity,
+      images
+    });
+  }
+
+  getProduct(id: string) {
+    return this.http.get<IProduct>(`/api/products/${id}`);
+  }
+
+  getProducts(options?: { [key: string]: string | number }) {
+
+    let query = '';
+
+    if (options) {
+      query = '?';
+      for (const key in options) {
+        query += `${key}=${options[key]}`
+      }
+    }
+    return this.http.get<{ result: IProduct[], count: number }>(`/api/products${query}`);
   }
 }

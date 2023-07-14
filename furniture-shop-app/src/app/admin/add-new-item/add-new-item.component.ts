@@ -69,27 +69,18 @@ export class AddNewItemComponent implements OnDestroy {
     });
 
     this.productsService.addNewProduct(name!, description!, category!, color!, material!, price!, discount!, quantity!, this.images).subscribe({
+      next: () => {
+        this.submitSuccess = true;
+        this.router.navigate(['/']);
+        this.loaderService.hideLoader();
+      },
       error: err => {
         console.log(err);
         this.serverError = err.error?.message ? err.error?.message : 'Something went wrong!';
         this.addNewForm.enable();
         this.loaderService.hideLoader();
       }
-    })
-
-    // this.userService.register().subscribe({
-    //   next: () => {
-    //     this.router.navigate(['/']);
-    //     this.loaderService.hideLoader();
-    //   },
-    //   error: err => {
-    //     console.log(err);
-    //     this.serverError = err.error?.message;
-    //     this.addNewForm.enable();
-    //     this.loaderService.hideLoader();
-    //   }
-
-    // });
+    });
 
   }
 }

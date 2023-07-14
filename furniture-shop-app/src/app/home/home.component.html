@@ -33,51 +33,15 @@
                 <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi cum debitis optio nemo,
                     iure dignissimos voluptatum unde accusantium laborum perferendis. </p>
             </div>
-            <!-- End Column 1 -->
 
-            <!-- Start Column 2 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <div class="product-item">
-                    <a routerLink="/products/:id/details" title="Details">
-                        <img src="assets/images/product-1.png" class="img-fluid product-thumbnail">
-                        <h3 class="product-title">Nordic Chair</h3>
-                        <strong class="product-price">$50.00</strong>
-                    </a>
-                    <span class="icon-cross" title="Add to Cart">
-                        <img src="assets/images/cross.svg" class="img-fluid">
-                    </span>
+            <ng-container *ngIf="!errorFetchingData">
+                <app-product-card class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" *ngFor="let product of products"
+                    [appLoading]="!product.name" [product]="product"></app-product-card>
+            </ng-container>
 
-                </div>
-            </div>
-            <!-- End Column 2 -->
-
-            <!-- Start Column 3 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a class="product-item" routerLink="/products/:id/details">
-                    <img src="assets/images/product-2.png" class="img-fluid product-thumbnail">
-                    <h3 class="product-title">Kruzo Aero Chair</h3>
-                    <strong class="product-price">$78.00</strong>
-
-                    <span class="icon-cross">
-                        <img src="assets/images/cross.svg" class="img-fluid">
-                    </span>
-                </a>
-            </div>
-            <!-- End Column 3 -->
-
-            <!-- Start Column 4 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                <a class="product-item" routerLink="/products/:id/details">
-                    <img src="assets/images/product-3.png" class="img-fluid product-thumbnail">
-                    <h3 class="product-title">Ergonomic Chair</h3>
-                    <strong class="product-price">$43.00</strong>
-
-                    <span class="icon-cross">
-                        <img src="assets/images/cross.svg" class="img-fluid">
-                    </span>
-                </a>
-            </div>
-            <!-- End Column 4 -->
+            <ng-container *ngIf="errorFetchingData">
+                <p>Error in loading resources. Please try again later!</p>
+            </ng-container>
 
         </div>
     </div>
