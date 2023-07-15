@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddNewItemComponent } from './add-new-item/add-new-item.component';
+import { EditItemComponent } from './edit-item/edit-item.component';
 
 const routes: Routes = [
   {
@@ -12,8 +13,8 @@ const routes: Routes = [
     }
   },
   {
-    path: ':id/edit',
-    component: AddNewItemComponent,
+    path: ':id/edit-item',
+    component: EditItemComponent,
     data: {
       title: 'Edit Product',
       animation: 'editPage'

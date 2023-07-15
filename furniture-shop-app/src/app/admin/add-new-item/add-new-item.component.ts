@@ -3,7 +3,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { productCategories } from 'src/app/shared/constants';
-import { emailValidator, usernameValidator, nameValidator, sameValueGroupValidator, categoryValidator } from 'src/app/shared/validators';
+import {  categoryValidator } from 'src/app/shared/validators';
 import { FileUploadService } from '../services/file-upload.service';
 import { ProductsService } from 'src/app/products/products.service';
 
@@ -13,14 +13,6 @@ import { ProductsService } from 'src/app/products/products.service';
   styleUrls: ['./add-new-item.component.css']
 })
 export class AddNewItemComponent implements OnDestroy {
-
-  ngOnDestroy(): void {
-    if (!this.submitSuccess) {
-      this.images.forEach(i => {
-        this.uploadService.deleteFileStorage(i.name);
-      })
-    }
-  }
 
   serverError = '';
   categories: string[] = productCategories;
@@ -47,6 +39,14 @@ export class AddNewItemComponent implements OnDestroy {
     private loaderService: LoaderService
   ) { }
 
+  ngOnDestroy(): void {
+    if (!this.submitSuccess) { 
+      this.images.forEach(i => {
+        this.uploadService.deleteFileStorage(i);
+      })
+    }
+  }
+
   addImages(e: any): void {
     this.images = e;
   }
@@ -69,9 +69,9 @@ export class AddNewItemComponent implements OnDestroy {
     });
 
     this.productsService.addNewProduct(name!, description!, category!, color!, material!, price!, discount!, quantity!, this.images).subscribe({
-      next: () => {
+      next: (product) => {
         this.submitSuccess = true;
-        this.router.navigate(['/']);
+        this.router.navigate([`/products/${product._id}/details`]);
         this.loaderService.hideLoader();
       },
       error: err => {

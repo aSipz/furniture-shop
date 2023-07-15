@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const productManager = require('../managers/productManager');
 const { privateGuard, adminGuard } = require('../middlewares/authMiddleware');
+const { removeVer } = require('../utils');
 
 const getAllProducts = async (req, res, next) => {
     const search = req.query.where;
@@ -35,8 +36,10 @@ const createProduct = async (req, res, next) => {
             throw error;
         }
 
-        await productManager.create({ name, description, category, color, material, price, discount, quantity, images, ownerId });
-        res.status(201).end();
+        const newProduct = await productManager.create({ name, description, category, color, material, price, discount, quantity, images, ownerId });
+
+        res.status(201)
+            .send(removeVer(newProduct));
     } catch (error) {
         next(error);
         console.log(error);
@@ -58,15 +61,26 @@ const getOneProduct = async (req, res, next) => {
 };
 
 const editProduct = async (req, res, next) => {
-    const { furnitureId } = req.params;
-    const userId = req.user._id;
+    const { productId } = req.params;
+    const { name, description, category, color, material, price, discount, quantity, images } = req.body;
+
     try {
-        const result = await productManager.edit(furnitureId, userId, req.body);
-        res.json(result);
+        const sameProductExists = await productManager.getProductByName(name);
+
+        if (sameProductExists) {
+            const error = new Error('There is already a product with this name!');
+            error.statusCode = 409;
+            throw error;
+        }
+
+        const editedProduct = await productManager.edit(productId, { name, description, category, color, material, price, discount, quantity, images });
+        res.status(200)
+            .send(removeVer(editedProduct));
     } catch (error) {
         next(error);
         console.log(error);
     }
+
 }
 
 const deleteProduct = async (req, res, next) => {
@@ -84,7 +98,7 @@ const deleteProduct = async (req, res, next) => {
 router.get('/', getAllProducts);
 router.post('/', adminGuard, createProduct);
 router.get('/:productId', getOneProduct);
-router.put('/:productId', privateGuard, editProduct);
+router.put('/:productId', adminGuard, editProduct);
 router.delete('/:productId', privateGuard, deleteProduct);
 
 module.exports = router;

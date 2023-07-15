@@ -7,6 +7,13 @@
                 [animationType]="'scale'"></app-image-slider>
 
             <div class="col-12 col-lg-5">
+
+                <div class="control-btns" *ngIf="isAdmin">
+                    <app-primary-btn text="Edit" type="submit" btnClass="blue"
+                        (btnClick)="editHandler()"></app-primary-btn>
+                    <app-primary-btn text="Delete" type="submit" btnClass="red"></app-primary-btn>
+                </div>
+
                 <div class="single_product_desc">
                     <!-- Product Meta Data -->
                     <div class="product-meta-data">

@@ -20,7 +20,31 @@ export class ProductsService {
     quantity: number | string,
     images: IImageEntry[]
   ) {
-    return this.http.post('/api/products', {
+    return this.http.post<IProduct>('/api/products', {
+      name,
+      description,
+      category,
+      color,
+      material,
+      price,
+      discount,
+      quantity,
+      images
+    });
+  }
+
+  editProduct(id: string,
+    name: string,
+    description: string,
+    category: string,
+    color: string,
+    material: string,
+    price: number | string,
+    discount: number,
+    quantity: number | string,
+    images: IImageEntry[]
+  ) {
+    return this.http.put<IProduct>(`/api/products/${id}`, {
       name,
       description,
       category,

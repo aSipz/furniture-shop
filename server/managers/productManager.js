@@ -44,17 +44,7 @@ exports.getAll = (search, limit, skip) => {
 
 exports.create = (productData) => Product.create(productData);
 
-exports.edit = async (furnitureId, userId, furnitureData) => {
-    const furniture = await this.getOne(furnitureId);
-
-    if (userId != furniture._ownerId) {
-        const error = new Error('Unauthorized');
-        error.statusCode = 401;
-        throw error;
-    }
-
-    return Product.findByIdAndUpdate(furnitureId, furnitureData, { runValidators: true });
-}
+exports.edit = async (productId, productData) => Product.findByIdAndUpdate(productId, productData, { runValidators: true });
 
 exports.delete = async (furnitureId, userId) => {
     const furniture = await this.getOne(furnitureId);

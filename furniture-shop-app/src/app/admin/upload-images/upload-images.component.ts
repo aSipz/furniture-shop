@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { FileUploadService } from '../services/file-upload.service';
 import { FileUpload } from 'src/app/shared/constants';
 
@@ -8,36 +8,33 @@ import { FileUpload } from 'src/app/shared/constants';
   templateUrl: './upload-images.component.html',
   styleUrls: ['./upload-images.component.css']
 })
-export class UploadImagesComponent implements OnInit, OnDestroy {
+export class UploadImagesComponent implements OnDestroy {
 
   @ViewChild('fileInput', { static: false }) fileInput!: ElementRef;
 
   @Output() imageEvent = new EventEmitter<any[]>();
 
+  @Input() imageInfos: any[] = [];
+
   selectedFiles?: FileList;
   progressInfos: any[] = [];
 
   previews: string[] = [];
-  imageInfos?: any[];
+  // imageInfos: any[] = [];
 
   timerIds: ReturnType<typeof setTimeout>[] = [];
   fileReaders: FileReader[] = [];
 
+  sub: Subscription;
 
-  constructor(private uploadService: FileUploadService) { }
+  constructor(private uploadService: FileUploadService) {
+    this.sub = this.uploadService.files$.subscribe({
+      next: (file) => {
 
-  ngOnInit(): void {
-    this.uploadService.getFiles().snapshotChanges().pipe(
-      map(changes =>
-      // store the key
-      {
-        return changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+        this.imageInfos.push(file);
+
+        this.imageEvent.emit(this.imageInfos);
       }
-      )
-    ).subscribe(fileUploads => {
-
-      this.imageEvent.emit(fileUploads);
-      this.imageInfos = fileUploads;
     });
   }
 
@@ -48,7 +45,7 @@ export class UploadImagesComponent implements OnInit, OnDestroy {
         r.abort();
       }
     });
-    this.imageInfos?.forEach(i => this.uploadService.deleteFileDatabase(i.key));
+    this.sub.unsubscribe();
   }
 
   reset() {
@@ -126,18 +123,18 @@ export class UploadImagesComponent implements OnInit, OnDestroy {
     fileUpload.isLoading = true;
 
     setTimeout(() => {
-
-      this.uploadService.deleteFile(fileUpload)
-        .then(() => {
-
+      this.uploadService.deleteFileStorage(fileUpload).subscribe({
+        next: () => {
           if (this.imageInfos) {
             this.imageInfos = this.imageInfos.filter(e => e !== fileUpload);
           }
-        })
-        .catch(err => {
+          this.imageEvent.emit(this.imageInfos);
+        },
+        error: (err) => {
           console.log(err);
           fileUpload.isLoading = false;
-        });
+        }
+      })
     }, 0);
 
   }

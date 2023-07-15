@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import { IImageEntry, IProduct } from 'src/app/shared/interfaces';
+import { IProduct } from 'src/app/shared/interfaces';
 import { ProductsService } from '../products.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/user/user.service';
 
 @Component({
   selector: 'app-product-details',
@@ -20,8 +21,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   product: IProduct | null = null;
 
+  get isAdmin() {
+    return this.userService.isAdmin;
+  }
+
   constructor(
     private productsService: ProductsService,
+    private userService: UserService,
     private loaderService: LoaderService,
     private route: ActivatedRoute,
     private router: Router,
@@ -51,52 +57,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
+  editHandler(): void {
+    this.router.navigate([`/admin/${this.productId}/edit-item`]);
+  }
+
 }
-
-
-function ngOnInit() {
-  throw new Error('Function not implemented.');
-}
-// serverError = '';
-
-//   loginForm = this.fb.group({
-//     email: ['', [Validators.required, emailValidator()]],
-//     password: ['', [Validators.required, Validators.minLength(4)]]
-//   });
-
-//   constructor(
-//     private fb: FormBuilder,
-//     private userService: UserService,
-//     private router: Router,
-//     private loaderService: LoaderService,
-//     private activatedRoute: ActivatedRoute
-//   ) { }
-
-//   loginHandler(): void {
-
-//     if (this.loginForm.invalid) {
-//       return;
-//     }
-
-//     const { email, password } = this.loginForm.value;
-
-//     this.loaderService.showLoader();
-
-//     this.loginForm.disable();
-
-//     this.userService.login(email!, password!).subscribe({
-//       next: () => {
-//         const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
-//         this.router.navigate([returnUrl]);
-//         // this.router.navigate(['/']);
-//         this.loaderService.hideLoader();
-//       },
-//       error: err => {
-//         console.log(err);
-//         this.serverError = err.error?.message;
-//         this.loginForm.enable();
-//         this.loaderService.hideLoader();
-//       }
-//     });
-
-//   }

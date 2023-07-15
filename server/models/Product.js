@@ -23,6 +23,11 @@ const productSchema = new Schema({
         required: true,
         minLength: [4, '{PATH} should be at least 4 characters long!']
     },
+    color: {
+        type: String,
+        required: true,
+        minLength: [3, '{PATH} should be at least 3 characters long!']
+    },
     price: {
         type: Number,
         required: true,

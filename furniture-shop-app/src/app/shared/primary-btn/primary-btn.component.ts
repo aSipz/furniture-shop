@@ -20,6 +20,7 @@ export class PrimaryBtnComponent {
   @Input() type: string = 'button';
   @Output() btnClick = new EventEmitter();
   @Input() isDisabled = false;
+  @Input() btnClass: string = 'green';
 
   constructor() { }
 

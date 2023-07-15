@@ -25,7 +25,7 @@
 <!-- Start Product Section -->
 <div class="product-section">
     <div class="container">
-        <div class="row">
+        <div class="row cards">
 
             <!-- Start Column 1 -->
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
@@ -35,7 +35,7 @@
             </div>
 
             <ng-container *ngIf="!errorFetchingData">
-                <app-product-card class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" *ngFor="let product of products"
+                <app-product-card class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0 product-card" *ngFor="let product of products"
                     [appLoading]="!product.name" [product]="product"></app-product-card>
             </ng-container>
 

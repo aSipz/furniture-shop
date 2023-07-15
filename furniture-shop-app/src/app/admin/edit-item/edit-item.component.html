@@ -1,1 +1,169 @@
-<p>edit-item works!</p>
+<div class="edit-container">
+    <div class="header">
+        <h2 class="h3 text-black">Edit Product</h2>
+    </div>
+
+    <div class="p-3 p-lg-5 border bg-white">
+
+        <p *ngIf="!!serverError" class="server-error">
+            {{serverError}}
+        </p>
+
+        <form [formGroup]="editForm" (ngSubmit)="editHandler()">
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="name" class="text-black">Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Ergonomic chair"
+                        [ngClass]="{'input-error': serverError === 'There is already a product with this name!'}"
+                        formControlName="name">
+
+                    <ng-container *ngIf="editForm.get('name')?.touched">
+                        <p *ngIf="editForm.get('name')?.errors?.['required']" class="error">
+                            Name is required!
+                        </p>
+                        <p *ngIf="editForm.get('name')?.errors?.['minlength']" class="error">
+                            Name should be at least {{editForm.get('name')?.errors?.['minlength'].requiredLength}}
+                            characters!
+                        </p>
+                    </ng-container>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="description" class="text-black">Description <span class="text-danger">*</span></label>
+                    <textarea type="text" class="form-control" id="description" name="description"
+                        placeholder="Some description..." formControlName="description" rows="6"> </textarea>
+
+                    <ng-container *ngIf="editForm.get('description')?.touched">
+                        <p *ngIf="editForm.get('description')?.errors?.['required']" class="error">
+                            Description is required!
+                        </p>
+                        <p *ngIf="editForm.get('description')?.errors?.['minlength']" class="error">
+                            Description should be at least
+                            {{editForm.get('description')?.errors?.['minlength'].requiredLength}} characters!
+                        </p>
+                    </ng-container>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="category" class="text-black">Category <span class="text-danger">*</span></label>
+
+                    <select name="category" id="category" class="form-control" formControlName="category">
+                        <option *ngFor="let category of categories" value={{category}}>{{category}}</option>
+                    </select>
+
+                    <ng-container *ngIf="editForm.get('category')?.touched">
+                        <p *ngIf="editForm.get('category')?.errors?.['required']" class="error">
+                            Category is required!
+                        </p>
+                        <p *ngIf="editForm.get('category')?.errors?.['categoryValidator']" class="error">
+                            Category should be a valid one!
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="col-md-6">
+                    <label for="quantity" class="text-black">Quantity <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" placeholder="10"
+                        formControlName="quantity">
+
+                    <ng-container *ngIf="editForm.get('quantity')?.touched">
+                        <p *ngIf="editForm.get('quantity')?.errors?.['required']" class="error">
+                            Quantity is required!
+                        </p>
+                        <p *ngIf="editForm.get('quantity')?.errors?.['min']" class="error">
+                            The minimum quantity is 0!
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="color" class="text-black">Color <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="color" name="color" placeholder="White"
+                        formControlName="color">
+
+                    <ng-container *ngIf="editForm.get('color')?.touched">
+                        <p *ngIf="editForm.get('color')?.errors?.['required']" class="error">
+                            Color is required!
+                        </p>
+                        <p *ngIf="editForm.get('color')?.errors?.['minlength']" class="error">
+                            Color should be at least {{editForm.get('color')?.errors?.['minlength'].requiredLength}}
+                            characters!
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="col-md-6">
+                    <label for="material" class="text-black">Material <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="material" name="material" placeholder="Wood"
+                        formControlName="material">
+
+                    <ng-container *ngIf="editForm.get('material')?.touched">
+                        <p *ngIf="editForm.get('material')?.errors?.['required']" class="error">
+                            Material is required!
+                        </p>
+                        <p *ngIf="editForm.get('material')?.errors?.['minlength']" class="error">
+                            Material should be at least
+                            {{editForm.get('material')?.errors?.['minlength'].requiredLength}} characters!
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="price" class="text-black">Price <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="price" name="price" placeholder="120"
+                        formControlName="price">
+
+                    <ng-container *ngIf="editForm.get('price')?.touched">
+                        <p *ngIf="editForm.get('price')?.errors?.['required']" class="error">
+                            Price is required!
+                        </p>
+                        <p *ngIf="editForm.get('price')?.errors?.['min']" class="error">
+                            The minimum price is 0!
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="col-md-6">
+                    <label for="discount" class="text-black">Discount % <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="discount" name="discount" placeholder="10"
+                        formControlName="discount">
+
+                    <ng-container *ngIf="editForm.get('discount')?.touched">
+                        <p *ngIf="editForm.get('discount')?.errors?.['min']" class="error">
+                            The minimum discount is 0!
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="name" class="text-black images">Images <span class="text-danger">*</span></label>
+
+                    <p *ngIf="images.length === 0" class="error images">
+                        At least one image is required!
+                    </p>
+
+                    <app-upload-images (imageEvent)="addImages($event)" [imageInfos]="images"></app-upload-images>
+
+                </div>
+
+            </div>
+
+            <div class="btn-container">
+                <app-primary-btn type="submit" text="Edit"
+                    [isDisabled]="editForm.invalid! || editForm.disabled! "></app-primary-btn>
+            </div>
+
+        </form>
+
+    </div>
+</div>
