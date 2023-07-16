@@ -1,8 +1,13 @@
 const Product = require('../models/Product');
 
-exports.getProductByName = (name) => Product.findOne({ name });
+exports.getProductByName = (name, id) => {
+    if (!id) {
+        return Product.findOne({ name });
+    }
+    return Product.findOne({ name, _id: { '$ne': id } });
+};
 
-exports.getProductById = (id, { include }) => {
+exports.getProductById = (id, include) => {
 
     const fieldsToPopulate = [];
 
@@ -17,26 +22,39 @@ exports.getProductById = (id, { include }) => {
     return Product.findById(id, { __v: 0 }).populate(include && fieldsToPopulate);
 };
 
-exports.getAll = (search, limit, skip) => {
+exports.getAll = (search, limit, skip, sort, include) => {
 
-    const searchCriteria = {};
+    let searchCriteria = {};
 
     if (search) {
-        const searchArray = [];
+        searchCriteria = JSON.parse(search);
+        // const searchArray = [];
 
-        const entry = search.split('=');
+        // const searchEntries = search.slice(1, -1).split(',').map(e => e);
 
-        searchArray.push({ [entry[0]]: { $exists: true, $eq: entry[1].slice(1, -1) } });
+        // searchEntries.forEach(s => {
+        //     const current = s.split(':');
+        //     searchArray.push({ [current[0].slice(1, -1)]: { $exists: true, $eq: current[1] } })
+        // });
 
-        searchCriteria[$and] = searchArray;
-
+        // searchCriteria['$and'] = searchArray;
     }
+
+    const sortObj = sort
+        ? sort.split(',')
+            .map(e => e)
+            .reduce((acc, curr) => {
+                const key = curr.split(1);
+                acc[key] = curr.startsWith('-') ? -1 : 1;
+                return acc;
+            }, {})
+        : {};
+
 
     const projectionCriteria = { __v: 0 };
 
-
     return Promise.all([
-        Product.find(searchCriteria, projectionCriteria).limit(limit && +limit).skip(skip && +skip),
+        Product.find(searchCriteria, projectionCriteria).limit(limit && +limit).skip(skip && +skip).sort(sortObj),
         Product.find(searchCriteria, projectionCriteria).count()
     ]);
 
@@ -44,16 +62,8 @@ exports.getAll = (search, limit, skip) => {
 
 exports.create = (productData) => Product.create(productData);
 
-exports.edit = async (productId, productData) => Product.findByIdAndUpdate(productId, productData, { runValidators: true });
+exports.edit = (productId, productData) => Product.findByIdAndUpdate(productId, productData, { runValidators: true, new: true });
 
-exports.delete = async (furnitureId, userId) => {
-    const furniture = await this.getOne(furnitureId);
+exports.delete = (productId) => Product.findByIdAndDelete(productId);
 
-    if (userId != furniture._ownerId) {
-        const error = new Error('Unauthorized');
-        error.statusCode = 401;
-        throw error;
-    }
-
-    return Product.findByIdAndDelete(furnitureId);
-}
+exports.rate = (productId, ratingId) => Product.findByIdAndUpdate(productId, { $push: { ratings: ratingId } });

@@ -13,8 +13,8 @@ export interface IProduct {
     discount: number;
     quantity: number;
     images?: IImageEntry[];
-    reviews?: IReview[];
-    ratings?: IRating[];
+    reviews?: IReview[] | string[];
+    ratings?: IRating[] | string[];
     createdAt: string;
     updatedAt: string;
     ownerId?: string;

@@ -144,6 +144,10 @@ a {
     font-size: 22px;
 }
 
+.availability .status.out-of-stock {
+    color: var(--bs-danger);
+}
+
 .product-price {
     font-size: 24px;
 }
@@ -157,6 +161,7 @@ app-primary-btn {
     display: flex;
     justify-content: flex-end;
     gap: 20px;
+    align-items: flex-end;
 }
 
 .control-btns>* {

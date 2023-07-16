@@ -4,4 +4,5 @@ export interface IRating {
     createdAt: string;
     updatedAt: string;
     ownerId: string;
+    productId: string;
 }

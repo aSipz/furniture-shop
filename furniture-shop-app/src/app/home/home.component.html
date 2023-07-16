@@ -35,12 +35,23 @@
             </div>
 
             <ng-container *ngIf="!errorFetchingData">
-                <app-product-card class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0 product-card" *ngFor="let product of products"
-                    [appLoading]="!product.name" [product]="product"></app-product-card>
+                <app-product-card class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0 product-card"
+                    *ngFor="let product of products" [appLoading]="!product.name"
+                    [product]="product"></app-product-card>
             </ng-container>
 
             <ng-container *ngIf="errorFetchingData">
-                <p>Error in loading resources. Please try again later!</p>
+                <div class="error">
+                    <h2>Error in loading resources</h2>
+                    <img src="assets/images/warning.svg" alt="warning" class="imf-fluid">
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="products.length === 0">
+                <div class="error">
+                    <h2>No products to display</h2>
+                    <img src="assets/images/warning.svg" alt="warning" class="imf-fluid">
+                </div>
             </ng-container>
 
         </div>

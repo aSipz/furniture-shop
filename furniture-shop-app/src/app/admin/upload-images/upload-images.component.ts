@@ -20,7 +20,6 @@ export class UploadImagesComponent implements OnDestroy {
   progressInfos: any[] = [];
 
   previews: string[] = [];
-  // imageInfos: any[] = [];
 
   timerIds: ReturnType<typeof setTimeout>[] = [];
   fileReaders: FileReader[] = [];

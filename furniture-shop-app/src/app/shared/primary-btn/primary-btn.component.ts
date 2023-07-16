@@ -24,7 +24,7 @@ export class PrimaryBtnComponent {
 
   constructor() { }
 
-  onClick() {
-    this.btnClick.emit();
+  onClick(event: MouseEvent) {
+    this.btnClick.emit(event);
   }
 }

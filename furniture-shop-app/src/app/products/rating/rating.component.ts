@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IRating } from 'src/app/shared/interfaces';
+import { UserService } from 'src/app/user/user.service';
 
-import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-rating',
@@ -9,7 +10,25 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 })
 export class RatingComponent {
 
-  @Input() rating: number = 3.5;
+  @Input() rating: IRating[] | string[] | undefined;
 
-  starIcon = faStar;
+  @Output() rateEvent = new EventEmitter<number>();
+
+  get getUserRating(): number | null {
+    if (this.rating) {
+      const ratings = this.rating as IRating[];
+      return ratings.find(r => r.ownerId === this.userService.user?._id)
+        ? ratings.find(r => r.ownerId === this.userService.user?._id)?.rating as number
+        : null;
+    }
+    return null;
+
+  }
+
+  constructor(private userService: UserService) { }
+
+  rateHandler(rating: number) {
+    this.rateEvent.emit(rating);
+  }
+
 }

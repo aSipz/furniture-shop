@@ -11,37 +11,45 @@
                 <div class="control-btns" *ngIf="isAdmin">
                     <app-primary-btn text="Edit" type="submit" btnClass="blue"
                         (btnClick)="editHandler()"></app-primary-btn>
-                    <app-primary-btn text="Delete" type="submit" btnClass="red"></app-primary-btn>
+
+                    <app-primary-btn text="{{!isAvailable ? 'Mark available' : 'Mark unavailable'}}" type="submit"
+                        btnClass="grey" (btnClick)="availabilityHandler($event)"></app-primary-btn>
+
+                    <app-primary-btn text="Delete" type="submit" btnClass="red"
+                        (btnClick)="deleteHandler()"></app-primary-btn>
                 </div>
 
                 <div class="single_product_desc">
                     <!-- Product Meta Data -->
                     <div class="product-meta-data">
                         <div class="line"></div>
-                        <p class="product-price">$180</p>
-                        <h6>White Modern Chair</h6>
+                        <p class="product-price">${{product.price}}</p>
+                        <h6>{{product.name}}</h6>
                         <!-- Ratings & Review -->
                         <div class="ratings-review mb-15 d-flex align-items-center justify-content-between">
 
                             <div class="ratings">
-                                <app-rating [rating]="rating"></app-rating>
+                                <app-rating [rating]="product.ratings" (rateEvent)="rateProduct($event)"></app-rating>
                             </div>
+
                             <div class="review">
                                 <a href="#">Write A Review</a>
                             </div>
                         </div>
                         <!-- Avaiable -->
-                        <p class="availability"><span class="status">●</span> In Stock</p>
+                        <p class="availability"><span class="status"
+                                [ngClass]="{'out-of-stock': product.quantity === 0 || product.deleted}">●</span>
+                            {{product.quantity === 0 || product.deleted?'Out of Stock' : 'In Stock'}}
+                        </p>
                     </div>
 
                     <div class="short_overview my-5">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid quae eveniet culpa officia
-                            quidem mollitia impedit iste asperiores nisi reprehenderit consequatur, autem, nostrum
-                            pariatur enim?</p>
+                        <p>{{product.description}}</p>
                     </div>
 
                     <!-- Add to Cart Form -->
-                    <form class="cart clearfix">
+                    <h3 *ngIf="product.deleted">Not available at the moment</h3>
+                    <form class="cart clearfix" *ngIf="!product.deleted">
                         <div class="cart-btn d-flex mb-50">
                             <p>Qty</p>
                             <div class="quantity">

@@ -8,6 +8,8 @@ import { ProductCardComponent } from './product-card/product-card.component';
 import { RouterModule } from '@angular/router';
 import { FormatPricePipe } from './pipes/format-price.pipe';
 import { GetImageUrlPipe } from './pipes/get-image-url.pipe';
+import { DebounceClickDirective } from './directives/debounce-click.directive';
+import { CalcRatingPipe } from './pipes/calc-rating.pipe';
 
 
 
@@ -22,7 +24,9 @@ import { GetImageUrlPipe } from './pipes/get-image-url.pipe';
     LoadingDirective,
     ProductCardComponent,
     FormatPricePipe,
-    GetImageUrlPipe
+    GetImageUrlPipe,
+    DebounceClickDirective,
+    CalcRatingPipe,
   ],
   imports: [
     CommonModule,
@@ -38,7 +42,9 @@ import { GetImageUrlPipe } from './pipes/get-image-url.pipe';
     LoadingDirective,
     ProductCardComponent,
     FormatPricePipe,
-    GetImageUrlPipe
+    GetImageUrlPipe,
+    DebounceClickDirective,
+    CalcRatingPipe
   ]
 })
 export class SharedModule { }

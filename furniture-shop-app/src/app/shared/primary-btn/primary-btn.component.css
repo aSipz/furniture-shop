@@ -19,6 +19,13 @@
     background: linear-gradient(90deg, #7c82c9 0%, #384770 100%);
 }
 
+.primary-btn.grey{
+    background: -webkit-linear-gradient(90deg, #c0c0c0 0%, #5e5e5e 100%);
+    background: -moz-linear-gradient(90deg, #c0c0c0 0%, #5e5e5e 100%);
+    background: -o-linear-gradient(90deg, #c0c0c0 0%, #5e5e5e 100%);
+    background: linear-gradient(90deg, #c0c0c0 0%, #5e5e5e 100%);
+}
+
 .primary-btn {
     position: relative;
     border: none;

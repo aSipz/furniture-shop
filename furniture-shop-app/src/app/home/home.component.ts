@@ -29,11 +29,11 @@ const loadingProduct = {
 })
 export class HomeComponent {
 
-  products: IProduct[] | null = [loadingProduct, loadingProduct, loadingProduct];
+  products: IProduct[] = [loadingProduct, loadingProduct, loadingProduct];
   errorFetchingData = false;
 
   constructor(private productService: ProductsService) {
-    this.productService.getProducts({ limit: 3 }).subscribe({
+    this.productService.getProducts({ limit: 3, search: { deleted: false } }).subscribe({
       next: value => this.products = value.result,
       error: err => {
         this.errorFetchingData = true;

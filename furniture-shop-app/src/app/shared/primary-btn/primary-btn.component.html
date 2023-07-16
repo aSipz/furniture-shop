@@ -1,5 +1,4 @@
-<!-- <button type="submit" value="submit" class="primary-btn">Log In</button> -->
-<button [type]="type" (click)="onClick()" [disabled]="isDisabled" class="primary-btn"
-    [ngClass]="{'green': btnClass === 'green', 'red': btnClass === 'red', 'blue': btnClass === 'blue' }">
+<button [type]="type" (click)="onClick($event)" [disabled]="isDisabled" class="primary-btn"
+    [ngClass]="{'green': btnClass === 'green', 'red': btnClass === 'red', 'blue': btnClass === 'blue', 'grey': btnClass === 'grey' }">
     {{ buttonText }}
 </button>
