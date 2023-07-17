@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { PrimaryBtnComponent } from './primary-btn/primary-btn.component';
 import { EmailDirective, NameDirective, SameValueDirective, UsernameDirective } from './validators';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -11,6 +12,7 @@ import { GetImageUrlPipe } from './pipes/get-image-url.pipe';
 import { DebounceClickDirective } from './directives/debounce-click.directive';
 import { CalcRatingPipe } from './pipes/calc-rating.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { DisplayArrowPipe } from './pipes/display-arrow.pipe';
 
 
 
@@ -29,6 +31,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     DebounceClickDirective,
     CalcRatingPipe,
     SearchBarComponent,
+    DisplayArrowPipe,
   ],
   imports: [
     CommonModule,
@@ -47,7 +50,8 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     GetImageUrlPipe,
     DebounceClickDirective,
     CalcRatingPipe,
-    SearchBarComponent
+    SearchBarComponent,
+    DisplayArrowPipe
   ]
 })
 export class SharedModule { }

@@ -33,3 +33,14 @@ export const loadingProduct = {
       url: ''
     }]
   }
+
+  export const productSorting = [
+    'Name',
+    '-Name',
+    'Price',
+    '-Price',
+    'Discount',
+    '-Discount',
+    'Rating',
+    '-Rating'
+  ]

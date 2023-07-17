@@ -17,6 +17,7 @@
     margin-top: calc(-1 * var(--bs-gutter-y));
     margin-right: calc(-.5 * var(--bs-gutter-x));
     margin-left: calc(-.5 * var(--bs-gutter-x));
+    padding: 2rem 0;
 }
 
 .row>* {
@@ -38,12 +39,12 @@
     color: rgba(var(--bs-black-rgb), var(--bs-text-opacity)) !important;
 }
 
-.row.cards>* {
+.row.cards>*:not(.error) {
     flex-basis: calc((100% - 30px)/4);
 }
 
 .error {
-    align-self: center;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;

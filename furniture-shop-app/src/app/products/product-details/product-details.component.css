@@ -162,6 +162,7 @@ app-primary-btn {
     justify-content: flex-end;
     gap: 20px;
     align-items: flex-end;
+    margin-bottom: 10px;
 }
 
 .control-btns>* {

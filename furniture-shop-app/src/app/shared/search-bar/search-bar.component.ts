@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { productCategories } from '../constants';
+import { productCategories, productSorting } from '../constants';
 
 @Component({
   selector: 'app-search-bar',
@@ -9,5 +9,7 @@ import { productCategories } from '../constants';
 export class SearchBarComponent {
 
   categories: string[] = productCategories;
+  sorting: string[] = productSorting;
+
   
 }
