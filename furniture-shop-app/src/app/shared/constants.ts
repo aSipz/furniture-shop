@@ -14,3 +14,22 @@ export class FileUpload {
         this.file = file;
     }
 }
+
+export const loadingProduct = {
+    _id: '',
+    name: '',
+    description: '',
+    category: '',
+    color: '',
+    material: '',
+    price: 0,
+    discount: 0,
+    quantity: 0,
+    createdAt: '',
+    updatedAt: '',
+    images: [{
+      key: '',
+      name: '',
+      url: ''
+    }]
+  }

@@ -14,6 +14,10 @@ export class RatingComponent {
 
   @Output() rateEvent = new EventEmitter<number>();
 
+  get isLoggedIn() {
+    return this.userService.isLoggedIn;
+  }
+
   get getUserRating(): number | null {
     if (this.rating) {
       const ratings = this.rating as IRating[];
@@ -22,7 +26,6 @@ export class RatingComponent {
         : null;
     }
     return null;
-
   }
 
   constructor(private userService: UserService) { }

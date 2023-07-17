@@ -5,3 +5,5 @@ exports.getByOwnerAndProduct = (ownerId, productId) => Rating.findOne({ ownerId,
 exports.create = (rating, ownerId, productId) => Rating.create({ rating, ownerId, productId });
 
 exports.update = (ratingId, rating) => Rating.findByIdAndUpdate(ratingId, { rating }, { runValidators: true, new: true });
+
+exports.deleteByProduct = (productId) => Rating.deleteMany({ productId });

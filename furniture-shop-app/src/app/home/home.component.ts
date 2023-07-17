@@ -2,25 +2,9 @@ import { Component } from '@angular/core';
 
 import { ProductsService } from '../products/products.service';
 import { IProduct } from '../shared/interfaces';
+import { loadingProduct } from '../shared/constants';
 
-const loadingProduct = {
-  _id: '',
-  name: '',
-  description: '',
-  category: '',
-  color: '',
-  material: '',
-  price: 0,
-  discount: 0,
-  quantity: 0,
-  createdAt: '',
-  updatedAt: '',
-  images: [{
-    key: '',
-    name: '',
-    url: ''
-  }]
-}
+
 
 @Component({
   selector: 'app-home',
@@ -33,7 +17,7 @@ export class HomeComponent {
   errorFetchingData = false;
 
   constructor(private productService: ProductsService) {
-    this.productService.getProducts({ limit: 3, search: { deleted: false } }).subscribe({
+    this.productService.getProducts({ limit: 3, search: { deleted: false }, sort: '-createdAt' }).subscribe({
       next: value => this.products = value.result,
       error: err => {
         this.errorFetchingData = true;

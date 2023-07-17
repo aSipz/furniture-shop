@@ -44,17 +44,31 @@ exports.getAll = (search, limit, skip, sort, include) => {
         ? sort.split(',')
             .map(e => e)
             .reduce((acc, curr) => {
-                const key = curr.split(1);
+                const key = curr.startsWith('-') ? curr.slice(1) : curr;
                 acc[key] = curr.startsWith('-') ? -1 : 1;
                 return acc;
             }, {})
         : {};
 
+    const fieldsToPopulate = [];
+
+    if (include) {
+        const fields = include.split(',').map(e => e).map(e => e.trim());
+        fields.forEach(f => {
+            fieldsToPopulate.push({ path: f });
+        });
+
+    }
+
 
     const projectionCriteria = { __v: 0 };
 
     return Promise.all([
-        Product.find(searchCriteria, projectionCriteria).limit(limit && +limit).skip(skip && +skip).sort(sortObj),
+        Product.find(searchCriteria, projectionCriteria)
+            .limit(limit && +limit)
+            .skip(skip && +skip)
+            .sort(sortObj)
+            .populate(include && fieldsToPopulate),
         Product.find(searchCriteria, projectionCriteria).count()
     ]);
 

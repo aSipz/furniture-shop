@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IImageEntry, IProduct, IRating } from '../shared/interfaces';
+import { IFavorite, IImageEntry, IProduct, IRating } from '../shared/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -81,10 +81,6 @@ export class ProductsService {
 
   setAvailability(id: string, deleted: boolean) {
     return this.http.put<IProduct>(`/api/products/${id}`, { deleted });
-  }
-
-  rate(id: string, rating: number) {
-    return this.http.post<IRating>(`/api/products/${id}/rate`, { rating });
   }
 
   getProducts(options?: { [key: string]: string | number | boolean | { [key: string]: any } }) {

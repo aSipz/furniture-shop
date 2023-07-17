@@ -167,3 +167,13 @@ app-primary-btn {
 .control-btns>* {
     flex-basis: 30%;
 }
+
+.info-wrapper{
+    display: flex;
+    justify-content: space-between;
+}
+
+.row.product-details{
+    width: 95%;
+    margin: 0 auto;
+}

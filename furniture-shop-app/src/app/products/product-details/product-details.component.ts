@@ -1,13 +1,15 @@
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { IProduct, IRating } from 'src/app/shared/interfaces';
+import { IFavorite, IProduct, IRating } from 'src/app/shared/interfaces';
 import { ProductsService } from '../products.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
-import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, mergeMap, switchMap, tap } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, mergeMap, of, switchMap, tap } from 'rxjs';
 import { UserService } from 'src/app/user/user.service';
 import { FileUploadService } from 'src/app/admin/services/file-upload.service';
 import { FileUpload } from 'src/app/shared/constants';
+import { RatingService } from '../rating.service';
+import { FavoritesService } from '../favorites.service';
 
 @Component({
   selector: 'app-product-details',
@@ -18,12 +20,18 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   private sub!: Subscription;
   private userRating$$ = new Subject<number>();
+  private userFavorite$$ = new Subject<boolean>();
 
   productId!: string;
   product: IProduct | null = null;
+  favorite: IFavorite | null = null;
 
   get isAdmin() {
     return this.userService.isAdmin;
+  }
+
+  get isLoggedIn() {
+    return this.userService.isLoggedIn;
   }
 
   get isAvailable() {
@@ -32,6 +40,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private productsService: ProductsService,
+    private ratingService: RatingService,
+    private favoritesService: FavoritesService,
     private userService: UserService,
     private loaderService: LoaderService,
     private imageService: FileUploadService,
@@ -45,9 +55,15 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.productId = params['id'];
 
-      this.productsService.getProduct(this.productId, { include: 'ratings' }).subscribe({
+      forkJoin([
+        this.productsService.getProduct(this.productId, { include: 'ratings' }),
+        this.isLoggedIn
+          ? this.favoritesService.getFavorite(this.productId)
+          : of(null)
+      ]).subscribe({
         next: (value) => {
-          this.product = value;
+          this.product = value[0];
+          this.favorite = value[1];
           this.loaderService.hideLoader();
         },
         error: (err) => {
@@ -55,13 +71,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
           this.loaderService.hideLoader();
           this.router.navigate(['/']);
         }
-      });
+      })
     });
 
     this.userRating$$.pipe(
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(rating => this.productsService.rate(this.productId, rating))
+      switchMap(rating => this.ratingService.rate(this.productId, rating))
     ).subscribe({
       next: (value) => {
 
@@ -72,6 +88,26 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
           : ratings.push(value);
 
         this.product!.ratings = ratings;
+
+      },
+      error: err => console.log(err)
+    });
+
+    this.userFavorite$$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(favorite => {
+        if (favorite) {
+          return this.favoritesService.addFavorite(this.productId);
+        }
+
+        return this.favoritesService.deleteFavorite(this.productId);
+      })
+    ).subscribe({
+      next: (value) => {
+
+        const fav = value as IFavorite | null;
+        this.favorite = fav;
 
       },
       error: err => console.log(err)
@@ -120,6 +156,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   rateProduct(rating: number) {
     this.userRating$$.next(rating);
+  }
+
+  likeProduct(like: boolean) {
+    this.userFavorite$$.next(like);
   }
 
 }

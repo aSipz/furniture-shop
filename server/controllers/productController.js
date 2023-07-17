@@ -2,7 +2,8 @@ const router = require('express').Router();
 
 const productManager = require('../managers/productManager');
 const ratingManager = require('../managers/ratingManager');
-const { privateGuard, adminGuard } = require('../middlewares/authMiddleware');
+const favoriteManager = require('../managers/favoriteManager');
+const { adminGuard } = require('../middlewares/authMiddleware');
 const { removeVer, toJSON } = require('../utils');
 
 const getAllProducts = async (req, res, next) => {
@@ -70,8 +71,6 @@ const editProduct = async (req, res, next) => {
     try {
         const sameProductExists = await productManager.getProductByName(name, productId);
 
-        console.log(sameProductExists);
-
         if (sameProductExists) {
             const error = new Error('There is already a product with this name!');
             error.statusCode = 409;
@@ -91,7 +90,11 @@ const editProduct = async (req, res, next) => {
 const deleteProduct = async (req, res, next) => {
     const { productId } = req.params;
     try {
-        await productManager.delete(productId);
+        await Promise.all([
+            productManager.delete(productId),
+            favoriteManager.deleteByProduct(productId),
+            ratingManager.deleteByProduct(productId)
+        ])
         res.status(204).end();
     } catch (error) {
         next(error);
@@ -99,35 +102,10 @@ const deleteProduct = async (req, res, next) => {
     }
 }
 
-const rateProduct = async (req, res, next) => {
-    const { productId } = req.params;
-    const ownerId = req.user._id;
-    const { rating } = req.body;
-
-    try {
-        const existingRating = await ratingManager.getByOwnerAndProduct(ownerId, productId);
-
-        let newRating;
-
-        if (existingRating) {
-            newRating = await ratingManager.update(existingRating._id, rating);
-        } else {
-            newRating = await ratingManager.create(rating, ownerId, productId);
-            await productManager.rate(productId, newRating._id);
-        }
-        res.status(200).send(removeVer(toJSON(newRating)));
-    } catch (error) {
-        next(error);
-        console.log(error);
-    }
-
-}
-
 router.get('/', getAllProducts);
 router.post('/', adminGuard, createProduct);
 router.get('/:productId', getOneProduct);
 router.put('/:productId', adminGuard, editProduct);
 router.delete('/:productId', adminGuard, deleteProduct);
-router.post('/:productId/rate', privateGuard, rateProduct);
 
 module.exports = router;

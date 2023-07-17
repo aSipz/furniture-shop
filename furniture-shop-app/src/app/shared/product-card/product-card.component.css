@@ -1,10 +1,12 @@
   .product-item {
       text-align: center;
       text-decoration: none;
-      display: block;
+      display: flex;
+      align-items: flex-end;
       position: relative;
       padding-bottom: 50px;
       cursor: pointer;
+      min-height: 300px;
   }
 
   .product-item .product-thumbnail {
@@ -54,7 +56,6 @@
 
   .product-item .icon-cross:hover {
       background-color: #f9bf29;
-      ;
   }
 
   .product-item .icon-cross img {
@@ -99,3 +100,7 @@
       max-width: 100%;
       height: auto;
   }
+ 
+  /* .product-item a{
+    ali
+  } */

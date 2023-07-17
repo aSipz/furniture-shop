@@ -1,0 +1,29 @@
+<div class="favorites-section">
+    <div class="container">
+        <h2 class="text-black">Favorites</h2>
+
+        <app-search-bar></app-search-bar>
+        
+        <div class="row cards">
+
+            <ng-container *ngIf="!errorFetchingData">
+                <app-product-card class="product-card" *ngFor="let product of products" [appLoading]="!product.name"
+                    [product]="product"></app-product-card>
+            </ng-container>
+
+            <ng-container *ngIf="errorFetchingData">
+                <div class="error">
+                    <h2>Error in loading resources</h2>
+                    <img src="assets/images/warning.svg" alt="warning" class="imf-fluid">
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="products.length === 0">
+                <div class="error">
+                    <h2>No products to display</h2>
+                    <img src="assets/images/warning.svg" alt="warning" class="imf-fluid">
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

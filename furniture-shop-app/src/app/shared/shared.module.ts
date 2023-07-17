@@ -10,6 +10,7 @@ import { FormatPricePipe } from './pipes/format-price.pipe';
 import { GetImageUrlPipe } from './pipes/get-image-url.pipe';
 import { DebounceClickDirective } from './directives/debounce-click.directive';
 import { CalcRatingPipe } from './pipes/calc-rating.pipe';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 
 
@@ -27,6 +28,7 @@ import { CalcRatingPipe } from './pipes/calc-rating.pipe';
     GetImageUrlPipe,
     DebounceClickDirective,
     CalcRatingPipe,
+    SearchBarComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +46,8 @@ import { CalcRatingPipe } from './pipes/calc-rating.pipe';
     FormatPricePipe,
     GetImageUrlPipe,
     DebounceClickDirective,
-    CalcRatingPipe
+    CalcRatingPipe,
+    SearchBarComponent
   ]
 })
 export class SharedModule { }

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { FavoritesComponent } from './favorites/favorites.component';
+import { authActivate } from '../shared/guards/auth.activate';
 
 const routes: Routes = [
   {
@@ -9,6 +11,16 @@ const routes: Routes = [
     data: {
       title: 'Product Details',
       animation: 'productDetailsPage'
+    }
+  },
+  {
+    path: 'favorites',
+    canActivate: [authActivate],
+    component: FavoritesComponent,
+    data: {
+      title: 'Favorites',
+      animation: 'favoritesPage',
+      loginRequired: true,
     }
   }
 ];

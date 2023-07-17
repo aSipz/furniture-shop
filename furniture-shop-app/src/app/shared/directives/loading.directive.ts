@@ -34,6 +34,7 @@ export class LoadingDirective implements OnInit, OnChanges {
     this.renderer.setStyle(loadingContainer, "background", "rgba(100, 100, 100, 0.2");
     this.renderer.setStyle(loadingContainer, "width", "100%");
     this.renderer.setStyle(loadingContainer, "height", "100%");
+    this.renderer.setStyle(loadingContainer, "border-radius", "10px");
 
     // custom spinner -- start
     const spinnerContainer = this.renderer.createElement("div");
