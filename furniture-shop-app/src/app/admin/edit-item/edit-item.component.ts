@@ -31,8 +31,8 @@ export class EditItemComponent implements OnDestroy {
     category: ['', [Validators.required, categoryValidator()]],
     color: ['', [Validators.required, Validators.minLength(3)]],
     material: ['', [Validators.required, Validators.minLength(4)]],
-    price: [0, [Validators.required, Validators.min(0)]],
-    discount: [0, [Validators.min(0)]],
+    price: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+    discount: [0, [Validators.min(0), Validators.max(99)]],
     quantity: [0, [Validators.required, Validators.min(0)]],
   });
 

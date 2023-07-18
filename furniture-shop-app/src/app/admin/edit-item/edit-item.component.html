@@ -129,6 +129,9 @@
                         <p *ngIf="editForm.get('price')?.errors?.['min']" class="error">
                             The minimum price is 0!
                         </p>
+                        <p *ngIf="editForm.get('price')?.errors?.['max']" class="error">
+                            The maximum price is 10000!
+                        </p>
                     </ng-container>
                 </div>
                 <div class="col-md-6">
@@ -138,7 +141,10 @@
 
                     <ng-container *ngIf="editForm.get('discount')?.touched">
                         <p *ngIf="editForm.get('discount')?.errors?.['min']" class="error">
-                            The minimum discount is 0!
+                            The minimum discount is 0%!
+                        </p>
+                        <p *ngIf="editForm.get('discount')?.errors?.['max']" class="error">
+                            The maximum discount is 99%!
                         </p>
                     </ng-container>
                 </div>

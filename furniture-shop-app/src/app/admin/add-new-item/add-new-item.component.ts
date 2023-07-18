@@ -26,8 +26,8 @@ export class AddNewItemComponent implements OnDestroy {
     category: ['', [Validators.required, categoryValidator()]],
     color: ['', [Validators.required, Validators.minLength(3)]],
     material: ['', [Validators.required, Validators.minLength(4)]],
-    price: ['', [Validators.required, Validators.min(0)]],
-    discount: [0, [Validators.min(0)]],
+    price: ['', [Validators.required, Validators.min(0), Validators.max(10000)]],
+    discount: [0, [Validators.min(0), Validators.max(99)]],
     quantity: ['', [Validators.required, Validators.min(0)]],
   });
 

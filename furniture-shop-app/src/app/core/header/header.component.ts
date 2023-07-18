@@ -1,5 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
+import { IsActiveMatchOptions } from '@angular/router';
 
 import { UserService } from 'src/app/user/user.service';
 
@@ -46,6 +47,13 @@ export class HeaderComponent {
   timer: ReturnType<typeof setTimeout> | null = null;
 
   isOpen = false;
+
+  readonly routeMatchOptions: IsActiveMatchOptions = {
+    queryParams: 'ignored',
+    matrixParams: 'exact',
+    paths: 'exact',
+    fragment: 'exact',
+  };
 
   constructor(private userService: UserService) { }
 

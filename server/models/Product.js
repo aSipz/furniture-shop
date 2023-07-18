@@ -32,10 +32,12 @@ const productSchema = new Schema({
         type: Number,
         required: true,
         min: 0,
+        max: 10000
     },
     discount: {
         type: Number,
         min: 0,
+        max: 99,
         default: 0
     },
     quantity: {

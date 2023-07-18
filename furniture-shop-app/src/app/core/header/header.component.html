@@ -18,7 +18,7 @@
                 </li>
 
                 <ng-container *ngIf="isLoggedIn">
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="routeMatchOptions">
                         <a class="nav-link" routerLink="/products/favorites">Favorites</a>
                     </li>
                     <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

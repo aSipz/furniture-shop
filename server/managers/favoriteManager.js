@@ -4,46 +4,48 @@ exports.getByOwnerAndProduct = (owner, product) => Favorite.findOne({ owner, pro
 
 exports.create = (owner, product) => Favorite.create({ owner, product });
 
-exports.delete = (ownerId, product) => Favorite.deleteOne({ ownerId, product });
+exports.delete = (owner, product) => Favorite.deleteOne({ owner, product });
 
-exports.getAll = (search, limit, skip, sort, include) => {
+exports.getProductsIdByUser = (owner) => Favorite.find({owner}, {product: 1, _id:0});
 
-    let searchCriteria = {};
+// exports.getAll = (search, limit, skip, sort, include) => {
 
-    if (search) {
-        searchCriteria = JSON.parse(search);
-    }
+//     let searchCriteria = {};
 
-    const sortObj = sort
-        ? sort.split(',')
-            .map(e => e)
-            .reduce((acc, curr) => {
-                const key = curr.startsWith('-') ? curr.slice(1) : curr;
-                acc[key] = curr.startsWith('-') ? -1 : 1;
-                return acc;
-            }, {})
-        : {};
+//     if (search) {
+//         searchCriteria = JSON.parse(search);
+//     }
 
-    const fieldsToPopulate = [];
+//     const sortObj = sort
+//         ? sort.split(',')
+//             .map(e => e)
+//             .reduce((acc, curr) => {
+//                 const key = curr.startsWith('-') ? curr.slice(1) : curr;
+//                 acc[key] = curr.startsWith('-') ? -1 : 1;
+//                 return acc;
+//             }, {})
+//         : {};
 
-    if (include) {
-        const fields = include.split(',').map(e => e).map(e => e.trim());
-        fields.forEach(f => {
-            fieldsToPopulate.push({ path: f });
-        });
-    }
+//     const fieldsToPopulate = [];
 
-    const projectionCriteria = { __v: 0 };
+//     if (include) {
+//         const fields = include.split(',').map(e => e).map(e => e.trim());
+//         fields.forEach(f => {
+//             fieldsToPopulate.push({ path: f });
+//         });
+//     }
 
-    return Promise.all([
-        Favorite.find(searchCriteria, projectionCriteria)
-            .limit(limit && +limit)
-            .skip(skip && +skip)
-            .sort(sortObj)
-            .populate(include && fieldsToPopulate),
-        Favorite.find(searchCriteria, projectionCriteria).count()
-    ]);
+//     const projectionCriteria = { __v: 0 };
 
-};
+//     return Promise.all([
+//         Favorite.find(searchCriteria, projectionCriteria)
+//             .limit(limit && +limit)
+//             .skip(skip && +skip)
+//             .sort(sortObj)
+//             .populate(include && fieldsToPopulate),
+//         Favorite.find(searchCriteria, projectionCriteria).count()
+//     ]);
+
+// };
 
 exports.deleteByProduct = (product) => Favorite.deleteMany({ product });

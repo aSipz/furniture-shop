@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IFavorite } from '../shared/interfaces';
+import { IFavorite, IProduct } from '../shared/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,6 @@ export class FavoritesService {
       }
       query += queryArr.join('&');
     }
-    return this.http.get<{ result: IFavorite[], count: number }>(`/api/favorites${query}`);
+    return this.http.get<{ result: IProduct[], count: number }>(`/api/favorites${query}`);
   }
 }
