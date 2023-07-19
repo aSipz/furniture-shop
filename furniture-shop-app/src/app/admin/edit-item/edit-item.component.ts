@@ -5,7 +5,7 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 import { productCategories } from 'src/app/shared/constants';
 import { categoryValidator } from 'src/app/shared/validators';
 import { FileUploadService } from '../services/file-upload.service';
-import { ProductsService } from 'src/app/products/products.service';
+import { ProductsService } from 'src/app/products/services/products.service';
 import { Subscription } from 'rxjs';
 import { IProduct } from 'src/app/shared/interfaces';
 

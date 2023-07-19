@@ -9,6 +9,7 @@ import { LikeProductComponent } from './like-product/like-product.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { CatalogComponent } from './catalog/catalog.component';
 import { ReviewListComponent } from './review-list/review-list.component';
+import { ReviewComponent } from './review/review.component';
 
 
 
@@ -20,7 +21,8 @@ import { ReviewListComponent } from './review-list/review-list.component';
     LikeProductComponent,
     FavoritesComponent,
     CatalogComponent,
-    ReviewListComponent
+    ReviewListComponent,
+    ReviewComponent
   ],
   imports: [
     CommonModule,

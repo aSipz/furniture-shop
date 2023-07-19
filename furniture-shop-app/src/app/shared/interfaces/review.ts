@@ -4,4 +4,5 @@ export interface IReview {
     createdAt: string;
     updatedAt: string;
     ownerId: string;
+    productId: string;
 }

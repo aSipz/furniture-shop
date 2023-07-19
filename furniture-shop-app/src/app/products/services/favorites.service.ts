@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IFavorite, IProduct } from '../shared/interfaces';
+import { IFavorite, IProduct } from '../../shared/interfaces';
 
 @Injectable({
   providedIn: 'root'

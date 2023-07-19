@@ -9,6 +9,6 @@
         </div>
         <p *ngIf="(rating | calcRating) === 0">No ratings yet</p>
         <p *ngIf="(rating | calcRating) !== 0">Rating: {{rating | calcRating : 0.01}}/5</p>
-        <p *ngIf="getUserRating">You rated: {{getUserRating}}</p>
+        <p *ngIf="userRating">You rated: {{userRating}}/5</p>
     </div>
 </div>

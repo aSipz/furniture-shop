@@ -15,7 +15,7 @@ exports.getProductById = (id, include) => {
         const fields = include.split(',').map(e => e).map(e => e.trim());
         fields.forEach(f => {
             if (f === 'ratings') {
-                fieldsToPopulate.push({ path: f, select: 'rating' });
+                fieldsToPopulate.push({ path: f, select: ['rating', 'ownerId'] });
             } else {
                 fieldsToPopulate.push({ path: f });
             }
@@ -86,3 +86,7 @@ exports.edit = (productId, productData) => Product.findByIdAndUpdate(productId, 
 exports.delete = (productId) => Product.findByIdAndDelete(productId);
 
 exports.rate = (productId, ratingId) => Product.findByIdAndUpdate(productId, { $push: { ratings: ratingId } });
+
+exports.addReview = (productId, reviewId) => Product.findByIdAndUpdate(productId, { $push: { reviews: reviewId } });
+
+exports.removeReview = (productId, reviewId) => Product.findByIdAndUpdate(productId, { $pull: { reviews: reviewId } });

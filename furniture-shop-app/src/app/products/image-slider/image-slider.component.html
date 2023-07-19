@@ -5,14 +5,16 @@
     </ng-container>
 
     <!-- controls -->
-    <button class="control prev" (click)="goToPrevious()">
-        <span class="arrow left"></span>
-    </button>
-    <button class="control next" (click)="goToNext()">
-        <span class="arrow right"></span>
-    </button>
+    <ng-container *ngIf="slides && slides.length > 1">
+        <button class="control prev" (click)="goToPrevious()">
+            <span class="arrow left"></span>
+        </button>
+        <button class="control next" (click)="goToNext()">
+            <span class="arrow right"></span>
+        </button>
+    </ng-container>
 </div>
-<div class="slider">
+<div class="slider" *ngIf="slides && slides.length > 1">
     <div class="dotsContainer">
         <div *ngFor="let slide of slides; let slideIndex = index" class="dot" (click)="goToSlide(slideIndex)"
             [ngClass]="{'active': slideIndex === currentIndex}">

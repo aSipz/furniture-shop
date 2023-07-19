@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { loadingProduct, pageSize } from 'src/app/shared/constants';
 import { IProduct } from 'src/app/shared/interfaces';
 import { UserService } from 'src/app/user/user.service';
-import { ProductsService } from '../products.service';
+import { ProductsService } from '../services/products.service';
 
 @Component({
   selector: 'app-catalog',

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IProduct } from 'src/app/shared/interfaces';
 import { loadingProduct, pageSize } from 'src/app/shared/constants';
-import { FavoritesService } from '../favorites.service';
+import { FavoritesService } from '../services/favorites.service';
 import { UserService } from 'src/app/user/user.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';

@@ -57,7 +57,7 @@
 
                     <!-- Add to Cart Form -->
                     <h3 *ngIf="product.deleted">Not available at the moment</h3>
-                    <form class="cart clearfix" *ngIf="!product.deleted">
+                    <form class="cart clearfix" *ngIf="!product.deleted && isLoggedIn">
                         <div class="cart-btn d-flex mb-50">
                             <p>Qty</p>
                             <div class="quantity">
