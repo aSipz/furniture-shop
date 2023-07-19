@@ -12,7 +12,7 @@
                     <app-primary-btn text="Edit" type="submit" btnClass="blue"
                         (btnClick)="editHandler()"></app-primary-btn>
 
-                    <app-primary-btn text="{{!isAvailable ? 'Mark available' : 'Mark unavailable'}}" type="submit"
+                    <app-primary-btn text="{{!isAvailable ? 'Available' : 'Unavailable'}}" type="submit"
                         btnClass="grey" (btnClick)="availabilityHandler($event)"></app-primary-btn>
 
                     <app-primary-btn text="Delete" type="submit" btnClass="red"
@@ -41,7 +41,7 @@
                             </div>
 
                             <div class="review">
-                                <a href="#">Write A Review</a>
+                                <button>Reviews</button>
                             </div>
                         </div>
                         <!-- Avaiable -->

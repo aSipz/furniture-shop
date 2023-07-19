@@ -116,6 +116,8 @@ img {
     padding-right: calc(var(--bs-gutter-x) * .5);
     padding-left: calc(var(--bs-gutter-x) * .5);
     margin-top: var(--bs-gutter-y);
+    position: relative;
+    z-index: 10;
 }
 
 .col-6 {
@@ -293,7 +295,7 @@ a:hover {
     background: #3b5d50;
     padding: calc(4rem - 30px) 0 4rem 0;
     position: relative;
-    z-index: -10;
+    /* z-index: -10; */
 }
 
 .hero .intro-excerpt {
@@ -404,6 +406,8 @@ a:hover {
     color: #2f2f2f;
     background: #f9bf29;
     border-color: #f9bf29;
+    z-index: 100;
+    position: relative;
 }
 
 .btn.btn-secondary:hover {

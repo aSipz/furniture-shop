@@ -14,7 +14,12 @@ exports.getProductById = (id, include) => {
     if (include) {
         const fields = include.split(',').map(e => e).map(e => e.trim());
         fields.forEach(f => {
-            fieldsToPopulate.push({ path: f });
+            if (f === 'ratings') {
+                fieldsToPopulate.push({ path: f, select: 'rating' });
+            } else {
+                fieldsToPopulate.push({ path: f });
+            }
+
         });
 
     }

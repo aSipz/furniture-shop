@@ -1,18 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IProduct } from 'src/app/shared/interfaces';
-import { loadingProduct, pageSize } from 'src/app/shared/constants';
-import { FavoritesService } from '../favorites.service';
-import { UserService } from 'src/app/user/user.service';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-@Component({
-  selector: 'app-favorites',
-  templateUrl: './favorites.component.html',
-  styleUrls: ['./favorites.component.css']
-})
-export class FavoritesComponent implements OnInit, OnDestroy {
+import { Subscription } from 'rxjs';
 
+import { loadingProduct, pageSize } from 'src/app/shared/constants';
+import { IProduct } from 'src/app/shared/interfaces';
+import { UserService } from 'src/app/user/user.service';
+import { ProductsService } from '../products.service';
+
+@Component({
+  selector: 'app-catalog',
+  templateUrl: './catalog.component.html',
+  styleUrls: ['./catalog.component.css']
+})
+export class CatalogComponent {
   products: IProduct[] = [loadingProduct, loadingProduct, loadingProduct];
   pages!: number;
   errorFetchingData = false;
@@ -23,7 +24,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private favoritesService: FavoritesService,
+    private productsService: ProductsService,
     private userService: UserService,
     private route: ActivatedRoute,
   ) { }
@@ -31,11 +32,19 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe(query => {
       const changedQuery = JSON.parse(JSON.stringify(query));
+
       if (!query['skip']) {
         changedQuery['skip'] = 0;
         changedQuery['limit'] = pageSize;
       }
-      this.favoritesService.getAll(changedQuery).subscribe({
+
+      if(!query['search']){
+        changedQuery['search'] = { deleted: false };
+      } else {
+        changedQuery['search']['deleted'] = false;
+      }
+
+      this.productsService.getProducts(changedQuery).subscribe({
         next: value => {
           this.products = value.result;
           this.pages = Math.ceil(value.count / pageSize);
@@ -51,5 +60,4 @@ export class FavoritesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-
 }

@@ -141,10 +141,12 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
         search: JSON.stringify({
           ...JSON.parse(this.query['search'] ? this.query['search'] : '{}'),
           [fieldName]: searchMap[fieldName](value)
-        })
+        }),
+        skip: null,
+        limit: null
       }
     } else {
-      const { [fieldName]: _, ...newSearch } = JSON.parse(this.query['search'] ? this.query['search'] : '{}');
+      const { [fieldName]: _, skip, limit, ...newSearch } = JSON.parse(this.query['search'] ? this.query['search'] : '{}');
       this.query = {
         ...this.query,
         search: JSON.stringify(newSearch)

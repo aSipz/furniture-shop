@@ -7,6 +7,8 @@ import { ImageSliderComponent } from './image-slider/image-slider.component';
 import { RatingComponent } from './rating/rating.component';
 import { LikeProductComponent } from './like-product/like-product.component';
 import { FavoritesComponent } from './favorites/favorites.component';
+import { CatalogComponent } from './catalog/catalog.component';
+import { ReviewListComponent } from './review-list/review-list.component';
 
 
 
@@ -16,7 +18,9 @@ import { FavoritesComponent } from './favorites/favorites.component';
     ImageSliderComponent,
     RatingComponent,
     LikeProductComponent,
-    FavoritesComponent
+    FavoritesComponent,
+    CatalogComponent,
+    ReviewListComponent
   ],
   imports: [
     CommonModule,

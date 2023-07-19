@@ -5,42 +5,42 @@ export const API_ERROR = new InjectionToken('API_ERROR');
 export const productCategories = ['Chairs', 'Beds', 'Sofas & armchairs', 'Tables', 'Storage furniture', 'Garden & outdoor', 'Bathroom', 'Desks', 'Accessories', 'Other'];
 
 export class FileUpload {
-    name!: string;
-    url!: string;
-    file: File;
-    isLoading?: boolean;
+  name!: string;
+  url!: string;
+  file: File;
+  isLoading?: boolean;
 
-    constructor(file: File) {
-        this.file = file;
-    }
-}
+  constructor(file: File) {
+    this.file = file;
+  }
+};
 
 export const loadingProduct = {
-    _id: '',
+  _id: '',
+  name: '',
+  description: '',
+  category: '',
+  color: '',
+  material: '',
+  price: 0,
+  discount: 0,
+  quantity: 0,
+  createdAt: '',
+  updatedAt: '',
+  images: [{
+    key: '',
     name: '',
-    description: '',
-    category: '',
-    color: '',
-    material: '',
-    price: 0,
-    discount: 0,
-    quantity: 0,
-    createdAt: '',
-    updatedAt: '',
-    images: [{
-      key: '',
-      name: '',
-      url: ''
-    }]
-  }
+    url: ''
+  }]
+};
 
-  export const productSorting = [
-    'Name',
-    '-Name',
-    'Price',
-    '-Price',
-    'Discount',
-    '-Discount',
-    'Rating',
-    '-Rating'
-  ]
+export const productSorting = [
+  'Name',
+  '-Name',
+  'Price',
+  '-Price',
+  'Discount',
+  '-Discount'
+];
+
+export const pageSize = 2;

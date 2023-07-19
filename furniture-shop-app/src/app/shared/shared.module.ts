@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {  ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { PrimaryBtnComponent } from './primary-btn/primary-btn.component';
 import { EmailDirective, NameDirective, SameValueDirective, UsernameDirective } from './validators';
@@ -15,6 +15,8 @@ import { CalcRatingPipe } from './pipes/calc-rating.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { DisplayArrowPipe } from './pipes/display-arrow.pipe';
 import { RangeDisplayPipe } from './pipes/range-display.pipe';
+import { PaginationComponent } from './pagination/pagination.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
@@ -35,11 +37,14 @@ import { RangeDisplayPipe } from './pipes/range-display.pipe';
     SearchBarComponent,
     DisplayArrowPipe,
     RangeDisplayPipe,
+    PaginationComponent,
+    
   ],
   imports: [
     CommonModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   exports: [
     PrimaryBtnComponent,
@@ -56,7 +61,8 @@ import { RangeDisplayPipe } from './pipes/range-display.pipe';
     CalcRatingPipe,
     SearchBarComponent,
     DisplayArrowPipe,
-    RangeDisplayPipe
+    RangeDisplayPipe,
+    PaginationComponent
   ]
 })
 export class SharedModule { }

@@ -15,7 +15,7 @@
 .footer-section .sofa-img {
     position: absolute;
     bottom: -36px;
-    z-index: 1;
+    z-index: 30;
     right: 2%;
 }
 

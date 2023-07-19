@@ -1,0 +1,30 @@
+.pagination {
+    display: flex;
+}
+
+.pagination .btn {
+    border: none;
+    background-color: transparent;
+    color: #3b5d50;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.pagination .pages {
+    color: rgba(var(--bs-black-rgb), var(--bs-text-opacity));
+    padding: 0 8px;
+}
+
+.btn:hover fa-icon{
+    color: #f9bf29;
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+.pagination .btn:disabled{
+    color: #888888;
+    pointer-events: none;
+}
+
+/* .pagination .btn */

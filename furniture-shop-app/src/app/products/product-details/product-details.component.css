@@ -77,8 +77,8 @@ h6 {
 }
 
 .align-items-center {
-    -ms-flex-align: center !important;
-    align-items: center !important;
+    -ms-flex-align: flex-start !important;
+    align-items: flex-start !important;
 }
 
 .w-100 {
@@ -169,12 +169,25 @@ app-primary-btn {
     flex-basis: 30%;
 }
 
-.info-wrapper{
+.info-wrapper {
     display: flex;
     justify-content: space-between;
 }
 
-.row.product-details{
+.row.product-details {
     width: 95%;
     margin: 0 auto;
+}
+
+.review{
+    position: relative;
+}
+.review button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    line-height: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
