@@ -3,6 +3,11 @@ export interface IReview {
     text: string;
     createdAt: string;
     updatedAt: string;
-    ownerId: string;
+    ownerId: {
+        _id: string;
+        firstName: string;
+        lastName: string
+    };
     productId: string;
+    likes: string[]
 }

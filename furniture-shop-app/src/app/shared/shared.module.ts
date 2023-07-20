@@ -17,6 +17,7 @@ import { DisplayArrowPipe } from './pipes/display-arrow.pipe';
 import { RangeDisplayPipe } from './pipes/range-display.pipe';
 import { PaginationComponent } from './pagination/pagination.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FullNamePipe } from './pipes/full-name.pipe';
 
 
 
@@ -38,6 +39,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DisplayArrowPipe,
     RangeDisplayPipe,
     PaginationComponent,
+    FullNamePipe,
     
   ],
   imports: [
@@ -62,7 +64,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     SearchBarComponent,
     DisplayArrowPipe,
     RangeDisplayPipe,
-    PaginationComponent
+    PaginationComponent,
+    FullNamePipe
   ]
 })
 export class SharedModule { }

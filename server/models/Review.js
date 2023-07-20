@@ -13,7 +13,11 @@ const reviewSchema = new Schema({
     productId: {
         type: Schema.Types.ObjectId,
         ref: 'Product'
-    }
+    },
+    likes: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 }, { timestamps: true });
 
 const Review = model('Review', reviewSchema);

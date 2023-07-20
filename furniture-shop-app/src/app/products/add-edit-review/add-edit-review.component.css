@@ -1,0 +1,139 @@
+.review {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+.inner {
+    flex: 1;
+    background-color: #fff;
+    margin: .5em 0;
+    padding: 0;
+    border-radius: 4px;
+    display: flex;
+    align-items: stretch;
+}
+
+.badge {
+    display: inline-block;
+    font-size: small;
+    color: white;
+    padding: 0.8em 0.4em 0;
+    background-color: #3b5d50;
+    line-height: 1em;
+    margin-right: .8em;
+    border-radius: 4px 0 0 4px;
+}
+
+.form-container{
+    width: 100%;
+    padding: 0.5rem 0.8rem 0.5rem 0;
+}
+
+.form-group{
+    position: relative;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+    opacity: 1;
+}
+
+.form-control:disabled {
+    background-color: #e9ecef;
+    opacity: 1;
+}
+
+.form-control {
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 1.5rem;
+    resize: vertical;
+}
+
+.form-control:active,
+.form-control:focus {
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-color: #3b5d50;
+    -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+.form-control.ng-touched.ng-invalid,
+.form-control.ng-touched.input-error {
+    border-color: rgba(var(--bs-danger-rgb));
+}
+
+.form-control.ng-touched.ng-valid.ng-dirty:not(.input-error) {
+    border-color: rgba(var(--bs-success-rgb));
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-container app-primary-btn {
+    flex-basis: 40%;
+    scale: 0.8;
+}
+
+.error {
+    position: absolute;
+    bottom: 0.4rem;
+    line-height: 1;
+}
+
+.server-error {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+}
+
+.text-danger,
+.error,
+.server-error {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity));
+}
+
+.text-black {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-black-rgb), var(--bs-text-opacity)) !important;
+}

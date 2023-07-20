@@ -89,9 +89,61 @@ const getReviews = async (req, res, next) => {
     }
 }
 
+const like = async (req, res, next) => {
+    const userId = req.user._id;
+    const { reviewId } = req.params;
+
+    try {
+        const existingReview = await reviewManager.getById(reviewId);
+        if (!existingReview) {
+            const error = new Error('There is no such review');
+            error.statusCode = 404;
+            throw error;
+        }
+        if (existingReview.ownerId === userId || existingReview.likes.map(id => id.toString()).includes(userId)) {
+            const error = new Error('Unauthorized');
+            error.statusCode = 401;
+            throw error;
+        }
+
+        await reviewManager.like(reviewId, userId);
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+        console.log(error);
+    }
+}
+
+const dislike = async (req, res, next) => {
+    const userId = req.user._id;
+    const { reviewId } = req.params;
+
+    try {
+        const existingReview = await reviewManager.getById(reviewId);
+        if (!existingReview) {
+            const error = new Error('There is no such review');
+            error.statusCode = 404;
+            throw error;
+        }
+        if (existingReview.ownerId === userId || !existingReview.likes.map(id => id.toString()).includes(userId)) {
+            const error = new Error('Unauthorized');
+            error.statusCode = 401;
+            throw error;
+        }
+
+        await reviewManager.dislike(reviewId, userId);
+        res.status(204).end();
+    } catch (error) {
+        next(error);
+        console.log(error);
+    }
+}
+
 router.get('/', getReviews);
 router.post('/', privateGuard, createReview);
 router.put('/:reviewId', privateGuard, editReview);
 router.delete('/:reviewId', privateGuard, deleteReview);
+router.post('/:reviewId/like', privateGuard, like);
+router.put('/:reviewId/like', privateGuard, dislike);
 
 module.exports = router;

@@ -1,1 +1,38 @@
-<p>review works!</p>
+<li class="review">
+    <div class="inner" [appLoading]="!review.text">
+        <span class="badge"></span>
+
+        <div class="container" *ngIf="review.text">
+            <div class="like">
+                <div class="name-container">
+                    <p class="name">{{review.ownerId | fullName}} <span class="rating">4/5</span></p>
+                    <!-- <span class="rating">Rating 4/5</span> -->
+                </div>
+
+                <div class="likes-container" *ngIf="isLoggedIn">
+                    <span>Likes ({{review.likes.length}})</span>
+                    <div class="likes" *ngIf="!isOwner">
+                        <button *ngIf="isLiked"><fa-icon [icon]="thumbSolid" title="dislike" ></fa-icon></button>
+                        <button *ngIf="!isLiked"><fa-icon [icon]="thumb" title="like" appDebounceClick
+                            (debounceClick)="like()" [debounceTime]="500"></fa-icon></button>
+
+                    </div>
+                </div>
+
+            </div>
+            <p class="text">{{review.text}}</p>
+            <div class="controls">
+                <div class="btns" *ngIf="user?._id === review.ownerId._id">
+                    <app-primary-btn text=" Edit" type="button" btnClass="blue"></app-primary-btn>
+                    <app-primary-btn text="Delete" type="button" btnClass="red"></app-primary-btn>
+                </div>
+                <p class="date">{{review.updatedAt !== review.createdAt ? 'Edited' : ''}} {{review.updatedAt | date : 'd
+                    MMMM y, HH:mm:ss'}}</p>
+            </div>
+        </div>
+
+        <div class="loading" *ngIf="!review.text"></div>
+
+    </div>
+
+</li>

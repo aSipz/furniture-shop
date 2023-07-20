@@ -19,8 +19,8 @@ export class CatalogComponent {
   errorFetchingData = false;
   private sub!: Subscription;
 
-  get userId() {
-    return this.userService.user?._id;
+  get isAdmin() {
+    return this.userService.isAdmin;
   }
 
   constructor(
@@ -38,10 +38,12 @@ export class CatalogComponent {
         changedQuery['limit'] = pageSize;
       }
 
-      if(!query['search']){
-        changedQuery['search'] = { deleted: false };
-      } else {
-        changedQuery['search']['deleted'] = false;
+      if (!this.isAdmin) {
+        if (!query['search']) {
+          changedQuery['search'] = { deleted: false };
+        } else {
+          changedQuery['search']['deleted'] = false;
+        }
       }
 
       this.productsService.getProducts(changedQuery).subscribe({

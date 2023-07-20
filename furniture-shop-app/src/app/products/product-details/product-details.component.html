@@ -3,19 +3,19 @@
 
         <div class="row product-details">
 
-            <app-image-slider [slides]="product.images!" [changeInterval]="5000"
-                [animationType]="'scale'"></app-image-slider>
+            <app-image-slider [slides]="product.images!" [changeInterval]="5000" [animationType]="'scale'"
+                class="images"></app-image-slider>
 
             <div class="col-12 col-lg-5">
 
                 <div class="control-btns" *ngIf="isAdmin">
-                    <app-primary-btn text="Edit" type="submit" btnClass="blue"
+                    <app-primary-btn text="Edit" type="button" btnClass="blue"
                         (btnClick)="editHandler()"></app-primary-btn>
 
-                    <app-primary-btn text="{{!isAvailable ? 'Available' : 'Unavailable'}}" type="submit"
-                        btnClass="grey" (btnClick)="availabilityHandler($event)"></app-primary-btn>
+                    <app-primary-btn text="{{!isAvailable ? 'Available' : 'Unavailable'}}" type="button" btnClass="grey"
+                        (btnClick)="availabilityHandler($event)"></app-primary-btn>
 
-                    <app-primary-btn text="Delete" type="submit" btnClass="red"
+                    <app-primary-btn text="Delete" type="button" btnClass="red"
                         (btnClick)="deleteHandler()"></app-primary-btn>
                 </div>
 
@@ -41,9 +41,12 @@
                             </div>
 
                             <div class="review">
-                                <button>Reviews</button>
+                                <button (click)="toggle()">Reviews</button>
                             </div>
                         </div>
+
+                        <app-review-list *ngIf="isShown" [productId]="productId"></app-review-list>
+
                         <!-- Avaiable -->
                         <p class="availability"><span class="status"
                                 [ngClass]="{'out-of-stock': product.quantity === 0 || product.deleted}">●</span>

@@ -39,4 +39,12 @@ export class ReviewsService {
     }
     return this.http.get<{ result: IReview[], count: number }>(`/api/reviews${query}`);
   }
+
+  like(reviewId: string) {
+    return this.http.post<void>(`/api/reviews/${reviewId}/like`, {});
+  }
+
+  dislike(reviewId: string) {
+    return this.http.put<void>(`/api/reviews/${reviewId}/like`, {});
+  }
 }

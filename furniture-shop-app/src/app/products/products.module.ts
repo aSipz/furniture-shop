@@ -10,6 +10,9 @@ import { FavoritesComponent } from './favorites/favorites.component';
 import { CatalogComponent } from './catalog/catalog.component';
 import { ReviewListComponent } from './review-list/review-list.component';
 import { ReviewComponent } from './review/review.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AddEditReviewComponent } from './add-edit-review/add-edit-review.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -22,12 +25,15 @@ import { ReviewComponent } from './review/review.component';
     FavoritesComponent,
     CatalogComponent,
     ReviewListComponent,
-    ReviewComponent
+    ReviewComponent,
+    AddEditReviewComponent
   ],
   imports: [
     CommonModule,
     ProductsRoutingModule,
     SharedModule,
+    FontAwesomeModule,
+    ReactiveFormsModule
   ]
 })
 export class ProductsModule { }

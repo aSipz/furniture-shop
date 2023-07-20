@@ -1,15 +1,19 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { trigger, transition, style, animate } from '@angular/animations';
+
+import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, mergeMap, of, switchMap } from 'rxjs';
 
 import { IFavorite, IProduct, IRating } from 'src/app/shared/interfaces';
 import { ProductsService } from '../services/products.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
-import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, mergeMap, of, switchMap } from 'rxjs';
 import { UserService } from 'src/app/user/user.service';
 import { FileUploadService } from 'src/app/admin/services/file-upload.service';
 import { FileUpload } from 'src/app/shared/constants';
 import { RatingService } from '../services/rating.service';
 import { FavoritesService } from '../services/favorites.service';
+
+
 
 @Component({
   selector: 'app-product-details',
@@ -25,6 +29,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   productId!: string;
   product: IProduct | null = null;
   favorite: IFavorite | null = null;
+  isShown = false;
 
   get isAdmin() {
     return this.userService.isAdmin;
@@ -161,5 +166,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   likeProduct(like: boolean) {
     this.userFavorite$$.next(like);
   }
+
+  toggle() {
+    this.isShown = !this.isShown;
+  }
+
 
 }

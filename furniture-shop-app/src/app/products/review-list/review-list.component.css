@@ -1,0 +1,19 @@
+.reviews {
+    margin: 0;
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    height: 50vh;
+    overflow: scroll;
+}
+
+.error{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.error img {
+    width: 80px;
+}

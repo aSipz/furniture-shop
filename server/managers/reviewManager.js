@@ -8,6 +8,10 @@ exports.deleteById = (reviewId) => Review.deleteById(reviewId);
 
 exports.getById = (id) => Review.findById(id);
 
+exports.like = (id, userId) => Review.findByIdAndUpdate(id, { $push: { likes: userId } });
+
+exports.dislike = (id, userId) => Review.findByIdAndUpdate(id, { $pull: { likes: userId } });
+
 exports.getAll = (search, limit, skip, sort, include) => {
 
     let searchCriteria = {};
@@ -31,7 +35,12 @@ exports.getAll = (search, limit, skip, sort, include) => {
     if (include) {
         const fields = include.split(',').map(e => e).map(e => e.trim());
         fields.forEach(f => {
-            fieldsToPopulate.push({ path: f });
+
+            if (f === 'ownerId') {
+                fieldsToPopulate.push({ path: f, select: ['firstName', 'lastName'] });
+            } else {
+                fieldsToPopulate.push({ path: f });
+            }
         });
 
     }

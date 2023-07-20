@@ -1,0 +1,104 @@
+.review {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+}
+
+.inner {
+    flex: 1;
+    background-color: #fff;
+    margin: .5em 0;
+    padding: 0;
+    border-radius: 10px;
+    display: flex;
+    align-items: stretch;
+}
+
+.container {
+    width: 100%;
+    padding-right: 0.5rem;
+}
+
+.like {
+    display: flex;
+    justify-content: space-between;
+}
+
+fa-icon {
+    margin-left: 0.5rem;
+    color: #4e6196;
+    font-size: 1.2rem;
+    cursor: pointer;
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+fa-icon:hover {
+    color: #4b72e0;
+}
+
+.rating {
+    margin-left: 1.5rem;
+}
+
+.badge {
+    display: inline-block;
+    font-size: small;
+    color: white;
+    padding: 0.8em 0.4em 0;
+    background-color: #3b5d50;
+    line-height: 1em;
+    margin-right: .8em;
+    border-radius: 4px 0 0 4px;
+}
+
+.name-container,
+.likes-container {
+    display: flex;
+    align-items: flex-end;
+}
+
+.likes button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+.name {
+    min-width: max-content;
+    /* padding: 0.5rem 0; */
+    font-size: 1rem;
+}
+
+.date {
+    text-align: right;
+    line-height: 1.2;
+    margin: 0 0 0 auto;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 0;
+    align-items: flex-end;
+}
+
+.controls .btns {
+    display: flex;
+    /* justify-content: space-between; */
+    /* flex-basis: 50%; */
+    /* gap: 1rem; */
+
+}
+
+.controls .btns>* {
+    width: 90px;
+    transform-origin: bottom left;
+    transform: scale(80%);
+}
+
+.loading {
+    height: 120px;
+}

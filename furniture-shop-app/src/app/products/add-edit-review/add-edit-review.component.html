@@ -1,0 +1,84 @@
+<!-- <div class="review-container">
+
+    <div class="p-3 p-lg-5 border bg-white">
+
+        <p *ngIf="!!serverError" class="server-error">
+            {{serverError}}
+        </p>
+
+        <form [formGroup]="reviewForm" (ngSubmit)="submitHandler()">
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="text" class="text-black">Review <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="email" name="text"
+                        formControlName="text" [ngClass]="{'input-error': !!serverError}">
+
+                    <ng-container *ngIf="reviewForm.get('text')?.touched">
+                        <p *ngIf="reviewForm.get('text')?.errors?.['required']" class="error">
+                            Review is required!
+                        </p>
+                        <p *ngIf="reviewForm.get('text')?.errors?.['minlength']" class="error">
+                            Review should be at least
+                            {{reviewForm.get('text')?.errors?.['minlength'].requiredLength}} characters!
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <app-primary-btn type="submit" text="Post"
+                    [isDisabled]="reviewForm.invalid! || reviewForm.disabled!"></app-primary-btn>
+            </div>
+
+        </form>
+
+
+    </div>
+</div> -->
+
+<div class="review">
+    <div class="inner">
+        <span class="badge"></span>
+
+
+
+        <div class="form-container">
+
+            <p *ngIf="!!serverError" class="server-error">
+                {{serverError}}
+            </p>
+
+            <form [formGroup]="reviewForm" (ngSubmit)="submitHandler()">
+
+                <div class="form-group">
+                    <div>
+                        <label for="text" class="text-black">Review <span class="text-danger">*</span></label>
+                        <textarea type="text" class="form-control" id="text" name="text" formControlName="text" rows="5"
+                            [ngClass]="{'input-error': !!serverError}"></textarea>
+
+                        <ng-container *ngIf="reviewForm.get('text')?.touched">
+                            <p *ngIf="reviewForm.get('text')?.errors?.['required']" class="error">
+                                Review is required!
+                            </p>
+                            <p *ngIf="reviewForm.get('text')?.errors?.['minlength']" class="error">
+                                Review should be at least
+                                {{reviewForm.get('text')?.errors?.['minlength'].requiredLength}} characters!
+                            </p>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <div class="btn-container">
+                    <app-primary-btn type="submit" [text]="formType"
+                        [isDisabled]="reviewForm.invalid! || reviewForm.disabled!"></app-primary-btn>
+                    <app-primary-btn type="button" text="Cancel" btnClass="grey" (btnClick)="cancelHandler()"></app-primary-btn>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

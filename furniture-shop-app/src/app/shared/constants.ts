@@ -34,6 +34,20 @@ export const loadingProduct = {
   }]
 };
 
+export const loadingReview = {
+  _id: '',
+  text: '',
+  createdAt: '',
+  updatedAt: '',
+  likes: [],
+  ownerId: {
+    _id: '',
+    firstName: '',
+    lastName: ''
+  },
+  productId: ''
+}
+
 export const productSorting = [
   'Name',
   '-Name',
