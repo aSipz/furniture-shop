@@ -21,10 +21,6 @@ h6 {
     margin-left: -15px;
 }
 
-.row>* {
-    flex-basis: 50%;
-}
-
 .col-12,
 .col-lg-5,
 .col-lg-7 {
@@ -54,7 +50,6 @@ h6 {
         max-width: 58.333333%;
     }
 }
-
 
 .clearfix::after {
     display: block;
@@ -177,10 +172,16 @@ app-primary-btn {
 .row.product-details {
     width: 95%;
     margin: 0 auto;
+    justify-content: center;
+    gap: 3rem;
 }
 
 .row.product-details>*{
     flex-basis: 50%;
+}
+
+.row.product-details .images {
+    max-width: 70vh;
 }
 
 .review{

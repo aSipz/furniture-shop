@@ -28,6 +28,20 @@ const rateProduct = async (req, res, next) => {
 
 }
 
+const getRating = async (req, res, next) => {
+    const { ownerId, productId } = req.params;
+
+    try {
+        const rating = await ratingManager.getByOwnerAndProduct(ownerId, productId);
+        res.status(200).send(removeVer(toJSON(rating)));
+    } catch (error) {
+        next(error);
+        console.log(error);
+    }
+
+}
+
 router.post('/', privateGuard, rateProduct);
+router.get('/:productId/:ownerId', getRating);
 
 module.exports = router;

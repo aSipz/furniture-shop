@@ -6,7 +6,7 @@
             <app-image-slider [slides]="product.images!" [changeInterval]="5000" [animationType]="'scale'"
                 class="images"></app-image-slider>
 
-            <div class="col-12 col-lg-5">
+            <div class="col-12 col-lg-5 details">
 
                 <div class="control-btns" *ngIf="isAdmin">
                     <app-primary-btn text="Edit" type="button" btnClass="blue"
@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="single_product_desc">
-                    <!-- Product Meta Data -->
+                    
                     <div class="product-meta-data">
                         <div class="line"></div>
                         <div class="info-wrapper">
@@ -33,7 +33,7 @@
                                 [favorite]="favorite"></app-like-product>
                         </div>
 
-                        <!-- Ratings & Review -->
+                        
                         <div class=" ratings-review mb-15 d-flex align-items-center justify-content-between">
 
                             <div class="ratings">
@@ -47,7 +47,7 @@
 
                         <app-review-list *ngIf="isShown" [productId]="productId"></app-review-list>
 
-                        <!-- Avaiable -->
+                        
                         <p class="availability"><span class="status"
                                 [ngClass]="{'out-of-stock': product.quantity === 0 || product.deleted}">●</span>
                             {{product.quantity === 0 || product.deleted?'Out of Stock' : 'In Stock'}}
@@ -58,7 +58,7 @@
                         <p>{{product.description}}</p>
                     </div>
 
-                    <!-- Add to Cart Form -->
+                    
                     <h3 *ngIf="product.deleted">Not available at the moment</h3>
                     <form class="cart clearfix" *ngIf="!product.deleted && isLoggedIn">
                         <div class="cart-btn d-flex mb-50">

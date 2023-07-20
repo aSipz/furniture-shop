@@ -12,4 +12,8 @@ export class RatingService {
   rate(productId: string, rating: number) {
     return this.http.post<IRating>(`/api/rate`, { rating, productId });
   }
+
+  get(productId: string, ownerId: string) {
+    return this.http.get<IRating>(`/api/rate/${productId}/${ownerId}`);
+  }
 }

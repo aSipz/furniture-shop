@@ -2,9 +2,9 @@ const Review = require('../models/Review');
 
 exports.create = (text, ownerId, productId) => Review.create({ text, ownerId, productId });
 
-exports.update = (reviewId, text) => Review.findByIdAndUpdate(reviewId, { rating }, { runValidators: true, new: true });
+exports.update = (reviewId, text) => Review.findByIdAndUpdate(reviewId, { text }, { runValidators: true, new: true });
 
-exports.deleteById = (reviewId) => Review.deleteById(reviewId);
+exports.deleteById = (reviewId) => Review.findByIdAndDelete(reviewId);
 
 exports.getById = (id) => Review.findById(id);
 

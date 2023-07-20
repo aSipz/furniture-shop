@@ -30,7 +30,7 @@ import { loadingReview } from 'src/app/shared/constants';
             animate('500ms cubic-bezier(0.35, 0, 0.25, 1)',
               style({ opacity: 0, transform: 'translateY(-100px)' }))
           ])
-        ])
+        ], { optional: true })
       ])
     ]),
     trigger('filterAnimation', [
@@ -53,6 +53,9 @@ import { loadingReview } from 'src/app/shared/constants';
     ]),
   ]
 })
+
+
+
 export class ReviewListComponent implements OnChanges, OnInit, OnDestroy {
 
   @HostBinding('@pageAnimations')
@@ -103,26 +106,20 @@ export class ReviewListComponent implements OnChanges, OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  // updateCriteria(criteria: string) {
-  //   criteria = criteria ? criteria.trim() : '';
-
-  //   // this._heroes = HEROES.filter(hero => hero.name.toLowerCase().includes(criteria.toLowerCase()));
-  //   const newTotal = this.reviews.length;
-
-  //   if (this.reviewsTotal !== newTotal) {
-  //     this.reviewsTotal = newTotal;
-  //   } else if (!criteria) {
-  //     this.reviewsTotal = -1;
-  //   }
-  // }
-
   toggle() {
     this.isShown = !this.isShown;
-    // this.reviewsTotal++;
   }
 
-  onLike(likes : string[]) {
-    console.log(likes);
+  onReview(review: IReview) {
+    this.reviews.find(r => r._id === review._id)
+      ? this.reviews.map(r => r._id === review._id ? review : r)
+      : this.reviews.push(review);
 
+    this.reviews.find(r => r._id === review._id) && this.reviewsTotal++;
+  }
+
+  onDelete(id: string) {
+    this.reviews = this.reviews.filter(r => r._id !== id);
+    this.reviewsTotal--;
   }
 }

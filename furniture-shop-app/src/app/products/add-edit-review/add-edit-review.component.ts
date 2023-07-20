@@ -16,6 +16,7 @@ import { IReview } from 'src/app/shared/interfaces';
 export class AddEditReviewComponent implements OnInit, OnDestroy {
   serverError = '';
   private sub!: Subscription;
+  private revSub!: Subscription;
   productId!: string;
 
   reviewForm = this.fb.group({
@@ -24,18 +25,30 @@ export class AddEditReviewComponent implements OnInit, OnDestroy {
 
   @Output() onCancel = new EventEmitter<boolean>();
   @Output() onReview = new EventEmitter<IReview>();
-  @Input() formType: string = 'Post';
+  @Input() review: IReview | null = null;
+
+  get user() {
+    const { firstName, lastName, _id } = this.userService.user!;
+
+    return { firstName, lastName, _id };
+  }
 
   constructor(
     private fb: FormBuilder,
     private reviewsService: ReviewsService,
     private route: ActivatedRoute,
+    private userService: UserService,
   ) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.productId = params['id'];
     });
+
+    if (this.review) {
+      const text = this.review.text as string;
+      this.reviewForm.setValue({ text });
+    }
   }
 
   ngOnDestroy() {
@@ -52,9 +65,23 @@ export class AddEditReviewComponent implements OnInit, OnDestroy {
 
     this.reviewForm.disable();
 
-    if (this.formType === 'Post') {
-      this.reviewsService.addNewReview(text!, this.productId).subscribe({
+    if (!this.review) {
+      this.revSub = this.reviewsService.addNewReview(text!, this.productId).subscribe({
         next: (review) => {
+          review.ownerId = this.user;
+          this.onReview.emit(review);
+          this.cancelHandler();
+        },
+        error: err => {
+          console.log(err);
+          this.serverError = err.error?.message;
+          this.reviewForm.enable();
+        }
+      });
+    } else {
+      this.revSub = this.reviewsService.editReview(text!, this.review._id).subscribe({
+        next: (review) => {
+          review.ownerId = this.user;
           this.onReview.emit(review);
           this.cancelHandler();
         },
@@ -65,11 +92,10 @@ export class AddEditReviewComponent implements OnInit, OnDestroy {
         }
       });
     }
-
-
   }
 
   cancelHandler(): void {
     this.onCancel.emit(true);
+    this.revSub && this.revSub.unsubscribe();
   }
 }

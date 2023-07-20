@@ -65,7 +65,6 @@ exports.getAll = (search, limit, skip, sort, include) => {
 
     }
 
-
     const projectionCriteria = { __v: 0 };
 
     return Promise.all([

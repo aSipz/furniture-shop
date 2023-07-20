@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges } from '@angular/core';
 
 import { faThumbsUp as faThumbSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
@@ -15,9 +15,12 @@ export class ReviewComponent {
 
   thumbSolid = faThumbSolid;
   thumb = faThumbsUp;
+  isDisabled = false;
+  isShown = false;
 
   @Input() review!: IReview;
-  @Output() likeChange = new EventEmitter<string[]>();
+  @Output() reviewChange = new EventEmitter<IReview>();
+  @Output() onReviewDelete = new EventEmitter<string>();
 
   get user() {
     return this.userService.user;
@@ -37,18 +40,54 @@ export class ReviewComponent {
 
   constructor(
     private userService: UserService,
-    private reviewsService: ReviewsService
-  ) { }
+    private reviewsService: ReviewsService,
+  ) {
+  }
 
   like() {
     this.reviewsService.like(this.review._id).subscribe({
       next: () => {
-        console.log('success');
-        this.likeChange.emit([...this.review.likes, this.user!._id]);
+        this.review.likes.push(this.user!._id);
+        this.reviewChange.emit(this.review);
       },
       error: (err) => {
         console.log(err);
       }
     })
+  }
+
+  dislike() {
+    this.reviewsService.dislike(this.review._id).subscribe({
+      next: () => {
+        this.review.likes = this.review.likes.filter(u => u !== this.user!._id);
+        this.reviewChange.emit(this.review);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+
+  deleteReview() {
+    this.isDisabled = true;
+    this.reviewsService.deleteReview(this.review._id).subscribe({
+      next: () => {
+        this.onReviewDelete.emit(this.review._id);
+        this.isDisabled = false;
+      },
+      error: (err) => {
+        console.log(err);
+        this.isDisabled = false;
+      }
+    })
+  }
+
+  toggle() {
+    this.isShown = !this.isShown;
+  }
+
+  onReview(review: IReview) {
+    this.review = review;
+    this.reviewChange.emit(review);
   }
 }

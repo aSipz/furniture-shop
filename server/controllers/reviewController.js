@@ -6,7 +6,7 @@ const { privateGuard } = require('../middlewares/authMiddleware');
 const { removeVer, toJSON } = require('../utils');
 
 const createReview = async (req, res, next) => {
-    const ownerId = req.user._id;
+    const ownerId = req.user._id.toString();
     const { text, productId } = req.body;
 
     try {
@@ -20,9 +20,10 @@ const createReview = async (req, res, next) => {
 }
 
 const editReview = async (req, res, next) => {
-    const ownerId = req.user._id;
+    const ownerId = req.user._id.toString();
     const { reviewId } = req.params;
     const { text } = req.body;
+    console.log(reviewId);
     try {
         const existingReview = await reviewManager.getById(reviewId);
         if (!existingReview) {
@@ -30,7 +31,7 @@ const editReview = async (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
-        if (existingReview.ownerId !== ownerId) {
+        if (existingReview.ownerId.toString() !== ownerId) {
             const error = new Error('Unauthorized');
             error.statusCode = 401;
             throw error;
@@ -45,7 +46,7 @@ const editReview = async (req, res, next) => {
 }
 
 const deleteReview = async (req, res, next) => {
-    const ownerId = req.user._id;
+    const ownerId = req.user._id.toString();
     const { reviewId } = req.params;
 
     try {
@@ -55,7 +56,7 @@ const deleteReview = async (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
-        if (existingReview.ownerId !== ownerId) {
+        if (existingReview.ownerId.toString() !== ownerId) {
             const error = new Error('Unauthorized');
             error.statusCode = 401;
             throw error;
@@ -90,7 +91,7 @@ const getReviews = async (req, res, next) => {
 }
 
 const like = async (req, res, next) => {
-    const userId = req.user._id;
+    const userId = req.user._id.toString();
     const { reviewId } = req.params;
 
     try {
@@ -100,7 +101,7 @@ const like = async (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
-        if (existingReview.ownerId === userId || existingReview.likes.map(id => id.toString()).includes(userId)) {
+        if (existingReview.ownerId.toString() === userId || existingReview.likes.map(id => id.toString()).includes(userId)) {
             const error = new Error('Unauthorized');
             error.statusCode = 401;
             throw error;
@@ -115,7 +116,7 @@ const like = async (req, res, next) => {
 }
 
 const dislike = async (req, res, next) => {
-    const userId = req.user._id;
+    const userId = req.user._id.toString();
     const { reviewId } = req.params;
 
     try {
@@ -125,7 +126,7 @@ const dislike = async (req, res, next) => {
             error.statusCode = 404;
             throw error;
         }
-        if (existingReview.ownerId === userId || !existingReview.likes.map(id => id.toString()).includes(userId)) {
+        if (existingReview.ownerId.toString() === userId || !existingReview.likes.map(id => id.toString()).includes(userId)) {
             const error = new Error('Unauthorized');
             error.statusCode = 401;
             throw error;
