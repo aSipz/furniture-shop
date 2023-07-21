@@ -57,6 +57,8 @@ export class LoadingDirective implements OnInit, OnChanges {
     if (simpleChanges['appLoading']) {
       const container = this.targetEl.nativeElement;
       const div = container.children[1];
+      const div2 = container.children[2];
+      
       if (div) {
         this.renderer.setStyle(
           div,

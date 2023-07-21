@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 :root {
     --bs-blue: #0d6efd;
     --bs-indigo: #6610f2;
@@ -212,5 +214,3 @@ app-footer {
         height: 32px;
     }
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

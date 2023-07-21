@@ -23,7 +23,7 @@ import { environment } from 'src/environments/environment';
   declarations: [
     AppComponent,
     AuthenticateComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

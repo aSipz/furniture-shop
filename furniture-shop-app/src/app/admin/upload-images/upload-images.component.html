@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-4">
-        <button type="button" class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="uploadFiles()">
+        <button type="button" class="btn btn-success btn-sm" [disabled]="!selectedFiles" *ngIf="selectedFiles" (click)="uploadFiles()">
             Upload
         </button>
         <button type="button" class="btn btn-cancel btn-sm" *ngIf="selectedFiles" (click)="reset()">
@@ -42,7 +42,7 @@
                 <a href="{{ image.url }}">{{ image.name }}</a>
             </p>
             <img src="{{ image.url }}" alt="{{ image.name }}" height="80px" />
-            <button type="button" (click)="deleteFileUpload(image)" class="btn btn-danger btn-sm" style="float: right">
+            <button type="button" (click)="openModal(image)" class="btn btn-danger btn-sm" style="float: right">
                 Delete
             </button>
         </li>

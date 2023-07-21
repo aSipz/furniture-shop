@@ -1,7 +1,11 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+
 import { Subscription } from 'rxjs';
+
 import { FileUploadService } from '../services/file-upload.service';
 import { FileUpload } from 'src/app/shared/constants';
+import { ModalComponent } from 'src/app/core/modal/modal.component';
 
 @Component({
   selector: 'app-upload-images',
@@ -26,7 +30,10 @@ export class UploadImagesComponent implements OnDestroy {
 
   sub: Subscription;
 
-  constructor(private uploadService: FileUploadService) {
+  constructor(
+    private uploadService: FileUploadService,
+    public modal: MatDialog
+  ) {
     this.sub = this.uploadService.files$.subscribe({
       next: (file) => {
 
@@ -117,25 +124,37 @@ export class UploadImagesComponent implements OnDestroy {
     }
   }
 
-  deleteFileUpload(fileUpload: FileUpload): void {
+  openModal(fileUpload: FileUpload) {
+    const dialogConfig = new MatDialogConfig();
 
-    fileUpload.isLoading = true;
+    dialogConfig.closeOnNavigation = true;
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      title: 'Delete Image',
+      text: 'Are you sure that you want to delete this image?',
+      imageUrl: fileUpload.url
+    };
 
-    setTimeout(() => {
-      this.uploadService.deleteFileStorage(fileUpload).subscribe({
-        next: () => {
-          if (this.imageInfos) {
-            this.imageInfos = this.imageInfos.filter(e => e !== fileUpload);
+    const dialogRef = this.modal.open(ModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        fileUpload.isLoading = true;
+        this.uploadService.deleteFileStorage(fileUpload).subscribe({
+          next: () => {
+            if (this.imageInfos) {
+              this.imageInfos = this.imageInfos.filter(e => e !== fileUpload);
+            }
+            this.imageEvent.emit(this.imageInfos);
+          },
+          error: (err) => {
+            console.log(err);
+            fileUpload.isLoading = false;
           }
-          this.imageEvent.emit(this.imageInfos);
-        },
-        error: (err) => {
-          console.log(err);
-          fileUpload.isLoading = false;
-        }
-      })
-    }, 0);
-
+        })
+      }
+    });
   }
 
   private hideMsg(progressIndex: number, time: number): void {

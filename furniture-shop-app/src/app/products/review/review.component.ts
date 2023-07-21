@@ -1,10 +1,13 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { faThumbsUp as faThumbSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import { IReview } from 'src/app/shared/interfaces';
 import { UserService } from 'src/app/user/user.service';
 import { ReviewsService } from '../services/reviews.service';
+import { ModalComponent } from 'src/app/core/modal/modal.component';
 
 @Component({
   selector: 'app-review',
@@ -17,6 +20,7 @@ export class ReviewComponent {
   thumb = faThumbsUp;
   isDisabled = false;
   isShown = false;
+  waitingForDelete = false;
 
   @Input() review!: IReview;
   @Output() reviewChange = new EventEmitter<IReview>();
@@ -45,6 +49,7 @@ export class ReviewComponent {
   constructor(
     private userService: UserService,
     private reviewsService: ReviewsService,
+    public modal: MatDialog
   ) {
   }
 
@@ -72,20 +77,6 @@ export class ReviewComponent {
     })
   }
 
-  deleteReview() {
-    this.isDisabled = true;
-    this.reviewsService.deleteReview(this.review._id).subscribe({
-      next: () => {
-        this.onReviewDelete.emit(this.review._id);
-        this.isDisabled = false;
-      },
-      error: (err) => {
-        console.log(err);
-        this.isDisabled = false;
-      }
-    })
-  }
-
   toggle() {
     this.isShown = !this.isShown;
   }
@@ -93,5 +84,38 @@ export class ReviewComponent {
   onReview(review: IReview) {
     this.review = review;
     this.reviewChange.emit(review);
+  }
+
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.closeOnNavigation = true;
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      title: 'Delete review',
+      text: 'Are you sure that you want to delete your review?'
+    };
+
+    const dialogRef = this.modal.open(ModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isDisabled = true;
+        this.waitingForDelete = true;
+        this.reviewsService.deleteReview(this.review._id).subscribe({
+          next: () => {
+            this.onReviewDelete.emit(this.review._id);
+            this.isDisabled = false;
+          },
+          error: (err) => {
+            console.log(err);
+            this.isDisabled = false;
+            this.waitingForDelete = false;
+          }
+        });
+      }
+
+    });
   }
 }

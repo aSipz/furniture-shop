@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, mergeMap, of, switchMap } from 'rxjs';
 
@@ -12,6 +11,8 @@ import { FileUploadService } from 'src/app/admin/services/file-upload.service';
 import { FileUpload } from 'src/app/shared/constants';
 import { RatingService } from '../services/rating.service';
 import { FavoritesService } from '../services/favorites.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ModalComponent } from 'src/app/core/modal/modal.component';
 
 
 
@@ -52,6 +53,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     private imageService: FileUploadService,
     private route: ActivatedRoute,
     private router: Router,
+    public modal: MatDialog
   ) {
     this.loaderService.showLoader();
   }
@@ -128,23 +130,53 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.router.navigate([`/admin/${this.productId}/edit-item`]);
   }
 
-  deleteHandler(): void {
-    this.loaderService.showLoader();
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
 
-    setTimeout(() => {
-      const images = this.product?.images as unknown as FileUpload[];
-      this.productsService.deleteProduct(this.productId).pipe(
-        mergeMap(() => forkJoin(images.map(i => this.imageService.deleteFileStorage(i))))
-      ).subscribe({
-        next: () => {
-          this.router.navigate(['/']);
-          this.loaderService.hideLoader();
-        },
-        error: (err) => {
-          console.log(err);
-          this.loaderService.hideLoader();
-        }
-      })
+    dialogConfig.closeOnNavigation = true;
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      title: 'Delete product',
+      text: `Are you sure that you want to delete ${this.product?.name}?`
+    };
+
+    const dialogRef = this.modal.open(ModalComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loaderService.showLoader();
+
+        const images = this.product?.images as unknown as FileUpload[];
+        this.productsService.deleteProduct(this.productId).pipe(
+          mergeMap(() => forkJoin(images.map(i => this.imageService.deleteFileStorage(i))))
+        ).subscribe({
+          next: () => {
+            this.router.navigate(['/']);
+            this.loaderService.hideLoader();
+          },
+          error: (err) => {
+            console.log(err);
+            this.loaderService.hideLoader();
+          }
+        });
+        // setTimeout(() => {
+        //   const images = this.product?.images as unknown as FileUpload[];
+        //   this.productsService.deleteProduct(this.productId).pipe(
+        //     mergeMap(() => forkJoin(images.map(i => this.imageService.deleteFileStorage(i))))
+        //   ).subscribe({
+        //     next: () => {
+        //       this.router.navigate(['/']);
+        //       this.loaderService.hideLoader();
+        //     },
+        //     error: (err) => {
+        //       console.log(err);
+        //       this.loaderService.hideLoader();
+        //     }
+        //   })
+        // });
+      }
+
     });
   }
 
