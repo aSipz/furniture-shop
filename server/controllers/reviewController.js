@@ -23,7 +23,6 @@ const editReview = async (req, res, next) => {
     const ownerId = req.user._id.toString();
     const { reviewId } = req.params;
     const { text } = req.body;
-    console.log(reviewId);
     try {
         const existingReview = await reviewManager.getById(reviewId);
         if (!existingReview) {

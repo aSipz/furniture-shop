@@ -24,11 +24,17 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe(query => {
+     
       const changedQuery = JSON.parse(JSON.stringify(query));
       if (!query['skip']) {
         changedQuery['skip'] = 0;
         changedQuery['limit'] = pageSize;
       }
+
+      query['search']
+        ? changedQuery['search'] = JSON.parse(changedQuery['search'])
+        : changedQuery['search'] = {};
+
       this.favoritesService.getAll(changedQuery).subscribe({
         next: value => {
           this.products = value.result;

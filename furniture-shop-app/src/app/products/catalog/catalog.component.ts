@@ -42,8 +42,14 @@ export class CatalogComponent {
         if (!query['search']) {
           changedQuery['search'] = { deleted: false };
         } else {
-          changedQuery['search']['deleted'] = false;
+          const search = JSON.parse(changedQuery['search']);
+          search.deleted = false;
+          changedQuery['search'] = search;
         }
+      } else {
+        query['search']
+          ? changedQuery['search'] = JSON.parse(changedQuery['search'])
+          : changedQuery['search'] = {};
       }
 
       this.productsService.getProducts(changedQuery).subscribe({

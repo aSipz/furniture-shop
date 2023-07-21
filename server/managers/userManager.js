@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt');
+
 const User = require('../models/User');
 const { jwt, removePassword, toJSON } = require('../utils');
 
@@ -46,4 +48,27 @@ exports.login = async (email, password) => {
         token,
         user
     };
+};
+
+exports.update = async (userId, email, username, firstName, lastName, password, oldPassword) => {
+
+    if (!password) {
+        return User.findByIdAndUpdate(userId, { email, username, firstName, lastName }, { new: true });
+    }
+
+    const user = await this.getUserById(userId);
+
+    const isCorrectPassword = await user.matchPassword(oldPassword);
+
+    if (!isCorrectPassword) {
+        const error = new Error('Wrong password!');
+        error.statusCode = 409;
+        throw error;
+    }
+
+    const hash = await bcrypt.hash(password, 4)
+
+    return User.findByIdAndUpdate(userId, { email, username, firstName, lastName, password: hash }, { new: true });
 }
+
+exports.delete = (userId) => User.findByIdAndDelete(userId);

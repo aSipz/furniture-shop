@@ -81,7 +81,7 @@ h6 {
 }
 
 .my-5 {
-    margin-top: 3rem !important;
+    margin-top: 1rem;
 }
 
 .my-5 {
@@ -145,6 +145,21 @@ a {
 
 .product-price {
     font-size: 24px;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+}
+
+.product-price .discount {
+    color: var(--bs-danger);
+    padding-left: 0.5rem;
+}
+
+.product-price .old-price {
+    text-decoration: line-through;
+}
+.product-price .new-price {
+    display: block;
+    color: var(--bs-green);
 }
 
 app-primary-btn {
@@ -176,7 +191,7 @@ app-primary-btn {
     gap: 3rem;
 }
 
-.row.product-details>*{
+.row.product-details>* {
     flex-basis: 50%;
 }
 
@@ -184,9 +199,10 @@ app-primary-btn {
     max-width: 70vh;
 }
 
-.review{
+.review {
     position: relative;
 }
+
 .review button {
     border: none;
     background-color: transparent;
@@ -195,4 +211,8 @@ app-primary-btn {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.short_overview span {
+    color: #242424;
 }

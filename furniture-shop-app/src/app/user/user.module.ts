@@ -6,6 +6,8 @@ import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UserRoutingModule } from './user-routing.module';
 import { CookieService } from 'ngx-cookie-service';
+import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 
 
@@ -13,6 +15,8 @@ import { CookieService } from 'ngx-cookie-service';
   declarations: [
     LoginComponent,
     RegisterComponent,
+    ProfileComponent,
+    EditProfileComponent,
   ],
   imports: [
     CommonModule,

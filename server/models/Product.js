@@ -69,7 +69,10 @@ const productSchema = new Schema({
         }],
         required: true
     }
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
+
+productSchema.virtual('discountPrice').
+    get(function () { return this.price * (100 - this.discount) / 100; });
 
 const Product = model('Product', productSchema);
 

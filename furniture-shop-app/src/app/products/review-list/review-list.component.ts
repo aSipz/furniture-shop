@@ -59,7 +59,7 @@ import { loadingReview } from 'src/app/shared/constants';
 export class ReviewListComponent implements OnChanges, OnInit, OnDestroy {
 
   @HostBinding('@pageAnimations')
-  animatePage = true;
+  // animatePage = true;
   isShown = false;
   errorFetchingData = false;
   private sub!: Subscription;

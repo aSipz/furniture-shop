@@ -165,8 +165,10 @@
             </div>
 
             <div class="btn-container">
-                <app-primary-btn type="submit" text="Edit"
-                    [isDisabled]="editForm.invalid! || editForm.disabled! "></app-primary-btn>
+                <app-primary-btn type="submit" text="Save"
+                    [isDisabled]="editForm.invalid! || editForm.disabled!"></app-primary-btn>
+                <app-primary-btn type="button" text="Cancel" btnClass="grey"
+                    (btnClick)="cancelHandler()"></app-primary-btn>
             </div>
 
         </form>

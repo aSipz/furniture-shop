@@ -167,10 +167,11 @@ form {
     margin-top: 20px;
     display: flex;
     justify-content: center;
+    gap: 2rem;
 }
 
 .btn-container app-primary-btn {
-    flex-basis: 40%;
+    flex-basis: 30%;
 }
 
 .error {

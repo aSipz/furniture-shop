@@ -31,7 +31,11 @@ export class ReviewComponent {
   }
 
   get isOwner() {
-    return this.user?._id === this.review.ownerId._id;
+    if (this.review.ownerId) {
+      return this.user?._id === this.review.ownerId._id;
+    }
+    return false;
+
   }
 
   get isLiked() {

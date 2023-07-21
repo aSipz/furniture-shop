@@ -68,11 +68,21 @@ export class UserService implements OnDestroy {
       );
   }
 
-  updateProfile(username: string, email: string, tel?: string) {
-    return this.http.put<IUser>('/api/users/profile', { username, email, tel })
+  updateProfile(username: string, email: string, firstName: string, lastName: string, password: string, oldPassword: string) {
+    return this.http.put<IUser>('/api/users/profile', { username, email, firstName, lastName, password, oldPassword })
       .pipe(
         tap(user => this.user$$.next(user)),
         catchError((err) => throwError(() => err))
+      );
+  }
+
+  deleteProfile() {
+    return this.http.delete<void>('/api/users/delete')
+      .pipe(tap(() => this.user$$.next(null)),
+        catchError(err => {
+          this.user$$.next(null);
+          return throwError(() => err);
+        })
       );
   }
 

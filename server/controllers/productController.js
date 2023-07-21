@@ -7,17 +7,14 @@ const { adminGuard } = require('../middlewares/authMiddleware');
 const { removeVer, toJSON } = require('../utils');
 
 const getAllProducts = async (req, res, next) => {
-    const search = req.query.search ? JSON.parse(JSON.parse(req.query.search)) : {};
-
-    console.log(search);
-
+    const search = req.query.search;
     const limit = req.query.limit;
     const skip = req.query.skip;
     const sort = req.query.sort;
     const include = req.query.include;
 
     try {
-        const [result, count] = await productManager.getAll(JSON.stringify(search), limit, skip, sort, include);
+        const [result, count] = await productManager.getAll(search, limit, skip, sort, include);
         res.status(200)
             .send({ result, count });
     } catch (error) {

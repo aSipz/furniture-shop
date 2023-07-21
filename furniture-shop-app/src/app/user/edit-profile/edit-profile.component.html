@@ -1,0 +1,143 @@
+<div class="edit-container">
+    <div class="header">
+        <h2 class="h3 text-black">Edit Profile</h2>
+    </div>
+
+    <div class="p-3 p-lg-5 border bg-white">
+
+        <p *ngIf="!!serverError" class="server-error">
+            {{serverError}}
+        </p>
+
+        <form [formGroup]="editForm" (ngSubmit)="editHandler()">
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="email" class="text-black">Email <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="email" name="email" placeholder="dan_jon@gmail.com"
+                        [ngClass]="{'input-error': !!serverError}" formControlName="email">
+
+                    <ng-container *ngIf="editForm.get('email')?.touched">
+                        <p *ngIf="editForm.get('email')?.errors?.['required']" class="error">
+                            Email is required!
+                        </p>
+                        <p *ngIf="editForm.get('email')?.errors?.['emailValidator']" class="error">
+                            Email is not valid!
+                        </p>
+                    </ng-container>
+                </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="username" class="text-black">Username <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="danny"
+                        [ngClass]="{'input-error': serverError === 'Username or email is already taken!'}" formControlName="username">
+
+                    <ng-container *ngIf="editForm.get('username')?.touched">
+                        <p *ngIf="editForm.get('username')?.errors?.['required']" class="error">
+                            Username is required!
+                        </p>
+                        <p *ngIf="editForm.get('username')?.errors?.['usernameValidator']" class="error">
+                            Username should be at least 4 characters and contain only latin letters and digits!
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="firstName" class="text-black">First Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Daniel"
+                        formControlName="firstName">
+
+                    <ng-container *ngIf="editForm.get('firstName')?.touched">
+                        <p *ngIf="editForm.get('firstName')?.errors?.['required']" class="error">
+                            First Name is required!
+                        </p>
+                        <p *ngIf="editForm.get('firstName')?.errors?.['nameValidator']" class="error">
+                            First Name should contain only latin letters!
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName" class="text-black">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Jones"
+                        formControlName="lastName">
+
+                    <ng-container *ngIf="editForm.get('lastName')?.touched">
+                        <p *ngIf="editForm.get('lastName')?.errors?.['required']" class="error">
+                            Last Name is required!
+                        </p>
+                        <p *ngIf="editForm.get('lastName')?.errors?.['nameValidator']" class="error">
+                            Last Name should contain only latin letters!
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+
+            <p>Change password?</p>
+            <div class="form-group row" formGroupName="passGroup">
+
+                <div class="col-md-6 pass">
+                    <label for="oldPass" class="text-black">Old Password</label>
+                    <input type="password" class="form-control" id="oldPass" name="oldPass" placeholder="****"
+                        formControlName="oldPass" [ngClass]="{'input-error': serverError === 'Wrong password!'}">
+
+
+                    <p *ngIf="editForm.get('passGroup')?.get('oldPass')?.errors?.['minlength']" class="error">
+                        Minimum length is
+                        {{editForm.get('passGroup')?.get('oldPass')?.errors?.['minlength'].requiredLength}}
+                        characters!
+                    </p>
+                    <p *ngIf="editForm.get('passGroup')?.get('pass')?.value !== '' && editForm.get('passGroup')?.get('oldPass')?.value === ''" class="error">
+                        Old password is required!
+                    </p>
+                </div>
+                <div class="col-md-6 pass">
+                    <label for="pass" class="text-black">New Password</label>
+                    <input type="password" class="form-control" id="pass" name="pass" placeholder="****"
+                        formControlName="pass">
+
+                    <ng-container *ngIf="editForm.get('passGroup')?.get('pass')?.touched">
+                        <p *ngIf="editForm.get('passGroup')?.get('pass')?.errors?.['minlength']" class="error">
+                            Minimum length is
+                            {{editForm.get('passGroup')?.get('pass')?.errors?.['minlength'].requiredLength}}
+                            characters!
+                        </p>
+                        <p *ngIf="editForm.get('passGroup')?.errors?.['changePassValidator']" class="error">
+                            New password is required!
+                        </p>
+                    </ng-container>
+                </div>
+                <div class="col-md-6 pass">
+                    <label for="repass" class="text-black">Retype New Password</label>
+                    <input type="password" class="form-control"
+                        [ngClass]="{'input-error': editForm.get('passGroup')?.errors?.['sameValueValidator']}"
+                        id="repass" name="repass" placeholder="****" formControlName="rePass">
+
+                    <ng-container
+                        *ngIf="editForm.get('passGroup')?.get('rePass')?.touched && editForm.get('passGroup')?.get('pass')?.value !== ''">
+                        <p *ngIf="editForm.get('passGroup')?.errors?.['sameValueValidator']" class="error">
+                            Passwords should match!
+                        </p>
+                    </ng-container>
+                    <p *ngIf="editForm.get('passGroup')?.get('pass')?.value !== '' && !editForm.get('passGroup')?.get('rePass')?.touched"
+                        class="error">
+                        Retype password is required!
+                    </p>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <app-primary-btn type="submit" text="Save"
+                    [isDisabled]="editForm.invalid! || editForm.disabled!"></app-primary-btn>
+                <app-primary-btn type="button" text="Cancel" btnClass="grey"
+                    (btnClick)="cancelHandler()"></app-primary-btn>
+            </div>
+
+        </form>
+
+    </div>
+</div>

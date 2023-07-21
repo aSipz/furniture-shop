@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="btn-container">
-                    <app-primary-btn type="submit" [text]="review? 'Edit' : 'Post'"
+                    <app-primary-btn type="submit" [text]="review? 'Save' : 'Post'"
                         [isDisabled]="reviewForm.invalid! || reviewForm.disabled!"></app-primary-btn>
                     <app-primary-btn type="button" text="Cancel" btnClass="grey"
                         (btnClick)="cancelHandler()"></app-primary-btn>

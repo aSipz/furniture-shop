@@ -2,15 +2,15 @@ const Review = require('../models/Review');
 
 exports.create = (text, ownerId, productId) => Review.create({ text, ownerId, productId });
 
-exports.update = (reviewId, text) => Review.findByIdAndUpdate(reviewId, { text }, { runValidators: true, new: true });
+exports.update = (reviewId, text) => Review.findOneAndUpdate({ _id: reviewId }, { text }, { runValidators: true, new: true });
 
 exports.deleteById = (reviewId) => Review.findByIdAndDelete(reviewId);
 
 exports.getById = (id) => Review.findById(id);
 
-exports.like = (id, userId) => Review.findByIdAndUpdate(id, { $push: { likes: userId } });
+exports.like = (id, userId) => Review.findByIdAndUpdate(id, { $push: { likes: userId } }, { timestamps: false });
 
-exports.dislike = (id, userId) => Review.findByIdAndUpdate(id, { $pull: { likes: userId } });
+exports.dislike = (id, userId) => Review.findByIdAndUpdate(id, { $pull: { likes: userId } }, { timestamps: false });
 
 exports.getAll = (search, limit, skip, sort, include) => {
 

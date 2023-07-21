@@ -6,6 +6,7 @@ import { productCategories } from 'src/app/shared/constants';
 import {  categoryValidator } from 'src/app/shared/validators';
 import { FileUploadService } from '../services/file-upload.service';
 import { ProductsService } from 'src/app/products/services/products.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-new-item',
@@ -17,6 +18,7 @@ export class AddNewItemComponent implements OnDestroy {
   serverError = '';
   categories: string[] = productCategories;
   submitSuccess = false;
+  private sub: Subscription | null = null;
 
   images: any[] = [];
 
@@ -40,11 +42,7 @@ export class AddNewItemComponent implements OnDestroy {
   ) { }
 
   ngOnDestroy(): void {
-    if (!this.submitSuccess) { 
-      this.images.forEach(i => {
-        this.uploadService.deleteFileStorage(i);
-      })
-    }
+    this.onCancel();
   }
 
   addImages(e: any): void {
@@ -68,7 +66,7 @@ export class AddNewItemComponent implements OnDestroy {
       return img;
     });
 
-    this.productsService.addNewProduct(name!, description!, category!, color!, material!, price!, discount!, quantity!, this.images).subscribe({
+    this.sub = this.productsService.addNewProduct(name!, description!, category!, color!, material!, price!, discount!, quantity!, this.images).subscribe({
       next: (product) => {
         this.submitSuccess = true;
         this.router.navigate([`/products/${product._id}/details`]);
@@ -82,5 +80,19 @@ export class AddNewItemComponent implements OnDestroy {
       }
     });
 
+  }
+
+  cancelHandler(): void {
+    this.router.navigate([`/products`]);
+    this.onCancel();
+  }
+
+  onCancel() {
+    this.sub && this.sub.unsubscribe();
+    if (!this.submitSuccess) { 
+      this.images.forEach(i => {
+        this.uploadService.deleteFileStorage(i);
+      })
+    }
   }
 }

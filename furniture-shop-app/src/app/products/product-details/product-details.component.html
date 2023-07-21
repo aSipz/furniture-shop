@@ -3,7 +3,7 @@
 
         <div class="row product-details">
 
-            <app-image-slider [slides]="product.images!" [changeInterval]="5000" [animationType]="'scale'"
+            <app-image-slider [slides]="product.images!" [changeInterval]="5000" [animationType]="'flip'"
                 class="images"></app-image-slider>
 
             <div class="col-12 col-lg-5 details">
@@ -20,12 +20,17 @@
                 </div>
 
                 <div class="single_product_desc">
-                    
+
                     <div class="product-meta-data">
                         <div class="line"></div>
                         <div class="info-wrapper">
                             <div class="title">
-                                <p class="product-price">${{product.price}}</p>
+                                <p class="product-price" *ngIf="product.discount === 0">${{product.price}}</p>
+                                <p class="product-price" *ngIf="product.discount > 0">
+                                    <span class="old-price">${{product.price}}</span>
+                                    <span class="discount">-{{product.discount}}%</span>
+                                    <span class="new-price">${{product.discountPrice}}</span>
+                                </p>
                                 <h6>{{product.name}}</h6>
                             </div>
 
@@ -33,7 +38,7 @@
                                 [favorite]="favorite"></app-like-product>
                         </div>
 
-                        
+
                         <div class=" ratings-review mb-15 d-flex align-items-center justify-content-between">
 
                             <div class="ratings">
@@ -47,7 +52,6 @@
 
                         <app-review-list *ngIf="isShown" [productId]="productId"></app-review-list>
 
-                        
                         <p class="availability"><span class="status"
                                 [ngClass]="{'out-of-stock': product.quantity === 0 || product.deleted}">●</span>
                             {{product.quantity === 0 || product.deleted?'Out of Stock' : 'In Stock'}}
@@ -55,10 +59,11 @@
                     </div>
 
                     <div class="short_overview my-5">
-                        <p>{{product.description}}</p>
+                        <p><span>Color: </span>{{product.color}}</p>
+                        <p><span>Material: </span>{{product.material}}</p>
+                        <p><span>Description: </span>{{product.description}}</p>
                     </div>
 
-                    
                     <h3 *ngIf="product.deleted">Not available at the moment</h3>
                     <form class="cart clearfix" *ngIf="!product.deleted && isLoggedIn">
                         <div class="cart-btn d-flex mb-50">

@@ -1,0 +1,23 @@
+<div class="profile-container">
+    <div class="header">
+        <h2 class="text-black">Profile</h2>
+    </div>
+
+    <div class="border bg-white">
+
+        <h3 class="text-black">Email:</h3>
+        <p>{{user?.email}}</p>
+        <h3 class="text-black">Username:</h3>
+        <p>{{user?.username}}</p>
+        <h3 class="text-black">First Name:</h3>
+        <p>{{user?.firstName}}</p>
+        <h3 class="text-black">Last Name:</h3>
+        <p>{{user?.lastName}}</p>
+
+        <div class="btn-container">
+            <app-primary-btn type="submit" text="Edit" btnClass="blue" (btnClick)="onEditClick()"></app-primary-btn>
+            <app-primary-btn type="button" text="Delete" btnClass="red" (btnClick)="onDeleteClick()"></app-primary-btn>
+        </div>
+
+    </div>
+</div>

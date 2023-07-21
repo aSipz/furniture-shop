@@ -5,7 +5,7 @@
         <div class="container" *ngIf="review.text">
             <div class="like">
                 <div class="name-container">
-                    <p class="name">{{review.ownerId | fullName}}</p>
+                    <p class="name">{{review.ownerId ? (review.ownerId | fullName) : 'unknown'}}</p>
                     <!-- <span class="rating">Rating 4/5</span> -->
                 </div>
 
@@ -24,14 +24,14 @@
             </div>
             <p class="text">{{review.text}}</p>
             <div class="controls">
-                <div class="btns" *ngIf="user?._id === review.ownerId._id">
+                <div class="btns" *ngIf="user?._id === review.ownerId?._id">
                     <app-primary-btn text="Edit" type="button" btnClass="blue" [isDisabled]="isDisabled"
                         (btnClick)="toggle()"></app-primary-btn>
                     <app-primary-btn text="Delete" type="button" btnClass="red" [isDisabled]="isDisabled"
                         (btnClick)="deleteReview()"></app-primary-btn>
                 </div>
-                <p class="date">{{review.updatedAt !== review.createdAt ? 'Edited' : ''}} {{review.updatedAt | date : 'd
-                    MMMM y, HH:mm:ss'}}</p>
+                <p class="date">{{review.updatedAt !== review.createdAt ? 'Edited:' : ''}} {{review.updatedAt | date : 'd
+                    MMMM y, HH:mm'}}</p>
             </div>
         </div>
 

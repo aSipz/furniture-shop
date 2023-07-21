@@ -20,7 +20,7 @@ export class EditItemComponent implements OnDestroy {
   categories: string[] = productCategories;
   submitSuccess = false;
   productId!: string;
-  private sub!: Subscription;
+  private subs: Subscription[] = [];
   product: IProduct | null = null;
 
   images: any[] = [];
@@ -31,7 +31,7 @@ export class EditItemComponent implements OnDestroy {
     category: ['', [Validators.required, categoryValidator()]],
     color: ['', [Validators.required, Validators.minLength(3)]],
     material: ['', [Validators.required, Validators.minLength(4)]],
-    price: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+    price: [0, [Validators.required, Validators.min(0), Validators.max(10000)]],
     discount: [0, [Validators.min(0), Validators.max(99)]],
     quantity: [0, [Validators.required, Validators.min(0)]],
   });
@@ -48,7 +48,7 @@ export class EditItemComponent implements OnDestroy {
   }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
+    const getSub = this.route.params.subscribe(params => {
       this.productId = params['id'];
 
       this.productsService.getProduct(this.productId).subscribe({
@@ -67,17 +67,11 @@ export class EditItemComponent implements OnDestroy {
         }
       });
     });
+    this.subs.push(getSub);
   }
 
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
-    if (!this.submitSuccess) {
-      this.images.forEach(i => {
-        if (!this.product?.images?.some(e => e.name === i.name)) {
-          this.uploadService.deleteFileStorage(i);
-        }
-      })
-    }
+    this.onCancel();
   }
 
   addImages(e: any): void {
@@ -101,7 +95,7 @@ export class EditItemComponent implements OnDestroy {
       return img;
     });
 
-    this.productsService.editProduct(this.productId, name!, description!, category!, color!, material!, price!, discount!, quantity!, this.images!).subscribe({
+    const editSub = this.productsService.editProduct(this.productId, name!, description!, category!, color!, material!, price!, discount!, quantity!, this.images!).subscribe({
       next: () => {
         this.submitSuccess = true;
         this.router.navigate([`/products/${this.productId}/details`]);
@@ -115,5 +109,23 @@ export class EditItemComponent implements OnDestroy {
       }
     });
 
+    this.subs.push(editSub);
+
+  }
+
+  cancelHandler(): void {
+    this.router.navigate([`/products/${this.productId}/details`]);
+    this.onCancel();
+  }
+
+  onCancel() {
+    this.subs.forEach(s => s.unsubscribe());
+    if (!this.submitSuccess) {
+      this.images.forEach(i => {
+        if (!this.product?.images?.some(e => e.name === i.name)) {
+          this.uploadService.deleteFileStorage(i);
+        }
+      })
+    }
   }
 }

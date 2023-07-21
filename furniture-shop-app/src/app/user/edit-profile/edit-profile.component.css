@@ -54,6 +54,10 @@ form {
     position: relative;
 }
 
+.col-md-6.pass{
+    width: 33%;
+}
+
 .row form {
     display: flex;
     flex-direction: column;
@@ -134,11 +138,8 @@ form {
     background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
 }
 
-.form-control:not(textarea) {
-    height: 50px;
-}
-
 .form-control {
+    height: 50px;
     border-radius: 10px;
     font-family: "Inter", sans-serif;
     margin-bottom: 1.5rem;
@@ -180,13 +181,7 @@ form {
     line-height: 1;
 }
 
-.error.images{
-    position: absolute;
-    top: 24px;
-    bottom: unset;
-}
-
-.server-error {
+.server-error{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

@@ -1,0 +1,43 @@
+.profile-container {
+    width: 80%;
+    margin: 1rem auto 8rem;
+}
+
+.profile-container .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.profile-container .header a {
+    text-decoration: none;
+    color: rgba(var(--bs-info-rgb));
+    font-weight: 600;
+}
+
+.text-black {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-black-rgb), var(--bs-text-opacity));
+}
+
+.border {
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+}
+
+.bg-white {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity));
+    position: relative;
+}
+
+.btn-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.btn-container app-primary-btn {
+    flex-basis: 30%;
+}

@@ -62,7 +62,7 @@ const deleteFavorite = async (req, res, next) => {
 
 const getAllFavorites = async (req, res, next) => {
     const ownerId = req.user._id;
-    const search = req.query.search ? JSON.parse(JSON.parse(req.query.search)) : {};
+    const search = req.query.search;
 
     const limit = req.query.limit;
     const skip = req.query.skip;
@@ -71,10 +71,11 @@ const getAllFavorites = async (req, res, next) => {
 
     try {
         const productIds = (await favoriteManager.getProductsIdByUser(ownerId)).map(e => toJSON(e).product);
-    
+;
         search._id = { $in: productIds };
+        const modifiedSearch = { ...JSON.parse(search), _id: { $in: productIds } }
 
-        const [result, count] = await productManager.getAll(JSON.stringify(search), limit, skip, sort, include);
+        const [result, count] = await productManager.getAll(JSON.stringify(modifiedSearch), limit, skip, sort, include);
 
         res.status(200)
             .send({ result, count });
@@ -85,7 +86,7 @@ const getAllFavorites = async (req, res, next) => {
 
 };
 
-router.get('/',privateGuard, getAllFavorites);
+router.get('/', privateGuard, getAllFavorites);
 router.post('/', privateGuard, addToFavorites);
 router.get('/:productId', getFavorites);
 router.delete('/:productId', privateGuard, deleteFavorite);

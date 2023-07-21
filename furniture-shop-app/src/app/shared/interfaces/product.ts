@@ -19,4 +19,5 @@ export interface IProduct {
     updatedAt: string;
     ownerId?: string;
     deleted?: boolean;
+    discountPrice?: number;
 }
