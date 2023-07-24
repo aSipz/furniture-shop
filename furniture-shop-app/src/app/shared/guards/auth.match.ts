@@ -4,7 +4,7 @@ import { Observable, map, take } from "rxjs";
 
 import { UserService } from "src/app/user/user.service";
 
-export const adminMatch: CanMatchFn = (
+export const authMatch: CanMatchFn = (
     route: Route,
     segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
 
@@ -15,8 +15,8 @@ export const adminMatch: CanMatchFn = (
         take(1),
         map(user => {
 
-            const adminRequired = route?.data?.['adminRequired'];
-            if (adminRequired && user?.userRights === 'admin') {
+            const loginRequired = route?.data?.['loginRequired'];
+            if (loginRequired === undefined || !!user === loginRequired) {
                 return true;
             }
 

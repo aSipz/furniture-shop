@@ -18,6 +18,7 @@ import { RangeDisplayPipe } from './pipes/range-display.pipe';
 import { PaginationComponent } from './pagination/pagination.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FullNamePipe } from './pipes/full-name.pipe';
+import { CalcPricePipe } from './pipes/calc-price.pipe';
 
 
 
@@ -40,7 +41,7 @@ import { FullNamePipe } from './pipes/full-name.pipe';
     RangeDisplayPipe,
     PaginationComponent,
     FullNamePipe,
-    
+    CalcPricePipe,
   ],
   imports: [
     CommonModule,
@@ -65,7 +66,8 @@ import { FullNamePipe } from './pipes/full-name.pipe';
     DisplayArrowPipe,
     RangeDisplayPipe,
     PaginationComponent,
-    FullNamePipe
+    FullNamePipe,
+    CalcPricePipe
   ]
 })
 export class SharedModule { }

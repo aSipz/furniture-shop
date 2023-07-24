@@ -1,13 +1,14 @@
 <div class="product-item" *ngIf="product.name">
-    
-    <a routerLink="/products/{{product._id}}/details" title="Details" >
+
+    <a routerLink="/products/{{product._id}}/details" title="Details">
         <img *ngIf="product.images" src="{{product.images | getImageUrl}}" class=" img-fluid product-thumbnail">
         <p *ngIf="product.deleted" class="unavailable">Unavailable</p>
         <h3 class="product-title">{{product.name}}</h3>
         <strong class="product-price">{{product.price | formatPrice}}</strong>
     </a>
-    <span *ngIf="product.quantity > 0 && !product.deleted" class="icon-cross" title="Add to Cart">
+    <span *ngIf="availableQty > 0 && !product.deleted" class="icon-cross" title="Add to Cart" appDebounceClick (debounceClick)="addToCart()"
+        [debounceTime]="500">
         <img src="assets/images/cross.svg" class="img-fluid">
     </span>
-    
+
 </div>

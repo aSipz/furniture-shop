@@ -4,6 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './core/error/error.component';
 import { adminMatch } from './shared/guards/admin.match';
+import { authMatch } from './shared/guards/auth.match';
 
 const routes: Routes = [
   {
@@ -27,6 +28,14 @@ const routes: Routes = [
       adminRequired: true
     },
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  },
+  {
+    path: 'cart',
+    canMatch: [authMatch],
+    data: {
+      loginRequired: true,
+    },
+    loadChildren: () => import('./cart/cart.module').then(m => m.CartModule)
   },
   {
     path: 'error',
