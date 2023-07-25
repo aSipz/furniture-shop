@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { checkoutActivate } from '../shared/guards/checkout.activate';
 
 const routes: Routes = [
   {
@@ -17,6 +18,7 @@ const routes: Routes = [
   {
     path: 'checkout',
     component: CheckoutComponent,
+    canActivate: [checkoutActivate],
     data: {
       title: 'Checkout',
       animation: 'checkoutPage'

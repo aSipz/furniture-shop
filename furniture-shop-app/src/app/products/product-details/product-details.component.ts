@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, mergeMap, of, switchMap } from 'rxjs';
 
@@ -13,6 +14,7 @@ import { RatingService } from '../services/rating.service';
 import { FavoritesService } from '../services/favorites.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
+import { CartService } from 'src/app/cart/services/cart.service';
 
 
 
@@ -32,6 +34,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   favorite: IFavorite | null = null;
   isShown = false;
 
+  @ViewChild('cartForm') cartForm!: NgForm;
+
   get isAdmin() {
     return this.userService.isAdmin;
   }
@@ -44,6 +48,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     return !this.product?.deleted;
   }
 
+  get cartProduct() {
+    return this.cartService.cart?.find(p => p._id === this.product?._id);
+  }
+
+  get availableQty() {
+    return (this.product?.quantity ?? 0) - (this.cartProduct?.count ?? 0);
+  }
+
   constructor(
     private productsService: ProductsService,
     private ratingService: RatingService,
@@ -53,6 +65,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     private imageService: FileUploadService,
     private route: ActivatedRoute,
     private router: Router,
+    private cartService: CartService,
     public modal: MatDialog
   ) {
     this.loaderService.showLoader();
@@ -87,7 +100,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       switchMap(rating => this.ratingService.rate(this.productId, rating))
     ).subscribe({
       next: (value) => {
-
         const ratings = [...this.product?.ratings as IRating[]];
         const existingRating = ratings.find(r => r._id === value._id);
         existingRating
@@ -187,7 +199,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         this.product!.deleted = product.deleted;
         (event.target as HTMLButtonElement).disabled = false;
       },
-      error: err => console.log(err)
+      error: err => {
+        console.log(err);
+        (event.target as HTMLButtonElement).disabled = false;
+      }
     });
   }
 
@@ -203,5 +218,19 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.isShown = !this.isShown;
   }
 
+  cartHandler() {
+    
+    if (this.cartForm.invalid) {
+      return;
+    }
 
+    let { quantity: count } = this.cartForm.value;
+
+    if (count % 1 !== 0) {
+      count = Math.round(count);
+    }
+
+    count > 0 && this.cartService.addToCart({ _id: this.product!._id, count });
+    this.cartForm.resetForm({ quantity: 1 });
+  }
 }

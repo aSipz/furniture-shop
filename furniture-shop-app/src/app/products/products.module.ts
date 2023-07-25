@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductsRoutingModule } from './products-routing.module';
 import { SharedModule } from '../shared/shared.module';
@@ -12,7 +14,6 @@ import { ReviewListComponent } from './review-list/review-list.component';
 import { ReviewComponent } from './review/review.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddEditReviewComponent } from './add-edit-review/add-edit-review.component';
-import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -33,7 +34,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProductsRoutingModule,
     SharedModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class ProductsModule { }

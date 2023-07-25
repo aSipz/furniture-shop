@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IProduct } from '../interfaces';
 import { CartService } from 'src/app/cart/services/cart.service';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-card',
@@ -9,15 +10,22 @@ import { CartService } from 'src/app/cart/services/cart.service';
 })
 export class ProductCardComponent {
 
-  @Input() product!: IProduct;
+  private _product!: IProduct;
 
-  get availableQty() {
-    return this.product.quantity - (this.cartProduct?.count ?? 0);
+  @Input() set product(value: IProduct) {
+    this._product = value;
+    this.availableQty = value.quantity - (this.cartProduct?.count ?? 0);
+  };
+
+  get product(): IProduct {
+    return this._product;
   }
 
   get cartProduct() {
     return this.cartService.cart?.find(p => p._id === this.product._id);
   }
+
+  availableQty: number = 0;
 
   constructor(private cartService: CartService) { }
 

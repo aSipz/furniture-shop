@@ -53,18 +53,18 @@ export class CartService implements OnDestroy {
     this.localDataService.saveData('cart', newCart);
   }
 
-  removeFromCart(product: ICartProduct) {
+  updateCart(product: ICartProduct) {
     const newCart = (this.cart as ICartProduct[])
       .map(p => {
         if (p._id === product._id) {
-          p.count -= product.count;
+          p.count = product.count;
         };
         return p;
       })
       .filter(p => p.count > 0);
 
-    this.cart$$.next(newCart);
-    this.localDataService.saveData('cart', newCart);
+    this.cart$$.next(newCart.length > 0 ? newCart : null);
+    this.localDataService.saveData('cart', newCart.length > 0 ? newCart : null);
   }
 
   clearCart() {

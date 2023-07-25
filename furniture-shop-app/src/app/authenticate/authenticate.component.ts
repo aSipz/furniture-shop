@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { LoaderService } from '../core/services/loader.service';
-import { tap } from 'rxjs';
+import { tap, filter } from 'rxjs';
 import { CartService } from '../cart/services/cart.service';
 
 @Component({
@@ -29,7 +29,6 @@ export class AuthenticateComponent {
           this.loaderService.hideLoader();
         },
         error: (err) => {
-          console.log(err);
           this.isAuthenticating = false;
           this.loaderService.hideLoader();
         },

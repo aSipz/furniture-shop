@@ -7,7 +7,7 @@
         <strong class="product-price">{{product.price | formatPrice}}</strong>
     </a>
     <span *ngIf="availableQty > 0 && !product.deleted" class="icon-cross" title="Add to Cart" appDebounceClick (debounceClick)="addToCart()"
-        [debounceTime]="500">
+        [debounceTime]="300">
         <img src="assets/images/cross.svg" class="img-fluid">
     </span>
 

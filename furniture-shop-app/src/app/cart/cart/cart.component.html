@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row mb-5">
-        <form class="col-md-12" [formGroup]="cartForm" (ngSubmit)="submitHandler()">
+        <form class="col-md-12" [formGroup]="cartForm" (ngSubmit)="goToShop()">
             <div class="site-blocks-table">
                 <table class="table">
                     <thead>
@@ -16,8 +16,10 @@
                     <tbody>
                         <tr *ngFor="let product of products; let i = index" formArrayName="products">
                             <td class="product-thumbnail">
-                                <img *ngIf="product.images" src="{{product.images | getImageUrl}}" alt="Image"
-                                    class="img-fluid">
+                                <a routerLink="/products/{{product._id}}/details">
+                                    <img *ngIf="product.images" src="{{product.images | getImageUrl}}" alt="Image"
+                                        class="img-fluid">
+                                </a>
                             </td>
                             <td class="product-name">
                                 <p class="h5 text-black">{{product.name}}</p>
@@ -27,11 +29,12 @@
                             </td>
                             <td>
 
-                                <div class="input-group quantity-container" style="max-width: 120px;">
+                                <div class="input-group quantity-container">
 
-                                    <ng-container [formGroup]="$any(productsArray.controls[i])">
+                                    <ng-container [formGroup]="$any(productsFormArray.controls[i])">
                                         <input type="number" class="form-control text-center quantity-amount"
-                                            formControlName="count" max="{{product.quantity}}" min="0">
+                                            formControlName="count" max="{{product.quantity}}" min="0" step="1"
+                                            (change)="updateCount(i, product._id)">
                                     </ng-container>
 
                                 </div>
@@ -48,13 +51,6 @@
 
                     </tbody>
                 </table>
-
-                <!-- <div *ngFor="let product of productsArray.controls; let i = index" formArrayName="products">
-                    <ng-container [formGroup]="$any(product)">
-                        <input type="number" formControlName="count">
-                    </ng-container>
-
-                </div> -->
 
                 <h3 class="empty-cart" *ngIf="!products || products.length === 0">No products in cart!</h3>
             </div>
@@ -75,7 +71,7 @@
                             <span class="text-black">Total</span>
                         </div>
                         <div class="col-md-6 text-right">
-                            <strong class="text-black">$230.00</strong>
+                            <strong class="text-black">${{cartTotal}}</strong>
                         </div>
                     </div>
 

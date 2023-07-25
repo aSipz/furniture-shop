@@ -1,1 +1,153 @@
-<p>checkout works!</p>
+<div class="container">
+    <div class="billing-container">
+        <div class="header">
+            <h2 class="h3 text-black">Billing Details</h2>
+        </div>
+
+        <div class="p-3 p-lg-5 border bg-white">
+
+            <p *ngIf="!!serverError" class="server-error">
+                {{serverError}}
+            </p>
+
+            <form [formGroup]="billingForm" (ngSubmit)="submitHandler()">
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label for="address" class="text-black">Address <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="address" name="address"
+                            placeholder="1, Tsarigradsko shose Blvd., 1000 Sofia"
+                            [ngClass]="{'input-error': !!serverError}" formControlName="address">
+
+                        <ng-container *ngIf="billingForm.get('address')?.touched">
+                            <p *ngIf="billingForm.get('address')?.errors?.['required']" class="error">
+                                Address is required!
+                            </p>
+                            <p *ngIf="billingForm.get('address')?.errors?.['emailValidator']" class="error">
+                                Address is not valid!
+                            </p>
+                        </ng-container>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="email" class="text-black">Email <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="email" name="email" placeholder="dan_jon@gmail.com"
+                            [ngClass]="{'input-error': !!serverError}" formControlName="email">
+
+                        <ng-container *ngIf="billingForm.get('email')?.touched">
+                            <p *ngIf="billingForm.get('email')?.errors?.['required']" class="error">
+                                Email is required!
+                            </p>
+                            <p *ngIf="billingForm.get('email')?.errors?.['emailValidator']" class="error">
+                                Email is not valid!
+                            </p>
+                        </ng-container>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="phone" class="text-black">Phone <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="phone" name="phone" placeholder="0881234567"
+                            [ngClass]="{'input-error': !!serverError}" formControlName="phone">
+
+                        <ng-container *ngIf="billingForm.get('phone')?.touched">
+                            <p *ngIf="billingForm.get('phone')?.errors?.['required']" class="error">
+                                Phone is required!
+                            </p>
+                            <p *ngIf="billingForm.get('phone')?.errors?.['phoneValidator']" class="error">
+                                Phone is not valid!
+                            </p>
+                        </ng-container>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label for="firstName" class="text-black">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Daniel"
+                            formControlName="firstName">
+
+                        <ng-container *ngIf="billingForm.get('firstName')?.touched">
+                            <p *ngIf="billingForm.get('firstName')?.errors?.['required']" class="error">
+                                First Name is required!
+                            </p>
+                            <p *ngIf="billingForm.get('firstName')?.errors?.['nameValidator']" class="error">
+                                First Name should contain only latin letters!
+                            </p>
+                        </ng-container>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lastName" class="text-black">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Jones"
+                            formControlName="lastName">
+
+                        <ng-container *ngIf="billingForm.get('lastName')?.touched">
+                            <p *ngIf="billingForm.get('lastName')?.errors?.['required']" class="error">
+                                Last Name is required!
+                            </p>
+                            <p *ngIf="billingForm.get('lastName')?.errors?.['nameValidator']" class="error">
+                                Last Name should contain only latin letters!
+                            </p>
+                        </ng-container>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label for="notes" class="text-black">Order notes</label>
+                        <textarea type="text" class="form-control" id="notes" name="notes"
+                            placeholder="Some description..." formControlName="notes" rows="6"> </textarea>
+
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+        </div>
+    </div>
+
+    <div class="order-container">
+        <div class="header">
+            <h2 class="h3 text-black">Your Order</h2>
+        </div>
+        <div class="p-3 p-lg-5 border bg-white">
+            <table class="table site-block-order-table mb-5">
+                <thead>
+                    <th>Product</th>
+                    <th>Total</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Top Up T-Shirt <strong class="mx-2">x</strong> 1</td>
+                        <td>$250.00</td>
+                    </tr>
+                    <tr>
+                        <td>Polo Shirt <strong class="mx-2">x</strong> 1</td>
+                        <td>$100.00</td>
+                    </tr>
+                    <tr>
+                        <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+                        <td class="text-black font-weight-bold"><strong>$350.00</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <div class="btn-group">
+                <button class="btn btn-black btn-lg py-3 btn-block">Back to Cart</button>
+                <button class="btn btn-black btn-lg py-3 btn-block">Place
+                    Order</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
