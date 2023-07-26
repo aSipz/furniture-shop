@@ -79,10 +79,12 @@ export class CartComponent implements OnDestroy {
   }
 
   goToShop() {
+    this.updateCart();
     this.router.navigate(['/products']);
   }
 
   goToCheckout() {
+    this.updateCart();
     this.router.navigate(['/cart/checkout']);
   }
 
@@ -108,5 +110,11 @@ export class CartComponent implements OnDestroy {
 
   get productsFormArray() {
     return (this.cartForm.get('products') as FormArray);
+  }
+
+  updateCart() {
+    this.products?.forEach(p => {
+      this.cartService.updateCart({ _id: p._id, count: p.cartCount });
+    });
   }
 }

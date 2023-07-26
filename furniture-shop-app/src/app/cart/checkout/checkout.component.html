@@ -1,4 +1,5 @@
-<div class="container">
+<div class="container" *ngIf="!orderReceived">
+
     <div class="billing-container">
         <div class="header">
             <h2 class="h3 text-black">Billing Details</h2>
@@ -28,7 +29,6 @@
                             </p>
                         </ng-container>
                     </div>
-
                 </div>
 
                 <div class="form-group row">
@@ -61,7 +61,6 @@
                             </p>
                         </ng-container>
                     </div>
-
                 </div>
 
                 <div class="form-group row">
@@ -95,19 +94,13 @@
                     </div>
                 </div>
 
-
-
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label for="notes" class="text-black">Order notes</label>
                         <textarea type="text" class="form-control" id="notes" name="notes"
                             placeholder="Some description..." formControlName="notes" rows="6"> </textarea>
-
-
                     </div>
-
                 </div>
-
 
             </form>
 
@@ -125,25 +118,24 @@
                     <th>Total</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Top Up T-Shirt <strong class="mx-2">x</strong> 1</td>
-                        <td>$250.00</td>
-                    </tr>
-                    <tr>
-                        <td>Polo Shirt <strong class="mx-2">x</strong> 1</td>
-                        <td>$100.00</td>
+                    <tr *ngFor="let product of products">
+                        <td [ngClass]="{'insufficient': product.error}">{{product.name}} <strong class="mx-2">x</strong>
+                            {{product.cartCount}}</td>
+                        <td [ngClass]="{'insufficient': product.error}">${{product | calcPrice : 2}}</td>
                     </tr>
                     <tr>
                         <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                        <td class="text-black font-weight-bold"><strong>$350.00</strong></td>
+                        <td class="text-black font-weight-bold"><strong>${{cartTotal.toFixed(2)}}</strong></td>
                     </tr>
+                    <p *ngIf="quantityErr" class="insufficient">Insufficient quantity! Please check your cart!</p>
                 </tbody>
+
             </table>
 
-
             <div class="btn-group">
-                <button class="btn btn-black btn-lg py-3 btn-block">Back to Cart</button>
-                <button class="btn btn-black btn-lg py-3 btn-block">Place
+                <a routerLink="/cart" class="btn btn-black btn-lg py-3 btn-block">Back to Cart</a>
+                <button class="btn btn-black btn-lg py-3 btn-block" [disabled]="quantityErr"
+                    (click)="submitHandler()">Place
                     Order</button>
             </div>
 
@@ -151,3 +143,5 @@
     </div>
 
 </div>
+
+<app-order-received *ngIf="orderReceived" />

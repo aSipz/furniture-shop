@@ -1,0 +1,65 @@
+<div class="orders-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Products</th>
+                <th>Total amount</th>
+                <th>Order received</th>
+                <th>Status</th>
+                <th>Cancel order</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of orders; let i = index" formArrayName="orders">
+                <td>
+                    <p>{{order._id}}</p>
+                    <!-- <a routerLink="/orders/{{order._id}}/details">
+                    <img *ngIf="order.images" src="{{order.images | getImageUrl}}" alt="Image" class="img-fluid">
+                </a> -->
+                </td>
+                <td class="products">
+                    <p *ngFor="let product of order.products">
+                        <a *ngIf="product.productId" routerLink="/products/{{$any(product.productId)._id}}/details">
+                            <img class="preview" src="{{$any(product.productId).images[0].url}}" alt="preview">
+                            {{product | productSummary}}
+                        </a>
+                        <ng-container *ngIf="!product.productId">
+                            {{product | productSummary}}
+                        </ng-container>
+                    </p>
+                    <!-- <p class="h5 text-black">{{order.name}}</p> -->
+                </td>
+                <td>
+                    <p>{{order.amount}}</p>
+                    <!-- <p class="h5 text-black">${{order.discountPrice}}</p> -->
+                </td>
+                <td>
+                    {{order.createdAt | date : 'd MMMM y, HH:mm'}}
+                    <!-- <div class="input-group quantity-container">
+
+                    <ng-container [formGroup]="$any(productsFormArray.controls[i])">
+                        <input type="number" class="form-control text-center quantity-amount" formControlName="count"
+                            max="{{order.quantity}}" min="0" step="1" (change)="updateCount(i, order._id)">
+                    </ng-container>
+
+                </div> -->
+
+                </td>
+                <td>
+                    <p>{{order.status}}</p>
+                    <!-- <p class="h5 text-black">${{order | calcPrice}}</p> -->
+                </td>
+                <td>
+                    <button class="cancel-btn" *ngIf="['Received', 'Processing'].includes(order.status)"
+                        (click)="openModal(order._id)">X</button>
+                    <!-- <button class="btn btn-black btn-sm" type="button" (click)="removeProduct(order._id)">X</button> -->
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+    <h3 class="empty-cart" *ngIf="orders.length === 0">No orders!</h3>
+</div>

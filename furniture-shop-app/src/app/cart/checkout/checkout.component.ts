@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-
-import { Subscription } from 'rxjs';
 
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { emailValidator, nameValidator, phoneValidator } from 'src/app/shared/validators';
@@ -10,6 +7,7 @@ import { UserService } from 'src/app/user/user.service';
 import { CartService } from '../services/cart.service';
 import { ProductsService } from 'src/app/products/services/products.service';
 import { IProduct } from 'src/app/shared/interfaces';
+import { OrdersService } from 'src/app/orders/services/orders.service';
 
 @Component({
   selector: 'app-checkout',
@@ -18,8 +16,8 @@ import { IProduct } from 'src/app/shared/interfaces';
 })
 export class CheckoutComponent {
   serverError = '';
+  orderReceived = false;
 
-  private sub!: Subscription;
   cartTotal: number = 0;
   products: (IProduct & { cartCount: number, error: boolean })[] | null = null;
 
@@ -30,7 +28,6 @@ export class CheckoutComponent {
     address: ['', [Validators.required, Validators.minLength(10)]],
     phone: ['', [Validators.required, phoneValidator()]],
     notes: [''],
-    saveAddress: [false]
   });
 
   get user() {
@@ -41,13 +38,17 @@ export class CheckoutComponent {
     return this.cartService.cart;
   }
 
+  get quantityErr() {
+    return this.products?.some(p => p.error);
+  }
+
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router,
     private loaderService: LoaderService,
     private cartService: CartService,
     private productService: ProductsService,
+    private orderService: OrdersService,
   ) {
 
     this.productService.getProducts({ search: { _id: { $in: this.cart?.map(p => p._id) } } }).subscribe({
@@ -78,25 +79,30 @@ export class CheckoutComponent {
       return;
     }
 
+    if (this.quantityErr) {
+      return;
+    }
+
     this.loaderService.showLoader();
 
     this.billingForm.disable();
 
-    // const { username, email, firstName, lastName, passGroup: { pass: password, oldPass: oldPassword } } = this.billingForm.value;
-    // this.sub = this.userService.updateProfile(username!, email!, firstName!, lastName!, password ? password : null, oldPassword ? oldPassword : null)
-    //   .subscribe({
-    //     next: () => {
-    //       this.router.navigate(['/user/profile']);
-    //       this.loaderService.hideLoader();
-    //     },
-    //     error: err => {
-    //       console.log(err);
-    //       this.serverError = err.error?.message;
-    //       this.billingForm.enable();
-    //       this.loaderService.hideLoader();
-    //     }
+    const { firstName, lastName, email, phone, address, notes } = this.billingForm.value;
 
-    //   });
+    this.orderService.newOrder(firstName!, lastName!, email!, phone!, address!, notes!, this.cartTotal, this.products!.map(p => ({ productId: p._id, count: p.cartCount })))
+      .subscribe({
+        next: () => {
+          this.cartService.clearCart();
+          this.loaderService.hideLoader();
+          this.orderReceived = true;
+        },
+        error: (err) => {
+          console.log(err);
+          this.serverError = err.error?.message;
+          this.billingForm.enable();
+          this.loaderService.hideLoader();
+        }
+      });
 
   }
 }

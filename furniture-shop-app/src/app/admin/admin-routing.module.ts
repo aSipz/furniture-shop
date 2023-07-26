@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddNewItemComponent } from './add-new-item/add-new-item.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
+import { CustomersOrdersComponent } from './customers-orders/customers-orders.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,14 @@ const routes: Routes = [
     data: {
       title: 'Edit Product',
       animation: 'editPage'
+    }
+  },
+  {
+    path: 'orders',
+    component: CustomersOrdersComponent,
+    data: {
+      title: 'Orders',
+      animation: 'ordersPage'
     }
   },
 ];

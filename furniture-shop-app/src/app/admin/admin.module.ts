@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UploadImagesComponent } from './upload-images/upload-images.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
+import { CustomersOrdersComponent } from './customers-orders/customers-orders.component';
 
 
 
@@ -14,7 +15,8 @@ import { EditItemComponent } from './edit-item/edit-item.component';
   declarations: [
     AddNewItemComponent,
     UploadImagesComponent,
-    EditItemComponent
+    EditItemComponent,
+    CustomersOrdersComponent
   ],
   imports: [
     CommonModule,

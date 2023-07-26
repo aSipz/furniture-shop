@@ -3,7 +3,7 @@ const normalizeObjectValues = require('./normalizeObjectValues');
 const removePassword = require('./removePass');
 const removeVer = require('./removeVer');
 const toJSON = require('./toJSON');
-const { productCategories } = require('./constants');
+const { productCategories, orderStatus } = require('./constants');
 
 module.exports = {
     jwt,
@@ -11,5 +11,6 @@ module.exports = {
     removePassword,
     toJSON,
     productCategories,
+    orderStatus,
     removeVer
 }

@@ -10,6 +10,15 @@ const productCategories = [
     'Other'
 ];
 
+const orderStatus = [
+    'Received',
+    'Processing',
+    'Shipped',
+    'Canceled',
+    'Completed',
+];
+
 module.exports = {
-    productCategories
+    productCategories,
+    orderStatus
 };

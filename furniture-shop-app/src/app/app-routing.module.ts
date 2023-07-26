@@ -38,6 +38,14 @@ const routes: Routes = [
     loadChildren: () => import('./cart/cart.module').then(m => m.CartModule)
   },
   {
+    path: 'orders',
+    canMatch: [authMatch],
+    data: {
+      loginRequired: true,
+    },
+    loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)
+  },
+  {
     path: 'error',
     component: ErrorComponent
   },

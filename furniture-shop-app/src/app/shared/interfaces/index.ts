@@ -5,3 +5,4 @@ export * from './rating';
 export * from './imageEntry';
 export * from './favorite';
 export * from './cartProduct';
+export * from './order';

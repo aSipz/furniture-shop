@@ -2,7 +2,25 @@ import { InjectionToken } from "@angular/core";
 
 export const API_ERROR = new InjectionToken('API_ERROR');
 
-export const productCategories = ['Chairs', 'Beds', 'Sofas & armchairs', 'Tables', 'Storage furniture', 'Garden & outdoor', 'Bathroom', 'Desks', 'Accessories', 'Other'];
+export const productCategories = [
+  'Chairs',
+  'Beds',
+  'Sofas & armchairs',
+  'Tables',
+  'Storage furniture',
+  'Garden & outdoor',
+  'Bathroom',
+  'Desks',
+  'Accessories',
+  'Other'];
+
+export const orderStatus = [
+  'Received',
+  'Processing',
+  'Shipped',
+  'Canceled',
+  'Completed',
+];
 
 export class FileUpload {
   name!: string;

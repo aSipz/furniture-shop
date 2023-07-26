@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { UserService } from 'src/app/user/user.service';
 import { LoaderService } from '../services/loader.service';
+import { CartService } from 'src/app/cart/services/cart.service';
 
 @Component({
   selector: 'app-profile-submenu',
@@ -18,6 +19,7 @@ export class ProfileSubmenuComponent {
   constructor(
     private userService: UserService,
     private loaderService: LoaderService,
+    private cartService: CartService,
     private router: Router
   ) { }
 
@@ -27,6 +29,7 @@ export class ProfileSubmenuComponent {
     this.userService.logout().subscribe({
       next: () => {
         this.loaderService.hideLoader();
+        this.cartService.clearCart();
         this.router.navigate(['/']);
       },
       error: (err) => {
