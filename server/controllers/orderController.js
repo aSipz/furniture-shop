@@ -1,6 +1,8 @@
 const router = require('express').Router();
 
 const orderManager = require('../managers/orderManager');
+const productManager = require('../managers/productManager');
+const { conn } = require('../database/dbConnect')
 const { privateGuard } = require('../middlewares/authMiddleware');
 const { removeVer, toJSON } = require('../utils');
 
@@ -9,13 +11,25 @@ const createOrder = async (req, res, next) => {
     const ownerId = req.user._id;
     const { firstName, lastName, email, phone, address, notes, products, amount } = req.body;
 
+    const session = await conn.startSession();
     try {
-        await orderManager.create({ firstName, lastName, email, phone, address, notes, products, ownerId, amount });
+        session.startTransaction();
+        const dbProducts = await Promise.all(products.map(p => productManager.getProductById(p.productId, null, { session })));
+        await Promise.all(dbProducts.map(p => {
+            p.quantity -= products.find(e => e.productId == p._id.toString()).count;
+            return p.save({ session });
+        }));
+        await orderManager.create({ firstName, lastName, email, phone, address, notes, products, ownerId, amount }, { session });
+        await session.commitTransaction();
         res.status(201)
             .end();
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        if (error._message == 'Product validation failed') {
+            error.statusCode = 409;
+        }
         next(error);
-        console.log(error);
     }
 };
 

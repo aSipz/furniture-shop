@@ -110,7 +110,7 @@ td .h5 {
     font-weight: 600;
 }
 
-.empty-cart{
+.empty-cart {
     text-align: center;
 }
 
@@ -127,4 +127,8 @@ td .h5 {
 
 .error img {
     max-width: 100px;
+}
+
+tr.canceled {
+    color: var(--bs-danger);
 }

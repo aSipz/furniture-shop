@@ -8,7 +8,7 @@
     margin-left: calc(-.5 * var(--bs-gutter-x));
 }
 
-.row>* {
+.row>*:not(.date-search) {
     max-width: 100%;
     padding-right: calc(var(--bs-gutter-x) * .5);
     padding-left: calc(var(--bs-gutter-x) * .5);
@@ -212,18 +212,31 @@ select {
 
 .date-search {
     display: flex;
-    align-items: flex-end;
-    position: relative;
+    align-items: center;
+    width: 300px;
+    flex-grow: 0;
+}
+
+mat-form-field {
+    align-self: flex-end;
 }
 
 .clear-date {
- position: absolute;
+    /* position: absolute;
  right: 0;
- border: none;
- background-color: transparent;
- cursor: pointer;
+ top: 0; */
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: 600;
+    width: 28px;
+    height: 28px;
+    position: relative;
+    top: 5px;
+    /* z-index: 100; */
 }
 
 .clear-date:hover {
-    background-color: #6c757d;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.053);
 }

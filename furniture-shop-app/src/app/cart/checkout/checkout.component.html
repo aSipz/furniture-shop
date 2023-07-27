@@ -17,8 +17,7 @@
                     <div class="col-md-12">
                         <label for="address" class="text-black">Address <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="address" name="address"
-                            placeholder="1, Tsarigradsko shose Blvd., 1000 Sofia"
-                            [ngClass]="{'input-error': !!serverError}" formControlName="address">
+                            placeholder="1, Tsarigradsko shose Blvd., 1000 Sofia" formControlName="address">
 
                         <ng-container *ngIf="billingForm.get('address')?.touched">
                             <p *ngIf="billingForm.get('address')?.errors?.['required']" class="error">
@@ -35,7 +34,7 @@
                     <div class="col-md-6">
                         <label for="email" class="text-black">Email <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="email" name="email" placeholder="dan_jon@gmail.com"
-                            [ngClass]="{'input-error': !!serverError}" formControlName="email">
+                            formControlName="email">
 
                         <ng-container *ngIf="billingForm.get('email')?.touched">
                             <p *ngIf="billingForm.get('email')?.errors?.['required']" class="error">
@@ -50,7 +49,7 @@
                     <div class="col-md-6">
                         <label for="phone" class="text-black">Phone <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="phone" name="phone" placeholder="0881234567"
-                            [ngClass]="{'input-error': !!serverError}" formControlName="phone">
+                            formControlName="phone">
 
                         <ng-container *ngIf="billingForm.get('phone')?.touched">
                             <p *ngIf="billingForm.get('phone')?.errors?.['required']" class="error">
@@ -119,15 +118,18 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let product of products">
-                        <td [ngClass]="{'insufficient': product.error}">{{product.name}} <strong class="mx-2">x</strong>
+                        <td [ngClass]="{'insufficient': product.error || serverError == 'Insufficient quantity!'}">
+                            {{product.name}} <strong class="mx-2">x</strong>
                             {{product.cartCount}}</td>
-                        <td [ngClass]="{'insufficient': product.error}">${{product | calcPrice : 2}}</td>
+                        <td [ngClass]="{'insufficient': product.error  || serverError == 'Insufficient quantity!'}">
+                            ${{product | calcPrice : 2}}</td>
                     </tr>
                     <tr>
                         <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
                         <td class="text-black font-weight-bold"><strong>${{cartTotal.toFixed(2)}}</strong></td>
                     </tr>
-                    <p *ngIf="quantityErr" class="insufficient">Insufficient quantity! Please check your cart!</p>
+                    <p *ngIf="quantityErr || serverError == 'Insufficient quantity!'" class="insufficient">
+                        Insufficient quantity! Please check your cart!</p>
                 </tbody>
 
             </table>

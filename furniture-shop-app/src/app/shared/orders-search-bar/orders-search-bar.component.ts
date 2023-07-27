@@ -1,4 +1,4 @@
-import { Component, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit, Input } from '@angular/core';
 import { Subscription, debounceTime, distinctUntilChanged, tap, take } from 'rxjs';
 
 import { orderSorting, orderStatus } from '../constants';
@@ -8,7 +8,7 @@ import { DateAdapter, MAT_DATE_FORMATS, } from '@angular/material/core';
 import { PICK_FORMATS, PickDateAdapter } from '../datePicker-format';
 
 const searchMap = {
-  name(value: string) {
+  email(value: string) {
     return { '$regex': value, '$options': 'i' };
   },
   status(value: string) {
@@ -20,7 +20,6 @@ const searchMap = {
     return { $gte: min, $lte: max };
   },
   createdAt(value: string) {
-    // console.log(value.split(', '));
     const [startDate, endDate] = value.split(', ');
     const dateSearch = {};
 
@@ -46,7 +45,7 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
   sorting: string[] = orderSorting;
 
   searchForm = this.fb.group({
-    name: [''],
+    email: [''],
     status: [''],
     priceGroup: this.fb.group({
       price1: [0],
@@ -63,6 +62,12 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
 
   subs: Subscription[] = [];
 
+  get hasSelectedDate() {
+    return Object.values(this.searchForm.get('dateGroup')?.value!).some(v => v);
+  }
+
+  @Input() adminPanel = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -77,7 +82,7 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
 
       const search = query['search'] ? JSON.parse(query['search']) : {};
 
-      const name = search['name']?.['$regex'] ?? '';
+      const email = search['email']?.['$regex'] ?? '';
       const status = search['status'] ?? '';
       const price1 = search['price']?.['$gte'] ?? '0';
       const price2 = search['price']?.['$lte'] ?? '100000';
@@ -86,19 +91,19 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
       const order = query['sort'] ?? '-createdAt';
       const priceGroup = { price1, price2 };
       const dateGroup = { startDate, endDate };
-      
-      this.searchForm.patchValue({ name, status, priceGroup, order, dateGroup });
+
+      this.searchForm.patchValue({ email, status, priceGroup, order, dateGroup });
 
     });
   }
 
   ngAfterViewInit() {
-    const nameSub = this.searchForm.get('name')?.valueChanges
+    const emailSub = this.searchForm.get('email')?.valueChanges
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
         tap((value) => {
-          this.addToSearch(value ? value : '', 'name');
+          this.addToSearch(value ? value : '', 'email');
         })
       )
       .subscribe();
@@ -126,7 +131,8 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
       debounceTime(500),
       distinctUntilChanged(),
       tap((value) => {
-        console.log(value);
+        console.log(Object.values(this.searchForm.get('dateGroup')?.value!).some(v => v));
+
 
         const valArr = Object.entries(value).map(v => {
           const date = v[1] ? Date.parse(v[1] as string) : null
@@ -147,7 +153,7 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe();
 
-    this.subs.push(nameSub!, statSub!, priceSub!, orderSub!, dateSub!);
+    this.subs.push(emailSub!, statSub!, priceSub!, orderSub!, dateSub!);
   }
 
   ngOnDestroy() {
@@ -192,7 +198,7 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
   }
 
   private addToOrder(value: string) {
-    if (value && value !== 'Name') {
+    if (value && value !== 'email') {
       this.query = {
         ...this.query,
         sort: value

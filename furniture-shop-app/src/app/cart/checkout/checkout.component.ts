@@ -101,6 +101,9 @@ export class CheckoutComponent {
         error: (err) => {
           console.log(err);
           this.serverError = err.error?.message;
+          if(err.status == 409) {
+            this.serverError = 'Insufficient quantity!';
+          }
           this.billingForm.enable();
           this.loaderService.hideLoader();
         }
