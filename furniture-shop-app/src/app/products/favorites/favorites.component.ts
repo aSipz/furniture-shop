@@ -14,6 +14,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
 
   products: IProduct[] = [loadingProduct, loadingProduct, loadingProduct];
   pages!: number;
+  pageSize = pageSize;
   errorFetchingData = false;
   private sub!: Subscription;
 
@@ -28,7 +29,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
       const changedQuery = JSON.parse(JSON.stringify(query));
       if (!query['skip']) {
         changedQuery['skip'] = 0;
-        changedQuery['limit'] = pageSize;
+        changedQuery['limit'] = this.pageSize;
       }
 
       query['search']
@@ -38,7 +39,7 @@ export class FavoritesComponent implements OnInit, OnDestroy {
       this.favoritesService.getAll(changedQuery).subscribe({
         next: value => {
           this.products = value.result;
-          this.pages = Math.ceil(value.count / pageSize);
+          this.pages = Math.ceil(value.count / this.pageSize);
         },
         error: err => {
           this.errorFetchingData = true;

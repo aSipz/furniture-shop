@@ -1,4 +1,5 @@
 import { InjectionToken } from "@angular/core";
+import { IsActiveMatchOptions } from "@angular/router";
 
 export const API_ERROR = new InjectionToken('API_ERROR');
 
@@ -75,4 +76,20 @@ export const productSorting = [
   '-Discount'
 ];
 
+export const orderSorting = [
+  'createdAt',
+  '-createdAt',
+  'amount',
+  '-amount',
+];
+
 export const pageSize = 8;
+
+export const ordersPageSize = 5;
+
+export const routeMatchOptions: IsActiveMatchOptions = {
+  queryParams: 'ignored',
+  matrixParams: 'exact',
+  paths: 'exact',
+  fragment: 'exact',
+};

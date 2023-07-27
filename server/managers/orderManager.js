@@ -10,6 +10,17 @@ exports.getAll = (search, limit, skip, sort, include) => {
 
     if (search) {
         searchCriteria = JSON.parse(search);
+        if (searchCriteria.createdAt) {
+
+            if (searchCriteria.createdAt['$gte']) {
+                searchCriteria.createdAt['$gte'] = +searchCriteria.createdAt['$gte'];
+            }
+
+            if (searchCriteria.createdAt['$lte']) {
+                const date = new Date(+searchCriteria.createdAt['$lte'])
+                searchCriteria.createdAt['$lte'] = date.setDate(date.getDate() + 1);
+            }
+        }
     }
 
     const sortObj = sort

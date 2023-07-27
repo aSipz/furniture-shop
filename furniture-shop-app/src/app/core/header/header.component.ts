@@ -1,6 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 import { IsActiveMatchOptions } from '@angular/router';
+import { routeMatchOptions } from 'src/app/shared/constants';
 
 import { UserService } from 'src/app/user/user.service';
 
@@ -48,12 +49,7 @@ export class HeaderComponent {
 
   isOpen = false;
 
-  readonly routeMatchOptions: IsActiveMatchOptions = {
-    queryParams: 'ignored',
-    matrixParams: 'exact',
-    paths: 'exact',
-    fragment: 'exact',
-  };
+  readonly routeMatchOptions: IsActiveMatchOptions = routeMatchOptions;
 
   constructor(private userService: UserService) { }
 

@@ -76,10 +76,12 @@ export class CheckoutComponent {
   submitHandler(): void {
 
     if (this.billingForm.invalid) {
+      this.billingForm.markAllAsTouched();
       return;
     }
 
     if (this.quantityErr) {
+      this.billingForm.markAllAsTouched();
       return;
     }
 

@@ -21,7 +21,7 @@
                     <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="routeMatchOptions">
                         <a class="nav-link" routerLink="/products/favorites">Favorites</a>
                     </li>
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="routeMatchOptions">
                         <a class="nav-link" routerLink="/orders">My Orders</a>
                     </li>
                 </ng-container>
@@ -30,7 +30,7 @@
                     <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link" routerLink="/admin/add-item">New Product</a>
                     </li>
-                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="routeMatchOptions">
                         <a class="nav-link" routerLink="/admin/orders">Customers orders</a>
                     </li>
                 </ng-container>

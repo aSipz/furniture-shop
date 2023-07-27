@@ -1,42 +1,62 @@
 import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subscription, debounceTime, distinctUntilChanged, tap, take } from 'rxjs';
 
-import { productCategories, productSorting } from '../constants';
+import { orderSorting, orderStatus } from '../constants';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { DateAdapter, MAT_DATE_FORMATS, } from '@angular/material/core';
+import { PICK_FORMATS, PickDateAdapter } from '../datePicker-format';
 
 const searchMap = {
   name(value: string) {
     return { '$regex': value, '$options': 'i' };
   },
-  category(value: string) {
+  status(value: string) {
     return value;
   },
-  price(value: string) {
+  amount(value: string) {
     const min = Math.min(...value.split(', ').map(e => +e));
     const max = Math.max(...value.split(', ').map(e => +e));
     return { $gte: min, $lte: max };
+  },
+  createdAt(value: string) {
+    // console.log(value.split(', '));
+    const [startDate, endDate] = value.split(', ');
+    const dateSearch = {};
+
+    startDate && Object.assign(dateSearch, { $gte: startDate });
+    endDate && Object.assign(dateSearch, { $lte: endDate });
+    return Object.values(dateSearch).length > 0 ? dateSearch : null;
   }
 }
 
-@Component({
-  selector: 'app-search-bar',
-  templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.css']
-})
-export class SearchBarComponent implements AfterViewInit, OnDestroy {
 
-  categories: string[] = productCategories;
-  sorting: string[] = productSorting;
+@Component({
+  selector: 'app-orders-search-bar',
+  templateUrl: './orders-search-bar.component.html',
+  styleUrls: ['./orders-search-bar.component.css'],
+  providers: [
+    { provide: DateAdapter, useClass: PickDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: PICK_FORMATS }
+  ]
+})
+export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
+
+  statuses: string[] = orderStatus;
+  sorting: string[] = orderSorting;
 
   searchForm = this.fb.group({
     name: [''],
-    category: [''],
+    status: [''],
     priceGroup: this.fb.group({
       price1: [0],
-      price2: [10000],
+      price2: [100000],
     }),
-    order: ['name'],
+    dateGroup: this.fb.group({
+      startDate: new FormControl<Date | string>({ value: '', disabled: true }),
+      endDate: new FormControl<Date | string>({ value: '', disabled: true }),
+    }),
+    order: ['-createdAt'],
   });
 
   query!: { [key: string]: any };
@@ -58,13 +78,16 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       const search = query['search'] ? JSON.parse(query['search']) : {};
 
       const name = search['name']?.['$regex'] ?? '';
-      const category = search['category'] ?? '';
+      const status = search['status'] ?? '';
       const price1 = search['price']?.['$gte'] ?? '0';
-      const price2 = search['price']?.['$lte'] ?? '10000';
-      const order = query['sort'] ?? 'name';
+      const price2 = search['price']?.['$lte'] ?? '100000';
+      const startDate = search['createdAt']?.['$gte'] ? new Date(+search['createdAt']?.['$gte']) : '';
+      const endDate = search['createdAt']?.['$lte'] ? new Date(+search['createdAt']?.['$lte']) : '';
+      const order = query['sort'] ?? '-createdAt';
       const priceGroup = { price1, price2 };
-
-      this.searchForm.setValue({ name, category, priceGroup, order });
+      const dateGroup = { startDate, endDate };
+      
+      this.searchForm.patchValue({ name, status, priceGroup, order, dateGroup });
 
     });
   }
@@ -80,12 +103,12 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       )
       .subscribe();
 
-    const catSub = this.searchForm.get('category')?.valueChanges
+    const statSub = this.searchForm.get('status')?.valueChanges
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
         tap((value) => {
-          this.addToSearch(value ? value : '', 'category');
+          this.addToSearch(value ? value : '', 'status');
         })
       )
       .subscribe();
@@ -95,7 +118,22 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       distinctUntilChanged(),
       tap((value) => {
         const valArr = Object.values(value).map(v => v ? v.toString() : '0');
-        this.addToSearch(valArr.some(v => !['0', '10000'].includes(v)) ? valArr.join(', ') : '', 'price');
+        this.addToSearch(valArr.some(v => !['0', '100000'].includes(v)) ? valArr.join(', ') : '', 'amount');
+      })
+    ).subscribe()
+
+    const dateSub = this.searchForm.get('dateGroup')!.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      tap((value) => {
+        console.log(value);
+
+        const valArr = Object.entries(value).map(v => {
+          const date = v[1] ? Date.parse(v[1] as string) : null
+          return date;
+        });
+        this.addToSearch(valArr.every(v => v === null) ? '' : valArr.join(', '), 'createdAt');
+
       })
     ).subscribe()
 
@@ -104,12 +142,12 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
         debounceTime(500),
         distinctUntilChanged(),
         tap((value) => {
-          this.addToOrder(value ? value : '');
+          this.addToOrder(value ? value : '-createdAt');
         })
       )
       .subscribe();
 
-    this.subs.push(nameSub!, catSub!, priceSub!, orderSub!);
+    this.subs.push(nameSub!, statSub!, priceSub!, orderSub!, dateSub!);
   }
 
   ngOnDestroy() {
@@ -129,8 +167,6 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       {
         relativeTo: this.route,
         queryParams: queryParams,
-        // queryParamsHandling: 'merge', 
-        // remove to replace all query params by provided
       });
   }
 
@@ -166,5 +202,9 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       this.query = newQuery;
     }
     this.changeQueryParams(this.query);
+  }
+
+  clearDate() {
+    this.searchForm.patchValue({ dateGroup: { startDate: '', endDate: '' } });
   }
 }

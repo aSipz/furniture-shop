@@ -10,7 +10,7 @@ const jwt = {
 };
 
 const secretKey = config.SECRET;
-const options = { expiresIn: '1d' };
+const options = { expiresIn: '3d' };
 
 exports.encodeToken = (payload) => {
     return jwt.sign(payload, secretKey, options);

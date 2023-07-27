@@ -21,7 +21,10 @@ export class AuthenticateComponent {
     this.loaderService.showLoader();
 
     this.userService.getProfile().pipe(
-      tap(u => this.cartService.getCart())
+      tap(u => {
+        !u && cartService.clearCart();
+        this.cartService.getCart();
+      })
     )
       .subscribe({
         next: () => {

@@ -1,0 +1,58 @@
+<div class="p-3 p-lg-5 border bg-white">
+    <form [formGroup]="searchForm">
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label for="name" class="text-black">Product name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="White chair"
+                    formControlName="name">
+            </div>
+
+            <div class="col-md-12" formGroupName="dateGroup" class="date-search">
+                <mat-form-field appearance="fill">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker1">
+                        <input matStartDate placeholder="Start date" formControlName="startDate">
+                        <input matEndDate placeholder="End date" formControlName="endDate">
+                    </mat-date-range-input>
+                    
+                    <!-- <mat-hint>DD/MM/YYYY - DD/MM/YYYY</mat-hint> -->
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker1 disabled="false"></mat-date-range-picker>
+                </mat-form-field>
+                <button class="clear-date" (click)="clearDate()">X</button>
+            </div>
+
+            <div class="col-md-12">
+                <label for="status" class="text-black">Status</label>
+
+                <select name="status" id="status" class="form-control" formControlName="status">
+                    <option value=''>All</option>
+                    <option *ngFor="let status of statuses" value={{status}}>{{status}}</option>
+                </select>
+
+            </div>
+
+            <div class="col-md-12">
+                <label class="text-black price">Amount
+                    <span>{{(searchForm.get('priceGroup')?.value || null) | rangeDisplay}}</span>
+                </label>
+
+                <div class="multi-range" formGroupName="priceGroup">
+                    <input type="range" min="0" max="100000" step="10" id="lower" formControlName="price1">
+                    <input type="range" min="0" max="100000" step="10" id="upper" formControlName="price2">
+                </div>
+
+            </div>
+
+            <div class="col-md-12">
+                <label for="order" class="text-black">Order By</label>
+
+                <select name="order" id="order" class="form-control" formControlName="order">
+                    <option *ngFor="let field of sorting" value={{field}}>{{field | displayArrow}}
+                    </option>
+                </select>
+
+            </div>
+        </div>
+    </form>
+</div>

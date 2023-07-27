@@ -3,6 +3,11 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 import { PrimaryBtnComponent } from './primary-btn/primary-btn.component';
 import { EmailDirective, NameDirective, SameValueDirective, UsernameDirective } from './validators';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -20,6 +25,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FullNamePipe } from './pipes/full-name.pipe';
 import { CalcPricePipe } from './pipes/calc-price.pipe';
 import { ProductSummaryPipe } from './pipes/product-summary.pipe';
+import { OrdersSearchBarComponent } from './orders-search-bar/orders-search-bar.component';
 
 
 
@@ -44,12 +50,17 @@ import { ProductSummaryPipe } from './pipes/product-summary.pipe';
     FullNamePipe,
     CalcPricePipe,
     ProductSummaryPipe,
+    OrdersSearchBarComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatFormFieldModule
   ],
   exports: [
     PrimaryBtnComponent,
@@ -70,7 +81,8 @@ import { ProductSummaryPipe } from './pipes/product-summary.pipe';
     PaginationComponent,
     FullNamePipe,
     CalcPricePipe,
-    ProductSummaryPipe
+    ProductSummaryPipe,
+    OrdersSearchBarComponent
   ]
 })
 export class SharedModule { }

@@ -1,20 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+
+import { Subscription } from 'rxjs';
 
 import { OrdersService } from '../services/orders.service';
 import { UserService } from 'src/app/user/user.service';
 import { IOrder } from 'src/app/shared/interfaces';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { ordersPageSize } from 'src/app/shared/constants';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-my-orders',
   templateUrl: './my-orders.component.html',
   styleUrls: ['./my-orders.component.css']
 })
-export class MyOrdersComponent {
+export class MyOrdersComponent implements OnDestroy, OnInit {
 
   orders: IOrder[] = [];
+  pages!: number;
+  pageSize = ordersPageSize;
+  private sub!: Subscription;
+  errorFetchingData = false;
 
   get user() {
     return this.userService.user;
@@ -24,18 +32,60 @@ export class MyOrdersComponent {
     private ordersService: OrdersService,
     private userService: UserService,
     public modal: MatDialog,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private route: ActivatedRoute,
   ) {
-    this.ordersService.getOrdersByUserId(this.user!._id).subscribe({
-      next: (value) => {
-        this.orders = value.result;
-        console.log(value);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+    // this.ordersService.getOrdersByUserId(this.user!._id).subscribe({
+    //   next: (value) => {
+    //     this.orders = value.result;
+    //     this.pages = Math.ceil(value.count / this.pageSize);
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   }
+    // })
 
+  }
+
+  ngOnInit() {
+    this.sub = this.route.queryParams.subscribe(query => {
+      const changedQuery = JSON.parse(JSON.stringify(query));
+
+      if (!query['skip']) {
+        changedQuery['skip'] = 0;
+        changedQuery['limit'] = this.pageSize;
+      }
+
+
+      if (!query['search']) {
+        changedQuery['search'] = { ownerId: this.user!._id };
+      } else {
+        const search = JSON.parse(changedQuery['search']);
+        search.ownerId = this.user!._id;
+        changedQuery['search'] = search;
+      }
+
+      changedQuery['include'] = 'products.productId';
+
+      if (!query['sort']) {
+        changedQuery['sort'] = '-createdAt';
+      }
+
+      this.ordersService.getOrders(changedQuery).subscribe({
+        next: value => {
+          this.orders = value.result;
+          this.pages = Math.ceil(value.count / this.pageSize);
+        },
+        error: err => {
+          this.errorFetchingData = true;
+          console.log(err);
+        }
+      });
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   openModal(orderId: string) {

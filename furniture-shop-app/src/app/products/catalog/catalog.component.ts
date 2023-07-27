@@ -16,6 +16,7 @@ import { ProductsService } from '../services/products.service';
 export class CatalogComponent {
   products: IProduct[] = [loadingProduct, loadingProduct, loadingProduct];
   pages!: number;
+  pageSize = pageSize;
   errorFetchingData = false;
   private sub!: Subscription;
 
@@ -35,7 +36,7 @@ export class CatalogComponent {
 
       if (!query['skip']) {
         changedQuery['skip'] = 0;
-        changedQuery['limit'] = pageSize;
+        changedQuery['limit'] = this.pageSize;
       }
 
       if (!this.isAdmin) {
@@ -55,7 +56,7 @@ export class CatalogComponent {
       this.productsService.getProducts(changedQuery).subscribe({
         next: value => {
           this.products = value.result;
-          this.pages = Math.ceil(value.count / pageSize);
+          this.pages = Math.ceil(value.count / this.pageSize);
         },
         error: err => {
           this.errorFetchingData = true;

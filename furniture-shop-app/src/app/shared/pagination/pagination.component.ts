@@ -4,7 +4,6 @@ import { ActivatedRoute, Router, Params } from '@angular/router';
 import { faAngleRight, faAnglesRight, faAngleLeft, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { filter, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { pageSize } from '../constants';
 
 @Component({
   selector: 'app-pagination',
@@ -18,11 +17,11 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
   anglesRight = faAnglesRight;
   anglesLeft = faAnglesLeft;
 
-  pageSize = pageSize;
   currentPage = 1;
   query!: { [key: string]: any };
 
   @Input() totalPages!: number;
+  @Input() pageSize!: number;
 
   private totalPages$$ = new BehaviorSubject<undefined | number>(undefined);
   private totalPages$ = this.totalPages$$.asObservable();
@@ -46,12 +45,12 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
       const skip = +val[0]['skip'];
       const limit = +val[0]['limit'];
 
-      if (limit !== pageSize || skip >= limit * this.totalPages || skip % limit !== 0) {
+      if (limit !== this.pageSize || skip >= limit * this.totalPages || skip % limit !== 0) {
 
         this.changePageUrl();
         this.currentPage = 1;
       } else {
-        this.currentPage = skip / pageSize + 1;
+        this.currentPage = skip / this.pageSize + 1;
 
       }
 
@@ -84,8 +83,8 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
 
     this.query = {
       ...this.query,
-      limit: page ? pageSize : null,
-      skip: page ? (page - 1) * pageSize : null
+      limit: page ? this.pageSize : null,
+      skip: page ? (page - 1) * this.pageSize : null
     }
 
     this.changeQueryParams(this.query);

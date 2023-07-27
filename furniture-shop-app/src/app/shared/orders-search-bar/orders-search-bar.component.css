@@ -203,9 +203,27 @@ input[type="range"]::-webkit-slider-thumb::before {
 
 label.price {
     display: block;
-    width: 135px;
+    width: 180px;
 }
 
 select {
     cursor: pointer;
+}
+
+.date-search {
+    display: flex;
+    align-items: flex-end;
+    position: relative;
+}
+
+.clear-date {
+ position: absolute;
+ right: 0;
+ border: none;
+ background-color: transparent;
+ cursor: pointer;
+}
+
+.clear-date:hover {
+    background-color: #6c757d;
 }
