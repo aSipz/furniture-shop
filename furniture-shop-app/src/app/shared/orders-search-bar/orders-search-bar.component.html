@@ -1,9 +1,9 @@
 <div class="p-3 p-lg-5 border bg-white">
     <form [formGroup]="searchForm">
         <div class="form-group row">
-            <div class="col-md-12" *ngIf="adminPanel">
-                <label for="email" class="text-black">Customer email</label>
-                <input type="text" class="form-control" id="email" name="email" placeholder="White chair"
+            <div class="col-md-12 email-search" *ngIf="adminPanel">
+                <label for="email" class="text-black">Client email</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="dan@gmail.com"
                     formControlName="email">
             </div>
 

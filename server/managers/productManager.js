@@ -33,16 +33,6 @@ exports.getAll = (search, limit, skip, sort, include) => {
 
     if (search) {
         searchCriteria = JSON.parse(search);
-        // const searchArray = [];
-
-        // const searchEntries = search.slice(1, -1).split(',').map(e => e);
-
-        // searchEntries.forEach(s => {
-        //     const current = s.split(':');
-        //     searchArray.push({ [current[0].slice(1, -1)]: { $exists: true, $eq: current[1] } })
-        // });
-
-        // searchCriteria['$and'] = searchArray;
     }
 
     const sortObj = sort

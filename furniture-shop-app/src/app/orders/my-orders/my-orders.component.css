@@ -129,6 +129,6 @@ td .h5 {
     max-width: 100px;
 }
 
-tr.canceled {
+tr.canceled p {
     color: var(--bs-danger);
 }

@@ -1,1 +1,77 @@
-<p>customers-orders works!</p>
+<div class="orders-container">
+    <ng-container *ngIf="errorFetchingData">
+        <div class="error">
+            <h2>Error in loading resources</h2>
+            <img src="assets/images/warning.svg" alt="warning" class="imf-fluid">
+        </div>
+    </ng-container>
+    <app-orders-search-bar [adminPanel]="true" />
+    <table *ngIf="!errorFetchingData" class="table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Notes</th>
+                <th>Products</th>
+                <th>Total amount</th>
+                <th>Order received</th>
+                <th>
+                    <p>Status/</p>
+                    <p>Change status</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of orders"
+                [ngClass]="{'canceled': order.status === 'Canceled','completed': order.status === 'Completed' }">
+                <td class="order-id">
+                    <span>{{order._id}}</span>
+                </td>
+                <td>
+                    <p>{{order.email}}</p>
+                </td>
+                <td>
+                    <p>{{order | fullName}}</p>
+                </td>
+                <td>
+                    <p>{{order.phone}}</p>
+                </td>
+                <td>
+                    <p>{{order.address}}</p>
+                </td>
+                <td>
+                    <p>{{order.notes}}</p>
+                </td>
+                <td class="products">
+                    <p *ngFor="let product of order.products">
+                        <a *ngIf="product.productId" routerLink="/products/{{$any(product.productId)._id}}/details">
+                            <img class="preview" src="{{$any(product.productId).images[0].url}}" alt="preview">
+                            {{product | productSummary}}
+                        </a>
+                        <ng-container *ngIf="!product.productId">
+                            {{product | productSummary}}
+                        </ng-container>
+                    </p>
+                </td>
+                <td>
+                    <p>${{order.amount.toFixed(2)}}</p>
+                </td>
+                <td>
+                    <p>{{order.createdAt | date : 'd MMMM y, HH:mm'}}</p>
+                </td>
+                <td>
+                    <p class="change-status" title="Change status" (click)="openModal(order)">{{order.status}}</p>
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+    <app-pagination [totalPages]="pages" [pageSize]="pageSize"></app-pagination>
+
+
+    <h3 class="empty-cart" *ngIf="orders.length === 0">No orders!</h3>
+</div>

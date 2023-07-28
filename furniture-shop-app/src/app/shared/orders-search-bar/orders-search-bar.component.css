@@ -222,9 +222,6 @@ mat-form-field {
 }
 
 .clear-date {
-    /* position: absolute;
- right: 0;
- top: 0; */
     border: none;
     background-color: transparent;
     cursor: pointer;
@@ -233,10 +230,13 @@ mat-form-field {
     height: 28px;
     position: relative;
     top: 5px;
-    /* z-index: 100; */
 }
 
 .clear-date:hover {
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.053);
+}
+
+.row .email-search{
+    max-width: 180px;
 }

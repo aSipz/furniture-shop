@@ -30,6 +30,7 @@ export class ProductCardComponent {
   constructor(private cartService: CartService) { }
 
   addToCart() {
-    this.cartService.addToCart({ _id: this.product._id, count: 1 });
+    const imageUrl = this.product!.images![0].url;
+    this.cartService.addToCart({ _id: this.product._id, count: 1, imageUrl });
   }
 }

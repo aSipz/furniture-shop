@@ -1,6 +1,8 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 import { IsActiveMatchOptions } from '@angular/router';
+import { filter, tap } from 'rxjs';
+import { CartService } from 'src/app/cart/services/cart.service';
 import { routeMatchOptions } from 'src/app/shared/constants';
 
 import { UserService } from 'src/app/user/user.service';
@@ -45,13 +47,30 @@ import { UserService } from 'src/app/user/user.service';
 })
 export class HeaderComponent {
 
-  timer: ReturnType<typeof setTimeout> | null = null;
+  timer: { [key: string]: ReturnType<typeof setTimeout> | null } = {
+    profile: null,
+    cart: null
+  };
 
-  isOpen = false;
+  isOpen: { [key: string]: boolean } = {
+    profile: false,
+    cart: false
+  };
 
   readonly routeMatchOptions: IsActiveMatchOptions = routeMatchOptions;
 
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private cartService: CartService
+  ) {
+    this.cartService.cart$.pipe(
+      filter(c => c !== null && c.length !== 0),
+      tap(c => {
+        this.show('cart');
+        this.hideWithDelay('cart', 2000);
+      })
+    ).subscribe()
+  }
 
   get isLoggedIn() {
     return this.userService.isLoggedIn;
@@ -61,29 +80,33 @@ export class HeaderComponent {
     return this.userService.isAdmin;
   }
 
-  show() {
-    this.stayOpened();
+  show(submenu: string) {
+    this.stayOpened(submenu);
 
-    if (!this.isOpen) {
-      this.isOpen = true;
+    if (!this.isOpen[submenu]) {
+      this.isOpen[submenu] = true;
     }
 
+    Object.keys(this.isOpen)
+      .filter(k => k !== submenu)
+      .forEach(k => this.hide(k));
+
   }
 
-  hideWithDelay() {
-    this.timer = setTimeout(() => {
-      this.isOpen = false;
-    }, 500);
+  hideWithDelay(submenu: string, delay?: number) {
+    this.timer[submenu] = setTimeout(() => {
+      this.isOpen[submenu] = false;
+    }, delay ? delay : 500);
   }
 
-  hide() {
-    this.isOpen = false;
+  hide(submenu: string) {
+    this.isOpen[submenu] = false;
   }
 
-  stayOpened() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
+  stayOpened(submenu: string) {
+    if (this.timer[submenu]) {
+      clearInterval(this.timer[submenu] as (string | number | NodeJS.Timeout | undefined));
+      this.timer[submenu] = null;
     }
   }
 

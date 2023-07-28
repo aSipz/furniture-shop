@@ -303,10 +303,19 @@ button.nav-link img {
     margin-right: 20px;
 }
 
-.subnav-content {
+.subnav-content:not(.cart) {
     transform: translateY(100%);
     position: absolute;
     bottom: 0;
     background-color: #3b5d50;
     z-index: 20;
+}
+
+.subnav-content.cart {
+    transform: translate(calc(-100% + 40px), 100%);
+    position: absolute;
+    bottom: 0;
+    z-index: 20;
+    background-color: #fff;
+    /* left: 0; */
 }

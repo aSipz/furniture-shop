@@ -1,0 +1,20 @@
+<ul class="dropdown-menu cart-list s-cate">
+    <p class="no-products" *ngIf="!products || products.length === 0">No products in cart!</p>
+    <li *ngFor="let product of products; let i = index" class="single-cart-list"
+        [ngClass]="{'new': differenceIndex && differenceIndex.includes(i)}">
+        <a routerLink="/products/{{product._id}}/details" class="photo"><img *ngIf="product.images"
+                src="{{product.images | getImageUrl}}" alt="Image" class="cart-thumb" /></a>
+        <div class="cart-list-txt">
+            <h6><a routerLink="/products/{{product._id}}/details">{{product.name}}</a></h6>
+            <p>{{product.cartCount}} x <span class="price">${{product.discountPrice!.toFixed(2)}}</span></p>
+        </div>
+        <div class="cart-close">
+            <span class="lnr lnr-cross" (click)="removeProduct(product._id)">&#9587;</span>
+        </div>
+    </li>
+
+    <li class="total">
+        <span>Total: ${{cartTotal.toFixed(2)}}</span>
+        <button class="btn-cart pull-right" (click)="goToCart()">View cart</button>
+    </li>
+</ul>

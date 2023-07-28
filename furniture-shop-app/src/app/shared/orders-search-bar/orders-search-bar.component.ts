@@ -131,9 +131,6 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
       debounceTime(500),
       distinctUntilChanged(),
       tap((value) => {
-        console.log(Object.values(this.searchForm.get('dateGroup')?.value!).some(v => v));
-
-
         const valArr = Object.entries(value).map(v => {
           const date = v[1] ? Date.parse(v[1] as string) : null
           return date;
@@ -198,7 +195,7 @@ export class OrdersSearchBarComponent implements AfterViewInit, OnDestroy {
   }
 
   private addToOrder(value: string) {
-    if (value && value !== 'email') {
+    if (value && value !== '-createdAt') {
       this.query = {
         ...this.query,
         sort: value

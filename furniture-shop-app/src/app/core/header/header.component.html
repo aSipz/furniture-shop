@@ -1,7 +1,7 @@
 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
     <div class="container">
-        <a class="navbar-brand" href="index.html">furni<span>.</span><span class="shop-name">shop</span></a>
+        <a class="navbar-brand" routerLink="/">furni<span>.</span><span class="shop-name">shop</span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
             aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,17 +39,24 @@
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <li class="nav-item">
 
-                    <button class="nav-link subnavbtn" (mouseenter)="show()" (mouseleave)="hideWithDelay()"><img
+                    <button class="nav-link subnavbtn" (mouseenter)="show('profile')" (mouseleave)="hideWithDelay('profile')"><img
                             src="assets/images/user.svg"></button>
-                    <div class="subnav-content" @openClose (mouseenter)="stayOpened()" *ngIf="isOpen"
-                        (mouseleave)="hide()">
+                    <div class="subnav-content" @openClose (mouseenter)="stayOpened('profile')" *ngIf="isOpen['profile']"
+                        (mouseleave)="hide('profile')">
 
-                        <app-profile-submenu></app-profile-submenu>
+                        <app-profile-submenu />
 
                     </div>
                 </li>
                 <li *ngIf="isLoggedIn">
-                    <a class="nav-link" routerLink="/cart"><img src="assets/images/cart.svg"></a>
+                    <a class="nav-link" routerLink="/cart" (mouseenter)="show('cart')" (mouseleave)="hideWithDelay('cart')"><img src="assets/images/cart.svg"></a>
+
+                    <div class="subnav-content cart" @openClose (mouseenter)="stayOpened('cart')" *ngIf="isOpen['cart']"
+                        (mouseleave)="hide('cart')">
+
+                        <app-cart-submenu />
+
+                    </div>
                 </li>
             </ul>
         </div>

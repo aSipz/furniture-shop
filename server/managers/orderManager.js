@@ -21,6 +21,7 @@ exports.getAll = (search, limit, skip, sort, include) => {
                 searchCriteria.createdAt['$lte'] = date.setDate(date.getDate() + 1);
             }
         }
+
     }
 
     const sortObj = sort

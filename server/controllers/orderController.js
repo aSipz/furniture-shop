@@ -25,12 +25,13 @@ const createOrder = async (req, res, next) => {
             .end();
     } catch (error) {
         await session.abortTransaction();
-        session.endSession();
+        console.log(error);
         if (error._message == 'Product validation failed') {
             error.statusCode = 409;
         }
         next(error);
     }
+    session.endSession();
 };
 
 const getAllOrders = async (req, res, next) => {
@@ -71,8 +72,10 @@ const editOrder = async (req, res, next) => {
         return res.status(401).end();
     }
 
+    const session = await conn.startSession();
     try {
-        const order = await orderManager.getById(orderId);
+        session.startTransaction();
+        const order = await orderManager.getById(orderId, { session });
         if (order.ownerId.toString() !== userId && role != 'admin') {
             return res.status(401).end();
         }
@@ -81,12 +84,26 @@ const editOrder = async (req, res, next) => {
             return res.status(401).end();
         }
 
-        await orderManager.edit(orderId, { status });
+        await orderManager.edit(orderId, { status }, { session });
+
+        if (status === 'Canceled') {
+            const dbProducts = await Promise.all(order.products.map(p => productManager.getProductById(p.productId, null, { session })));
+            await Promise.all(dbProducts.map(p => {
+                if (p) {
+                    p.quantity += order.products.find(e => e.productId == p._id.toString()).count;
+                    return p.save({ session });
+                }
+            }));
+        }
+
+        await session.commitTransaction();
         res.status(204).end();
     } catch (error) {
+        await session.abortTransaction();
         next(error);
         console.log(error);
     }
+    session.endSession();
 
 }
 

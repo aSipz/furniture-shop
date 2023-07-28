@@ -34,28 +34,18 @@ export class MyOrdersComponent implements OnDestroy, OnInit {
     public modal: MatDialog,
     private loaderService: LoaderService,
     private route: ActivatedRoute,
-  ) {
-    // this.ordersService.getOrdersByUserId(this.user!._id).subscribe({
-    //   next: (value) => {
-    //     this.orders = value.result;
-    //     this.pages = Math.ceil(value.count / this.pageSize);
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   }
-    // })
-
-  }
+  ) { }
 
   ngOnInit() {
     this.sub = this.route.queryParams.subscribe(query => {
       const changedQuery = JSON.parse(JSON.stringify(query));
 
+      this.loaderService.showLoader();
+
       if (!query['skip']) {
         changedQuery['skip'] = 0;
         changedQuery['limit'] = this.pageSize;
       }
-
 
       if (!query['search']) {
         changedQuery['search'] = { ownerId: this.user!._id };
@@ -75,10 +65,12 @@ export class MyOrdersComponent implements OnDestroy, OnInit {
         next: value => {
           this.orders = value.result;
           this.pages = Math.ceil(value.count / this.pageSize);
+          this.loaderService.hideLoader();
         },
         error: err => {
           this.errorFetchingData = true;
           console.log(err);
+          this.loaderService.hideLoader();
         }
       });
     });
