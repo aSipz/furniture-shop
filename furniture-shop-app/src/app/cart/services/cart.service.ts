@@ -38,7 +38,7 @@ export class CartService implements OnDestroy {
   addToCart(product: ICartProduct) {
     let newCart: ICartProduct[] = [];
     if (this.cart) {
-      newCart = [...this.cart];
+      newCart = JSON.parse(JSON.stringify(this.cart));
       const cartProduct = newCart.find(p => p._id === product._id);
       if (cartProduct) {
         cartProduct.count += product.count;
@@ -54,7 +54,7 @@ export class CartService implements OnDestroy {
   }
 
   updateCart(product: ICartProduct) {
-    const newCart = (this.cart as ICartProduct[])
+    const newCart = (JSON.parse(JSON.stringify(this.cart as ICartProduct[])) as ICartProduct[])
       .map(p => {
         if (p._id === product._id) {
           p.count = product.count;

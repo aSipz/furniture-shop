@@ -1,5 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AnimationType, fadeIn, fadeOut, flipIn, flipOut, jackIn, jackOut, scaleIn, scaleOut} from './image-slider.animations';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+
+import { AnimationType, fadeIn, fadeOut, flipIn, flipOut, jackIn, jackOut, scaleIn, scaleOut } from './image-slider.animations';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { IImageEntry } from 'src/app/shared/interfaces';
 
@@ -43,7 +44,7 @@ import { IImageEntry } from 'src/app/shared/interfaces';
     ])
   ]
 })
-export class ImageSliderComponent implements OnDestroy, OnInit {
+export class ImageSliderComponent implements OnDestroy, OnInit, OnChanges {
   @Input() slides: IImageEntry[] = [];
   @Input() changeInterval: number = 3000;
   @Input() animationType: string = AnimationType.Scale;
@@ -53,6 +54,16 @@ export class ImageSliderComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.resetTimer();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    const current: SimpleChange = changes['slides'];
+
+    if (current?.currentValue) {
+      this.slides = current.currentValue;
+      this.currentIndex = 0;
+    }
+
   }
 
   ngOnDestroy() {

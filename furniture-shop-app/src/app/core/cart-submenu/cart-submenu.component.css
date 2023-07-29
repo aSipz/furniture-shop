@@ -200,6 +200,10 @@ ul.cart-list>li.total {
     color: #fff;
 }
 
+.single-cart-list.new h6 a {
+    color: #fff;
+}
+
 .single-cart-list:hover h6 a {
     color: #fff;
 }

@@ -14,7 +14,6 @@ export class ProductCardComponent {
 
   @Input() set product(value: IProduct) {
     this._product = value;
-    this.availableQty = value.quantity - (this.cartProduct?.count ?? 0);
   };
 
   get product(): IProduct {
@@ -25,12 +24,14 @@ export class ProductCardComponent {
     return this.cartService.cart?.find(p => p._id === this.product._id);
   }
 
-  availableQty: number = 0;
+  get availableQty() {
+    return (this.product?.quantity ?? 0) - (this.cartProduct?.count ?? 0);
+  }
 
   constructor(private cartService: CartService) { }
 
   addToCart() {
     const imageUrl = this.product!.images![0].url;
-    this.cartService.addToCart({ _id: this.product._id, count: 1, imageUrl });
+    this.cartService.addToCart({ _id: this.product._id, count: 1, imageUrl, name: this.product!.name, price: this.product?.discountPrice });
   }
 }

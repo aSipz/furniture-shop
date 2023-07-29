@@ -1,65 +1,46 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { pairwise, tap, startWith } from 'rxjs';
-
 import { CartService } from 'src/app/cart/services/cart.service';
-import { ProductsService } from 'src/app/products/services/products.service';
-import { IProduct, ICartProduct } from 'src/app/shared/interfaces';
+import { ICartProduct } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'app-cart-submenu',
   templateUrl: './cart-submenu.component.html',
   styleUrls: ['./cart-submenu.component.css']
 })
-export class CartSubmenuComponent implements OnDestroy {
+export class CartSubmenuComponent implements OnChanges {
 
-  products: (IProduct & { cartCount: number })[] | null = null;
-  cart: ICartProduct[] | null = null;
-  cartTotal: number = 0;
-  differenceIndex: number[] | null = null;
-  timer: ReturnType<typeof setTimeout> | null = null;
+  @Input() cart!: [ICartProduct[] | null, ICartProduct[] | null];
+  @Input() newEntry!: boolean;
+
+  differenceIndex: number[] = [];
+
+  get cartTotal(): number {
+    if (this.cart[1] && this.cart[1].length > 0) {
+      return this.cart[1].reduce((acc, curr) => acc += (curr.price! * curr.count), 0);
+    }
+
+    return 0;
+  }
 
   constructor(
     private cartService: CartService,
-    private productService: ProductsService,
     private router: Router,
-  ) {
-    this.cartService.cart$.pipe(
-      // startWith(null),
-      // pairwise(),
-      tap(cart => {
+  ) { }
 
-        // this.compareCarts(oldCart, cart);
+  ngOnChanges(changes: SimpleChanges) {
+    const currentCart: SimpleChange = changes['cart'];
+    const newEntry: SimpleChange = changes['newEntry'];
 
-        this.cart = cart;
-        this.productService.getProducts({ search: { _id: { $in: cart ? cart?.map(p => p._id) : [] } } }).subscribe({
-          next: (value) => {
-            const cartProducts = value.result
-              .map(p => ({ ...p, cartCount: cart?.find(e => e._id === p._id)?.count ?? 0 }))
-              .map(p => {
-                if (p.cartCount > p.quantity) {
-                  p.cartCount = p.quantity;
-                }
-                return p;
-              });
-            this.products = cartProducts;
-            this.cartTotal = cartProducts.reduce((acc, curr) => acc += (curr.discountPrice! * curr.cartCount), 0);
-          },
-          error: (err) => {
-            console.log(err);
-          }
-        });
-      })
-    ).subscribe()
-  }
-
-  ngOnDestroy(): void {
-    if (this.timer) {
-      clearTimeout(this.timer);
+    if (currentCart?.currentValue) {
+      this.cart = currentCart.currentValue;
+      this.compareCarts(this.cart[0], this.cart[1]);
     }
 
-    this.differenceIndex = null;
+    if (newEntry?.currentValue === false) {
+      this.differenceIndex = [];
+    }
 
   }
 
@@ -71,28 +52,24 @@ export class CartSubmenuComponent implements OnDestroy {
     this.router.navigate(['/cart']);
   }
 
-  compareCarts(oldCart: ICartProduct[] | null, newCart: ICartProduct[] | null) {
+  compareCarts(oldCart: ICartProduct[] | undefined | null, newCart: ICartProduct[] | undefined | null) {
+
     if (!oldCart && newCart) {
       this.differenceIndex = newCart?.map((e, i) => i);
-      this.timer = setTimeout(() => {
-        this.differenceIndex = null;
-      }, 2000);
       return;
     }
 
+    this.differenceIndex = [];
+
     if (newCart) {
       newCart.forEach((p, i) => {
-
         if (!oldCart?.some(e => e._id === p._id)) {
-          this.differenceIndex?.push(i);
+          this.differenceIndex.push(i);
         } else {
-          oldCart.find(e => e._id === p._id)?.count !== p.count && this.differenceIndex?.push(i);
+          oldCart.find(e => e._id === p._id)?.count !== p.count && this.differenceIndex.push(i);
         }
       });
     }
-    this.timer = setTimeout(() => {
-      this.differenceIndex = null;
-    }, 2000);
     return;
   }
 }

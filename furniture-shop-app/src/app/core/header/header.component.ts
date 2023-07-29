@@ -1,9 +1,11 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { trigger, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
-import { IsActiveMatchOptions } from '@angular/router';
-import { filter, tap } from 'rxjs';
+import { IsActiveMatchOptions, NavigationEnd, Router } from '@angular/router';
+import { pairwise, tap } from 'rxjs';
+
 import { CartService } from 'src/app/cart/services/cart.service';
 import { routeMatchOptions } from 'src/app/shared/constants';
+import { ICartProduct } from 'src/app/shared/interfaces';
 
 import { UserService } from 'src/app/user/user.service';
 
@@ -47,9 +49,10 @@ import { UserService } from 'src/app/user/user.service';
 })
 export class HeaderComponent {
 
-  timer: { [key: string]: ReturnType<typeof setTimeout> | null } = {
+  private timer: { [key: string]: ReturnType<typeof setTimeout> | null } = {
     profile: null,
-    cart: null
+    cart: null,
+    newEntry: null
   };
 
   isOpen: { [key: string]: boolean } = {
@@ -57,19 +60,47 @@ export class HeaderComponent {
     cart: false
   };
 
+  cart: [ICartProduct[] | null, ICartProduct[] | null] = [null, null];
+  newEntry = false;
+
+  currentRoute: string = '';
+
   readonly routeMatchOptions: IsActiveMatchOptions = routeMatchOptions;
 
   constructor(
     private userService: UserService,
-    private cartService: CartService
+    private cartService: CartService,
+    private router: Router
   ) {
+    this.router.events.subscribe((event) => {
+
+      if (event instanceof NavigationEnd) {
+        this.currentRoute = event.url;
+      }
+    });
+
     this.cartService.cart$.pipe(
-      filter(c => c !== null && c.length !== 0),
-      tap(c => {
-        this.show('cart');
-        this.hideWithDelay('cart', 2000);
+      pairwise(),
+      tap(value => {
+
+        this.cart = value;
+
+        if (value[1] !== null && value[1].length !== 0 && !this.currentRoute.startsWith('/cart')) {
+          this.show('cart');
+          this.hideWithDelay('cart', 2000);
+          this.newEntry = true;
+
+          if (this.timer['newEntry']) {
+            clearInterval(this.timer['newEntry']);
+          }
+          this.timer['newEntry'] = setTimeout(() => {
+            this.newEntry = false;
+          }, 2000);
+        }
+
       })
-    ).subscribe()
+    ).subscribe();
+
   }
 
   get isLoggedIn() {

@@ -221,6 +221,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   cartHandler() {
 
     if (this.cartForm.invalid) {
+
+      if (this.cartForm.value.quantity > this.availableQty) {
+        this.cartForm.setValue({ quantity: this.availableQty });
+      }
       return;
     }
 
@@ -232,7 +236,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
     const imageUrl = this.product!.images![0].url;
 
-    count > 0 && this.cartService.addToCart({ _id: this.product!._id, count, imageUrl });
+    count > 0 && this.cartService.addToCart({ _id: this.product!._id, count, imageUrl, name: this.product!.name, price: this.product?.discountPrice });
     this.cartForm.resetForm({ quantity: 1 });
   }
 }

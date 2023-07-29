@@ -39,22 +39,23 @@
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <li class="nav-item">
 
-                    <button class="nav-link subnavbtn" (mouseenter)="show('profile')" (mouseleave)="hideWithDelay('profile')"><img
-                            src="assets/images/user.svg"></button>
-                    <div class="subnav-content" @openClose (mouseenter)="stayOpened('profile')" *ngIf="isOpen['profile']"
-                        (mouseleave)="hide('profile')">
+                    <button class="nav-link subnavbtn" (mouseenter)="show('profile')"
+                        (mouseleave)="hideWithDelay('profile')"><img src="assets/images/user.svg"></button>
+                    <div class="subnav-content" @openClose (mouseenter)="stayOpened('profile')"
+                        *ngIf="isOpen['profile']" (mouseleave)="hide('profile')">
 
                         <app-profile-submenu />
 
                     </div>
                 </li>
                 <li *ngIf="isLoggedIn">
-                    <a class="nav-link" routerLink="/cart" (mouseenter)="show('cart')" (mouseleave)="hideWithDelay('cart')"><img src="assets/images/cart.svg"></a>
+                    <a class="nav-link" routerLink="/cart" (mouseenter)="show('cart')"
+                        (mouseleave)="hideWithDelay('cart')"><img src="assets/images/cart.svg"></a>
 
                     <div class="subnav-content cart" @openClose (mouseenter)="stayOpened('cart')" *ngIf="isOpen['cart']"
                         (mouseleave)="hide('cart')">
 
-                        <app-cart-submenu />
+                        <app-cart-submenu [cart]="cart" [newEntry]="newEntry" />
 
                     </div>
                 </li>
