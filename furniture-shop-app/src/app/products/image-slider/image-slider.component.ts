@@ -50,6 +50,7 @@ export class ImageSliderComponent implements OnDestroy, OnInit, OnChanges {
   @Input() animationType: string = AnimationType.Scale;
 
   currentIndex: number = 0;
+  imageLoading: boolean[] = [];
   timeoutId?: ReturnType<typeof setTimeout>;
 
   ngOnInit(): void {
@@ -61,6 +62,7 @@ export class ImageSliderComponent implements OnDestroy, OnInit, OnChanges {
 
     if (current?.currentValue) {
       this.slides = current.currentValue;
+      this.imageLoading = this.slides.map(e => true);
       this.currentIndex = 0;
     }
 
@@ -108,6 +110,12 @@ export class ImageSliderComponent implements OnDestroy, OnInit, OnChanges {
   goToSlide(slideIndex: number): void {
     this.resetTimer();
     this.currentIndex = slideIndex;
+  }
+
+  onImageLoad(index: number) {
+    console.log('load');
+    
+    this.imageLoading[index] = false;
   }
 
 }

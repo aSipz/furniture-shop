@@ -50,7 +50,7 @@ import { OrdersSearchBarComponent } from './orders-search-bar/orders-search-bar.
     FullNamePipe,
     CalcPricePipe,
     ProductSummaryPipe,
-    OrdersSearchBarComponent
+    OrdersSearchBarComponent,
   ],
   imports: [
     CommonModule,
@@ -82,7 +82,7 @@ import { OrdersSearchBarComponent } from './orders-search-bar/orders-search-bar.
     FullNamePipe,
     CalcPricePipe,
     ProductSummaryPipe,
-    OrdersSearchBarComponent
+    OrdersSearchBarComponent,
   ]
 })
 export class SharedModule { }

@@ -1,7 +1,11 @@
 <div class="carousel">
     <ng-container *ngFor="let slide of slides; let i = index">
-        <img *ngIf="i === currentIndex" src="{{slide.url}}" class="slide" [@slideAnimation]="animationType" loading="eager"
-            (mouseenter)="onEnter()" (mouseleave)="onLeave()" />
+        <div *ngIf="i === currentIndex" [appLoading]="imageLoading[i]">
+            <!-- <div *ngIf="imageLoading[i]"></div> -->
+                <img src="{{slide.url}}" class="slide" [@slideAnimation]="animationType" (mouseenter)="onEnter()"
+                    (mouseleave)="onLeave()" />
+
+        </div>
     </ng-container>
 
     <ng-container *ngIf="slides && slides.length > 1">
