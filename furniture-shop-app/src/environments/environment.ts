@@ -1,6 +1,7 @@
 export const environment = {
     production: true,
-    apiURL: 'http://localhost:3000',
+    apiURL: ' https://angular-furniture-shop-app.onrender.com',
+    // apiURL: 'http://localhost:3000',
     firebase: {
         apiKey: "AIzaSyCKWVsXHeU2duBE1TbdAHmP8cdqZaY_kYU",
         authDomain: "furniture-shop-df231.firebaseapp.com",
