@@ -113,8 +113,6 @@ export class ImageSliderComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   onImageLoad(index: number) {
-    console.log('load');
-    
     this.imageLoading[index] = false;
   }
 

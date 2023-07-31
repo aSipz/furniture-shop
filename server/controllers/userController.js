@@ -9,7 +9,6 @@ const { privateGuard, guestGuard } = require('../middlewares/authMiddleware');
 const register = async (req, res, next) => {
     const { username, email, password, firstName, lastName } = normalizeObjectValues(req.body);
 
-
     try {
         const sameUserExists = await userManager.checkIfExist(email, username);
 

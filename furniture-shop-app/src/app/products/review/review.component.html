@@ -1,5 +1,5 @@
 <li class="review" *ngIf="!isShown">
-    <div class="inner" [appLoading]="!review.text || waitingForDelete">
+    <div class="outer" [appLoading]="!review.text || waitingForDelete">
 
         <div class="inner" *ngIf="review.text && !waitingForDelete">
             <span class="badge"></span>
