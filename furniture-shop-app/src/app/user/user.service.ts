@@ -52,7 +52,8 @@ export class UserService implements OnDestroy {
   }
 
   logout() {
-    this.cookieService.delete('auth');
+    // this.cookieService.delete('auth');
+    this.cookieService.set('auth', 'logout', Date.now(), undefined, undefined, true, 'None');
     return this.http.post<void>('/api/users/logout', {})
       .pipe(tap(() => this.user$$.next(null)));
   }
