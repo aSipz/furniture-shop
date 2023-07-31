@@ -20,7 +20,7 @@ const register = async (req, res, next) => {
 
         const { token, user } = await userManager.register(email, username, firstName, lastName, password);
 
-        res.cookie('auth', token, { httpOnly: true, sameSite: 'none', secure: true });
+        res.cookie('auth', token, { httpOnly: true, sameSite: 'none' });
 
         res.status(200)
             .send(user);
@@ -39,7 +39,7 @@ const login = async (req, res, next) => {
 
         const { token, user } = await userManager.login(email, password);
 
-        res.cookie('auth', token, { httpOnly: true, sameSite: 'none', secure: true });
+        res.cookie('auth', token, { httpOnly: true, sameSite: 'none'});
 
         res.status(200)
             .send(user);
