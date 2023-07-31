@@ -52,7 +52,7 @@ export class UserService implements OnDestroy {
   }
 
   logout() {
-    this.cookieService.delete('auth');
+    this.cookieService.delete('auth', undefined, 'angular-furniture-shop-app.onrender.com', true, 'None');
     return this.http.post<void>('/api/users/logout', {})
       .pipe(tap(() => this.user$$.next(null)));
   }
