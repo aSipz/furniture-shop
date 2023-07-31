@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OrderReceivedComponent } from './order-received/order-received.component';
+import { InitialModule } from '../initial/initial.module';
 
 
 
@@ -20,6 +21,7 @@ import { OrderReceivedComponent } from './order-received/order-received.componen
     CommonModule,
     CartRoutingModule,
     SharedModule,
+    InitialModule,
     ReactiveFormsModule
   ]
 })

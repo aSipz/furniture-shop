@@ -2,9 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { BehaviorSubject, Subscription, catchError, filter, tap, throwError } from 'rxjs';
+import { IUser } from '../initial/interfaces';
 
-import { IUser } from '../shared/interfaces';
-import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +29,6 @@ export class UserService implements OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService
   ) {
     this.subscription = this.user$.subscribe(user => this.user = user);
   }
@@ -53,7 +51,6 @@ export class UserService implements OnDestroy {
 
   logout() {
     // this.cookieService.delete('auth');
-    // this.cookieService.set('auth', 'logout', Date.now(), undefined, undefined, true, 'None');
     return this.http.post<void>('/api/users/logout', {})
       .pipe(tap(() => this.user$$.next(null)));
   }

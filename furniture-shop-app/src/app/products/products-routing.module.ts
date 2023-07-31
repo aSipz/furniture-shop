@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { FavoritesComponent } from './favorites/favorites.component';
-import { authActivate } from '../shared/guards/auth.activate';
 import { CatalogComponent } from './catalog/catalog.component';
+import { authActivate } from '../initial/guards/auth.activate';
 
 const routes: Routes = [
   {

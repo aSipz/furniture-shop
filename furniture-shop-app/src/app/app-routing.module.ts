@@ -3,8 +3,8 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './core/error/error.component';
-import { adminMatch } from './shared/guards/admin.match';
-import { authMatch } from './shared/guards/auth.match';
+import { adminMatch } from './initial/guards/admin.match';
+import { authMatch } from './initial/guards/auth.match';
 
 const routes: Routes = [
   {

@@ -2,9 +2,9 @@ import { Injectable, OnDestroy } from '@angular/core';
 
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { ICartProduct } from 'src/app/shared/interfaces';
 import { UserService } from 'src/app/user/user.service';
 import { LocalDataService } from 'src/app/core/services/local-data.service';
+import { ICartProduct } from 'src/app/initial/interfaces';
 
 
 @Injectable({

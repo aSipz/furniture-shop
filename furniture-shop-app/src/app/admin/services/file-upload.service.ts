@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+
 import { Observable, Subject, catchError, finalize } from 'rxjs';
-import { FileUpload } from 'src/app/shared/constants';
-import { IImageEntry } from 'src/app/shared/interfaces';
+
+import { FileUpload } from 'src/app/initial/constants';
+import { IImageEntry } from 'src/app/initial/interfaces';
+
+
 
 import { v4 as uuidv4 } from 'uuid';
 

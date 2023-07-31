@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleCha
 
 import { AnimationType, fadeIn, fadeOut, flipIn, flipOut, jackIn, jackOut, scaleIn, scaleOut } from './image-slider.animations';
 import { trigger, transition, useAnimation } from '@angular/animations';
-import { IImageEntry } from 'src/app/shared/interfaces';
+import { IImageEntry } from 'src/app/initial/interfaces';
 
 @Component({
   selector: 'app-image-slider',

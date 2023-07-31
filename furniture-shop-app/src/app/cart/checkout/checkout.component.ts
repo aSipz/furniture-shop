@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 
 import { LoaderService } from 'src/app/core/services/loader.service';
-import { emailValidator, nameValidator, phoneValidator } from 'src/app/shared/validators';
 import { UserService } from 'src/app/user/user.service';
 import { CartService } from '../services/cart.service';
 import { ProductsService } from 'src/app/products/services/products.service';
-import { IProduct } from 'src/app/shared/interfaces';
 import { OrdersService } from 'src/app/orders/services/orders.service';
+import { IProduct } from 'src/app/initial/interfaces';
+import { emailValidator, nameValidator, phoneValidator } from 'src/app/initial/validators';
 
 @Component({
   selector: 'app-checkout',

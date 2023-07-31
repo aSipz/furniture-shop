@@ -14,6 +14,7 @@ import { ReviewListComponent } from './review-list/review-list.component';
 import { ReviewComponent } from './review/review.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddEditReviewComponent } from './add-edit-review/add-edit-review.component';
+import { InitialModule } from '../initial/initial.module';
 
 
 
@@ -33,6 +34,7 @@ import { AddEditReviewComponent } from './add-edit-review/add-edit-review.compon
     CommonModule,
     ProductsRoutingModule,
     SharedModule,
+    InitialModule,
     FontAwesomeModule,
     ReactiveFormsModule,
     FormsModule

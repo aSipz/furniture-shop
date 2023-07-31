@@ -6,9 +6,9 @@ import { Subscription } from 'rxjs';
 
 import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { orderStatus, ordersPageSize } from 'src/app/initial/constants';
+import { IOrder } from 'src/app/initial/interfaces';
 import { OrdersService } from 'src/app/orders/services/orders.service';
-import { orderStatus, ordersPageSize } from 'src/app/shared/constants';
-import { IOrder } from 'src/app/shared/interfaces';
 import { UserService } from 'src/app/user/user.service';
 
 @Component({

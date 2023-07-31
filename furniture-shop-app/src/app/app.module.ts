@@ -11,13 +11,13 @@ import { BehaviorSubject } from 'rxjs';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { AuthenticateComponent } from './authenticate/authenticate.component';
 import { appInterceptorProvider } from './app.interceptor';
-import { API_ERROR } from './shared/constants';
 import { HomeComponent } from './home/home.component';
 import { environment } from 'src/environments/environment';
+import { InitialModule } from './initial/initial.module';
+import { API_ERROR } from './initial/constants';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { environment } from 'src/environments/environment';
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
-    SharedModule,
+    InitialModule,
     CoreModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),

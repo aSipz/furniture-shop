@@ -5,9 +5,9 @@ import { tap, Subscription, } from 'rxjs';
 
 import { CartService } from '../services/cart.service';
 import { ProductsService } from 'src/app/products/services/products.service';
-import { ICartProduct, IProduct } from 'src/app/shared/interfaces';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { ICartProduct, IProduct } from 'src/app/initial/interfaces';
 
 @Component({
   selector: 'app-cart',

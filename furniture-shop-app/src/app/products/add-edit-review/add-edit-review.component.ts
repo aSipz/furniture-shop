@@ -3,10 +3,9 @@ import { Validators, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { LoaderService } from 'src/app/core/services/loader.service';
 import { UserService } from 'src/app/user/user.service';
 import { ReviewsService } from '../services/reviews.service';
-import { IReview } from 'src/app/shared/interfaces';
+import { IReview } from 'src/app/initial/interfaces';
 
 @Component({
   selector: 'app-add-edit-review',

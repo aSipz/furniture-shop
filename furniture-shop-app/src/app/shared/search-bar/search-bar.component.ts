@@ -1,9 +1,9 @@
 import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { Subscription, debounceTime, distinctUntilChanged, tap, take } from 'rxjs';
 
-import { productCategories, productSorting } from '../constants';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+import { productCategories, productSorting } from 'src/app/initial/constants';
 
 const searchMap = {
   name(value: string) {

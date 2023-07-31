@@ -3,8 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { UserService } from '../user.service';
-import { emailValidator } from 'src/app/shared/validators';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { emailValidator } from 'src/app/initial/validators';
 
 @Component({
   selector: 'app-login',

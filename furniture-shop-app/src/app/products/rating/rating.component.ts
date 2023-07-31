@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChange, SimpleChanges } from '@angular/core';
-import { IRating } from 'src/app/shared/interfaces';
+import { IRating } from 'src/app/initial/interfaces';
 import { UserService } from 'src/app/user/user.service';
 
 

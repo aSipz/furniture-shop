@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UploadImagesComponent } from './upload-images/upload-images.component';
 import { EditItemComponent } from './edit-item/edit-item.component';
 import { CustomersOrdersComponent } from './customers-orders/customers-orders.component';
+import { InitialModule } from '../initial/initial.module';
 
 
 
@@ -22,6 +23,7 @@ import { CustomersOrdersComponent } from './customers-orders/customers-orders.co
     CommonModule,
     AdminRoutingModule,
     SharedModule,
+    InitialModule,
     ReactiveFormsModule
   ]
 })

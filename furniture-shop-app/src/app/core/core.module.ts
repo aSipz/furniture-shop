@@ -16,6 +16,7 @@ import { ProfileSubmenuComponent } from './profile-submenu/profile-submenu.compo
 import { ModalComponent } from './modal/modal.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CartSubmenuComponent } from './cart-submenu/cart-submenu.component';
+import { InitialModule } from '../initial/initial.module';
 
 
 
@@ -32,7 +33,7 @@ import { CartSubmenuComponent } from './cart-submenu/cart-submenu.component';
   imports: [
     CommonModule,
     RouterModule,
-    SharedModule,
+    InitialModule,
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,

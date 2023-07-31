@@ -4,8 +4,8 @@ import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, catchError, of, switchMap, take, throwError, zip, timer, retry } from "rxjs";
 
 import { environment } from 'src/environments/environment';
-import { API_ERROR } from "./shared/constants";
 import { UserService } from "./user/user.service";
+import { API_ERROR } from "./initial/constants";
 
 const apiURL = environment.apiURL;
 

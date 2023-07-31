@@ -3,8 +3,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { UserService } from '../user.service';
-import { emailValidator, nameValidator, sameValueGroupValidator, usernameValidator } from 'src/app/shared/validators';
 import { LoaderService } from 'src/app/core/services/loader.service';
+import { emailValidator, usernameValidator, nameValidator, sameValueGroupValidator } from 'src/app/initial/validators';
 
 @Component({
   selector: 'app-register',

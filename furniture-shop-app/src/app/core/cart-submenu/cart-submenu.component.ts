@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChange, SimpleChanges } from '@angul
 import { Router } from '@angular/router';
 
 import { CartService } from 'src/app/cart/services/cart.service';
-import { ICartProduct } from 'src/app/shared/interfaces';
+import { ICartProduct } from 'src/app/initial/interfaces';
 
 @Component({
   selector: 'app-cart-submenu',

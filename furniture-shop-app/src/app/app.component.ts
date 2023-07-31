@@ -3,8 +3,8 @@ import { Title } from '@angular/platform-browser';
 import { Router, ActivationStart, ChildrenOutletContexts } from '@angular/router';
 
 import { filter, map } from 'rxjs';
+import { slideInAnimation } from './initial/animations';
 
-import { slideInAnimation } from './shared/animations';
 
 @Component({
   selector: 'app-root',

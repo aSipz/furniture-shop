@@ -4,10 +4,10 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { faThumbsUp as faThumbSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { IReview } from 'src/app/shared/interfaces';
 import { UserService } from 'src/app/user/user.service';
 import { ReviewsService } from '../services/reviews.service';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
+import { IReview } from 'src/app/initial/interfaces';
 
 @Component({
   selector: 'app-review',

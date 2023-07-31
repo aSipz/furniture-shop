@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { LoaderService } from 'src/app/core/services/loader.service';
-import { emailValidator, usernameValidator, nameValidator, sameValueGroupValidator, changePassValidator } from 'src/app/shared/validators';
 import { UserService } from '../user.service';
+import { emailValidator, usernameValidator, nameValidator, sameValueGroupValidator, changePassValidator } from 'src/app/initial/validators';
 
 @Component({
   selector: 'app-edit-profile',

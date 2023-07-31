@@ -4,6 +4,7 @@ import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { OrdersRoutingModule } from './orders-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { InitialModule } from '../initial/initial.module';
 
 
 
@@ -15,6 +16,7 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     OrdersRoutingModule,
     SharedModule,
+    InitialModule,
     RouterModule
   ]
 })

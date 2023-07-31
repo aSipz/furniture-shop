@@ -4,17 +4,18 @@ import { NgForm } from '@angular/forms';
 
 import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, mergeMap, of, switchMap } from 'rxjs';
 
-import { IFavorite, IProduct, IRating } from 'src/app/shared/interfaces';
+
 import { ProductsService } from '../services/products.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { UserService } from 'src/app/user/user.service';
 import { FileUploadService } from 'src/app/admin/services/file-upload.service';
-import { FileUpload } from 'src/app/shared/constants';
 import { RatingService } from '../services/rating.service';
 import { FavoritesService } from '../services/favorites.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { CartService } from 'src/app/cart/services/cart.service';
+import { IFavorite, IProduct, IRating } from 'src/app/initial/interfaces';
+import { FileUpload } from 'src/app/initial/constants';
 
 
 

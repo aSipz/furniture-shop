@@ -5,11 +5,11 @@ import { Subscription } from 'rxjs';
 
 import { OrdersService } from '../services/orders.service';
 import { UserService } from 'src/app/user/user.service';
-import { IOrder } from 'src/app/shared/interfaces';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { LoaderService } from 'src/app/core/services/loader.service';
-import { ordersPageSize } from 'src/app/shared/constants';
 import { ActivatedRoute } from '@angular/router';
+import { IOrder } from 'src/app/initial/interfaces';
+import { ordersPageSize } from 'src/app/initial/constants';
 
 @Component({
   selector: 'app-my-orders',

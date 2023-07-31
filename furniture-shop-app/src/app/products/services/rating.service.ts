@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IRating } from '../../shared/interfaces';
+import { IRating } from 'src/app/initial/interfaces';
 
 @Injectable({
   providedIn: 'root'

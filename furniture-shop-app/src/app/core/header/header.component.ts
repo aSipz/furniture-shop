@@ -4,8 +4,8 @@ import { IsActiveMatchOptions, NavigationEnd, Router } from '@angular/router';
 import { pairwise, tap } from 'rxjs';
 
 import { CartService } from 'src/app/cart/services/cart.service';
-import { routeMatchOptions } from 'src/app/shared/constants';
-import { ICartProduct } from 'src/app/shared/interfaces';
+import { routeMatchOptions } from 'src/app/initial/constants';
+import { ICartProduct } from 'src/app/initial/interfaces';
 
 import { UserService } from 'src/app/user/user.service';
 

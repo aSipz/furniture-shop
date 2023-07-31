@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IProduct } from 'src/app/shared/interfaces';
-import { loadingProduct, pageSize } from 'src/app/shared/constants';
-import { FavoritesService } from '../services/favorites.service';
-import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+
+import { FavoritesService } from '../services/favorites.service';
+import { loadingProduct, pageSize } from 'src/app/initial/constants';
+import { IProduct } from 'src/app/initial/interfaces';
 
 @Component({
   selector: 'app-favorites',

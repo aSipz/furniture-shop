@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 
 import { UserService } from 'src/app/user/user.service';
 import { ReviewsService } from '../services/reviews.service';
-import { IReview } from 'src/app/shared/interfaces';
-import { loadingReview } from 'src/app/shared/constants';
+import { IReview } from 'src/app/initial/interfaces';
+import { loadingReview } from 'src/app/initial/constants';
 
 @Component({
   selector: 'app-review-list',

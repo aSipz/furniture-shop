@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IFavorite } from 'src/app/shared/interfaces';
+import { IFavorite } from 'src/app/initial/interfaces';
 
 @Component({
   selector: 'app-like-product',

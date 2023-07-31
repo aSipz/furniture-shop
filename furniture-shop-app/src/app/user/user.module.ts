@@ -8,6 +8,7 @@ import { UserRoutingModule } from './user-routing.module';
 import { CookieService } from 'ngx-cookie-service';
 import { ProfileComponent } from './profile/profile.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { InitialModule } from '../initial/initial.module';
 
 
 
@@ -23,6 +24,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
     UserRoutingModule,
     ReactiveFormsModule,
     SharedModule,
+    InitialModule
   ],
   providers: [CookieService],
   exports: []

@@ -4,8 +4,8 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { FileUploadService } from '../services/file-upload.service';
-import { FileUpload } from 'src/app/shared/constants';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
+import { FileUpload } from 'src/app/initial/constants';
 
 @Component({
   selector: 'app-upload-images',

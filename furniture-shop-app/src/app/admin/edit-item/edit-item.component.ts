@@ -1,13 +1,16 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoaderService } from 'src/app/core/services/loader.service';
-import { productCategories } from 'src/app/shared/constants';
-import { categoryValidator } from 'src/app/shared/validators';
+
+import { Subscription } from 'rxjs';
+
+import { LoaderService } from 'src/app/core/services/loader.service';;
 import { FileUploadService } from '../services/file-upload.service';
 import { ProductsService } from 'src/app/products/services/products.service';
-import { Subscription } from 'rxjs';
-import { IProduct } from 'src/app/shared/interfaces';
+import { productCategories } from 'src/app/initial/constants';
+import { IProduct } from 'src/app/initial/interfaces';
+import { categoryValidator } from 'src/app/initial/validators';
+
 
 @Component({
   selector: 'app-edit-item',

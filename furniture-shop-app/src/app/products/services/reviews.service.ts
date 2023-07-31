@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IReview } from '../../shared/interfaces';
+import { IReview } from 'src/app/initial/interfaces';
 
 @Injectable({
   providedIn: 'root'
