@@ -39,7 +39,7 @@ const login = async (req, res, next) => {
 
         const { token, user } = await userManager.login(email, password);
 
-        res.cookie('auth', token, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 172800000  });
+        res.cookie('auth', token, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 172800000 });
 
         res.status(200)
             .send(user);
@@ -57,7 +57,7 @@ const logout = async (req, res, next) => {
     try {
         await tokenManager.createToken(token);
 
-        res.clearCookie('auth')
+        res.clearCookie('auth', { httpOnly: true, sameSite: 'none', secure: true })
             .status(204)
             .send({ message: 'Logged out!' });
     } catch (error) {
