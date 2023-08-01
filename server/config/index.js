@@ -9,7 +9,7 @@ config = {
         PORT: 3000,
         SECRET: 'evenMoreSecretSecret',
         DB_URI: 'mongodb+srv://aSipz:WQGlcsJ79fXqmEMj@cluster0.yazycpi.mongodb.net/?retryWrites=true&w=majority',
-        origin: ['http://localhost:4200', 'https://furniture-shop-df231.web.app']
+        origin: ['https://furniture-shop-df231.web.app']
     }
 };
 

@@ -27,9 +27,9 @@
                             <div class="title">
                                 <p class="product-price" *ngIf="product.discount === 0">${{product.price}}</p>
                                 <p class="product-price" *ngIf="product.discount > 0">
-                                    <span class="old-price">${{product.price}}</span>
+                                    <span class="old-price">${{product.price.toFixed(2)}}</span>
                                     <span class="discount">-{{product.discount}}%</span>
-                                    <span class="new-price">${{product.discountPrice}}</span>
+                                    <span class="new-price">${{product.discountPrice?.toFixed(2)}}</span>
                                 </p>
                                 <h6>{{product.name}}</h6>
                             </div>

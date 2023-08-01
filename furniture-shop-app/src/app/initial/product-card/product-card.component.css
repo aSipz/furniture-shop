@@ -113,6 +113,6 @@
       height: auto;
   }
 
-  /* .product-item a{
-    ali
-  } */
+  .discount {
+    color: var(--bs-danger);
+  }

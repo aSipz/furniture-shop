@@ -4,7 +4,8 @@
         <img *ngIf="product.images" src="{{product.images | getImageUrl}}" class=" img-fluid product-thumbnail">
         <p *ngIf="product.deleted" class="unavailable">Unavailable</p>
         <h3 class="product-title">{{product.name}}</h3>
-        <strong class="product-price">{{product.price | formatPrice}}</strong>
+        <strong class="product-price">{{product.price | formatPrice}} </strong>
+        <span class="discount" *ngIf="product.discount !== 0">-{{product.discount}}%</span>
     </a>
     <span *ngIf="availableQty > 0 && !product.deleted" class="icon-cross" title="Add to Cart" (click)="addToCart()">
         <img src="assets/images/cross.svg" class="img-fluid">

@@ -42,11 +42,13 @@ export class CartService implements OnDestroy {
       const cartProduct = newCart.find(p => p._id === product._id);
       if (cartProduct) {
         cartProduct.count += product.count;
+        newCart.splice(newCart.findIndex(p => p._id === product._id), 1);
+        newCart.unshift(cartProduct);
       } else {
-        newCart.push(product);
+        newCart.unshift(product);
       }
     } else {
-      newCart.push(product);
+      newCart.unshift(product);
     }
 
     this.cart$$.next(newCart);
