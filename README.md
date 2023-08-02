@@ -37,6 +37,7 @@ In the application, you can:
 <details>
 
 <summary>Register</summary>
+
 ### Register
 
 ![Register](https://github.com/aSipz/furniture-shop/blob/main/screenshots/03_register.jpg)
@@ -47,11 +48,21 @@ There can't be users with same email or username.
 
 </details>
 
+<details>
+
+<summary>Login</summary>
+
 ### Login
 
 ![Login](https://github.com/aSipz/furniture-shop/blob/main/screenshots/04_login.jpg)
 
 There are validations implemented on frontend and backend for email and password.
+
+</details>
+
+<details>
+
+<summary>View, edit and delete profile</summary>
 
 ### View, edit and delete profile
 
@@ -62,6 +73,12 @@ Every user can:
 ![Edit profile and password](https://github.com/aSipz/furniture-shop/blob/main/screenshots/06_edit_profile.jpg)
 
 Delete his profile.
+
+</details>
+
+<details>
+
+<summary>Browse shop</summary>
 
 ### Browse shop
 
@@ -75,6 +92,12 @@ Users with administrator rights additionally can view products which are marked 
 
 Registered user have a section with all his favorites including products, which are currently unavailable and can search and order them.
 
+</details>
+
+<details>
+
+<summary>View product details</summary>
+
 ### View product details
 
 Every visitor can view product details, rating and reviews.
@@ -87,11 +110,23 @@ Users with administrator rights can additionally make product unavailable/availa
 
 ![Product details for administrator](https://github.com/aSipz/furniture-shop/blob/main/screenshots/12_product_details_admin.jpg)
 
+</details>
+
+<details>
+
+<summary>View cart</summary>
+
 ### Cart
 
 Registered users can add, remove or change count of products in their cart. Every time when there is a change in cart, available quantities are checked and maximum count restriction is applied.
 
 ![Cart](https://github.com/aSipz/furniture-shop/blob/main/screenshots/08_cart.jpg)
+
+</details>
+
+<details>
+
+<summary>View checkout</summary>
 
 ### Checkout
 
@@ -99,6 +134,12 @@ On checkout page user should enter address, phone and optionally notes for order
 an error is shown. After successful order the available product quantities are updated and the order is visible in the list with orders.
 
 ![Checkout](https://github.com/aSipz/furniture-shop/blob/main/screenshots/09_checkout.jpg)
+
+</details>
+
+<details>
+
+<summary>View orders</summary>
 
 ### View orders
 
@@ -112,14 +153,28 @@ An administrator has access to a list of all clients orders and can change their
 
 ![All orders](https://github.com/aSipz/furniture-shop/blob/main/screenshots/14_clients_orders.jpg)
 
+</details>
+
+<details>
+
+<summary>Add new product</summary>
+
 ### Add new product
 
 An administrator can add new product. There can't be products with same name. There are validations implemented on frontend and backend for name, description, category, quantity, color, material, price. Every product should have at least one image.
 
 ![Add product](https://github.com/aSipz/furniture-shop/blob/main/screenshots/11_add_new_product.jpg)
 
+</details>
+
+<details>
+
+<summary>Edit existing product</summary>
+
 ### Edit existing product
 
 An administrator can edit all products. There are validations implemented on frontend and backend for name, description, category, quantity, color, material, price. Every product should have at least one image.
 
 ![Edit product](https://github.com/aSipz/furniture-shop/blob/main/screenshots/13_edit_product.jpg)
+
+</details>
