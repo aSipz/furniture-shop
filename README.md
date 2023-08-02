@@ -28,7 +28,13 @@ The backend is developed with Express and deployed on [Render.com](https://rende
 
 For database is used [MongoDB Atlas](https://www.mongodb.com/atlas/database)
 
+<details>
+
+<summary>Home screen</summary>
+
 ![Home screen for visitor](https://github.com/aSipz/furniture-shop/blob/main/screenshots/01_home_guest.jpg)
+
+</details>
 
 ## Functionality
 
