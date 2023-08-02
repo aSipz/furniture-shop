@@ -3,6 +3,8 @@ const router = require('express').Router();
 const productManager = require('../managers/productManager');
 const ratingManager = require('../managers/ratingManager');
 const favoriteManager = require('../managers/favoriteManager');
+const orderManager = require('../managers/orderManager');
+const { conn } = require('../database/dbConnect');
 const { adminGuard } = require('../middlewares/authMiddleware');
 const { removeVer, toJSON } = require('../utils');
 
@@ -88,17 +90,31 @@ const editProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
     const { productId } = req.params;
+
+    const session = await conn.startSession();
+
     try {
+        session.startTransaction();
+        const [orders, count] = await orderManager.getAll(JSON.stringify({ 'products.productId': productId }), { session });
+
+        const ordersForCancel = orders.filter(o => o.status !== 'Completed');
+
         await Promise.all([
-            productManager.delete(productId),
-            favoriteManager.deleteByProduct(productId),
-            ratingManager.deleteByProduct(productId)
-        ])
+            ...ordersForCancel.map(o => orderManager.edit(o._id, { status: 'Completed' }, { session })),
+            productManager.delete(productId, { session }),
+            favoriteManager.deleteByProduct(productId, { session }),
+            ratingManager.deleteByProduct(productId, { session })
+        ]);
+
+        await session.commitTransaction();
         res.status(204).end();
     } catch (error) {
+        await session.abortTransaction();
         next(error);
         console.log(error);
     }
+
+    session.endSession();
 }
 
 router.get('/', getAllProducts);

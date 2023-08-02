@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const orderManager = require('../managers/orderManager');
 const productManager = require('../managers/productManager');
-const { conn } = require('../database/dbConnect')
+const { conn } = require('../database/dbConnect');
 const { privateGuard } = require('../middlewares/authMiddleware');
 
 const createOrder = async (req, res, next) => {
