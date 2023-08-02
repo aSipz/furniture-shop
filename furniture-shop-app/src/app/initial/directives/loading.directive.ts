@@ -36,7 +36,7 @@ export class LoadingDirective implements OnInit, OnChanges {
     this.renderer.setStyle(loadingContainer, "height", "100%");
     this.renderer.setStyle(loadingContainer, "border-radius", "10px");
 
-    // custom spinner -- start
+   
     const spinnerContainer = this.renderer.createElement("div");
     this.renderer.addClass(spinnerContainer, "lds-facebook");
     const spinnerInnerDiv1 = this.renderer.createElement("div");
@@ -48,7 +48,6 @@ export class LoadingDirective implements OnInit, OnChanges {
     this.renderer.appendChild(spinnerContainer, spinnerInnerDiv3);
 
     this.renderer.appendChild(loadingContainer, spinnerContainer);
-    // custom spinner -- end
 
     this.renderer.appendChild(this.targetEl.nativeElement, loadingContainer);
   }

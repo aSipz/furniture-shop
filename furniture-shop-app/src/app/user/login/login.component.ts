@@ -44,7 +44,6 @@ export class LoginComponent {
       next: () => {
         const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
         this.router.navigate([returnUrl]);
-        // this.router.navigate(['/']);
         this.loaderService.hideLoader();
       },
       error: err => {

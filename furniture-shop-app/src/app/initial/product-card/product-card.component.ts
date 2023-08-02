@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
+
 import { IProduct } from '../interfaces';
 import { CartService } from 'src/app/cart/services/cart.service';
-import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-card',

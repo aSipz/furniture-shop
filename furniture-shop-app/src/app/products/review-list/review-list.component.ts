@@ -25,7 +25,6 @@ import { loadingReview } from 'src/app/initial/constants';
       ]),
       transition(':leave', [
         query('.review', [
-          // style({ opacity: 0, transform: 'translateY(100px)' }),
           stagger(30, [
             animate('500ms cubic-bezier(0.35, 0, 0.25, 1)',
               style({ opacity: 0, transform: 'translateY(-100px)' }))

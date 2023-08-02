@@ -56,14 +56,12 @@
     --bs-body-bg: #fff
 }
 
-/* Box sizing rules */
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
 
-/* Remove default margin */
 body,
 h1,
 h2,
@@ -77,7 +75,6 @@ dd {
     margin: 0;
 }
 
-/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
 ul[role='list'],
 ol[role='list'] {
     list-style: none;
@@ -85,12 +82,10 @@ ol[role='list'] {
     margin: 0px;
 }
 
-/* Set core root defaults */
 html:focus-within {
     scroll-behavior: smooth;
 }
 
-/* A very quick an applicable solution is to use this piece of code: */
 html {
     overflow: scroll;
     overflow-x: hidden;
@@ -98,29 +93,18 @@ html {
 
 ::-webkit-scrollbar {
     width: 0px;
-    /* remove scrollbar space /
-    background: transparent; / optional: just make scrollbar invisible /
-    */
 }
 
-/* / optional: show position indicator in red  */
-/* ::-webkit-scrollbar-thumb {
-    background: #FF0000;
-} */
-
-/* A elements that don't have a class get default styles */
 a:not([class]) {
     text-decoration-skip-ink: auto;
 }
 
-/* Make images easier to work with */
 img,
 picture {
     max-width: 100%;
     display: block;
 }
 
-/* Inherit fonts for inputs and buttons */
 input,
 button,
 textarea,
@@ -128,7 +112,6 @@ select {
     font: inherit;
 }
 
-/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
     html:focus-within {
         scroll-behavior: auto;
@@ -145,7 +128,6 @@ select {
 }
 
 body {
-    /* min-height: 100vh; */
     text-rendering: optimizeSpeed;
     line-height: 1.5;
     font-family: "Inter", sans-serif;
@@ -229,7 +211,6 @@ app-footer {
 
 .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
     background-color: rgba(40, 90, 61, 0.3);
-    /* background-color: #3b5d50; */
 }
 
 .mat-datepicker-toggle-active {
@@ -265,10 +246,3 @@ app-footer {
 .mat-primary .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
     color: #3b5d50 !important;
 }
-
-
-
-/* .mat-calendar-body-cell-content.mat-calendar-body-today {
-    background-color: green !important;
-    color: white !important;
-} */

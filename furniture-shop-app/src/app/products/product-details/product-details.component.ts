@@ -173,21 +173,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
             this.loaderService.hideLoader();
           }
         });
-        // setTimeout(() => {
-        //   const images = this.product?.images as unknown as FileUpload[];
-        //   this.productsService.deleteProduct(this.productId).pipe(
-        //     mergeMap(() => forkJoin(images.map(i => this.imageService.deleteFileStorage(i))))
-        //   ).subscribe({
-        //     next: () => {
-        //       this.router.navigate(['/']);
-        //       this.loaderService.hideLoader();
-        //     },
-        //     error: (err) => {
-        //       console.log(err);
-        //       this.loaderService.hideLoader();
-        //     }
-        //   })
-        // });
       }
 
     });

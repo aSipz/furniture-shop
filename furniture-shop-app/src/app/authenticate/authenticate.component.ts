@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from '../user/user.service';
 import { LoaderService } from '../core/services/loader.service';
-import { tap, filter } from 'rxjs';
+import { tap } from 'rxjs';
 import { CartService } from '../cart/services/cart.service';
 
 @Component({

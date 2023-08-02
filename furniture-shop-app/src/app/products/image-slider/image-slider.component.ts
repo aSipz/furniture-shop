@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { trigger, transition, useAnimation } from '@angular/animations';
 
 import { AnimationType, fadeIn, fadeOut, flipIn, flipOut, jackIn, jackOut, scaleIn, scaleOut } from './image-slider.animations';
-import { trigger, transition, useAnimation } from '@angular/animations';
 import { IImageEntry } from 'src/app/initial/interfaces';
 
 @Component({
@@ -10,7 +10,6 @@ import { IImageEntry } from 'src/app/initial/interfaces';
   styleUrls: ['./image-slider.component.css'],
   animations: [
     trigger("slideAnimation", [
-      /* scale */
       transition("void => scale", [
         useAnimation(scaleIn, { params: { time: "500ms" } })
       ]),
@@ -18,7 +17,6 @@ import { IImageEntry } from 'src/app/initial/interfaces';
         useAnimation(scaleOut, { params: { time: "500ms" } })
       ]),
 
-      /* fade */
       transition("void => fade", [
         useAnimation(fadeIn, { params: { time: "500ms" } })
       ]),
@@ -26,7 +24,6 @@ import { IImageEntry } from 'src/app/initial/interfaces';
         useAnimation(fadeOut, { params: { time: "500ms" } })
       ]),
 
-      /* flip */
       transition("void => flip", [
         useAnimation(flipIn, { params: { time: "500ms" } })
       ]),
@@ -34,7 +31,6 @@ import { IImageEntry } from 'src/app/initial/interfaces';
         useAnimation(flipOut, { params: { time: "500ms" } })
       ]),
 
-      /* JackInTheBox */
       transition("void => jackInTheBox", [
         useAnimation(jackIn, { params: { time: "700ms" } })
       ]),

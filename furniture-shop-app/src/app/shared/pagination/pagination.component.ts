@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
+import { filter, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+
 import { faAngleRight, faAnglesRight, faAngleLeft, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
 
-import { filter, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-pagination',

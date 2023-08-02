@@ -1,8 +1,9 @@
 import { Component, OnDestroy, AfterViewInit } from '@angular/core';
-import { Subscription, debounceTime, distinctUntilChanged, tap, take } from 'rxjs';
-
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+
+import { Subscription, debounceTime, distinctUntilChanged, tap, take } from 'rxjs';
+
 import { productCategories, productSorting } from 'src/app/initial/constants';
 
 const searchMap = {
@@ -129,8 +130,6 @@ export class SearchBarComponent implements AfterViewInit, OnDestroy {
       {
         relativeTo: this.route,
         queryParams: queryParams,
-        // queryParamsHandling: 'merge', 
-        // remove to replace all query params by provided
       });
   }
 

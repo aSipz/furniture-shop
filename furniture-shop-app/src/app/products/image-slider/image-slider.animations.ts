@@ -1,8 +1,5 @@
 import { style, animate, animation, keyframes } from "@angular/animations";
 
-// =========================
-// Enum for referencing animations
-// =========================
 export enum AnimationType {
     Scale = "scale",
     Fade = "fade",
@@ -11,11 +8,8 @@ export enum AnimationType {
     Slide = 'slide'
 }
 
-// =========================
-// Scale
-// =========================
 export const scaleIn = animation([
-    style({ opacity: 0, transform: "scale(0.5)" }), // start state
+    style({ opacity: 0, transform: "scale(0.5)" }),
     animate(
         "{{time}} cubic-bezier(0.785, 0.135, 0.15, 0.86)",
         style({ opacity: 1, transform: "scale(1)" })
@@ -29,11 +23,8 @@ export const scaleOut = animation([
     )
 ]);
 
-// =========================
-// Fade
-// =========================
 export const fadeIn = animation([
-    style({ opacity: 0 }), // start state
+    style({ opacity: 0 }),
     animate(
         "{{time}} cubic-bezier(0.785, 0.135, 0.15, 0.86)",
         style({ opacity: 1 })
@@ -47,9 +38,6 @@ export const fadeOut = animation([
     )
 ]);
 
-// =========================
-// Flip
-// =========================
 export const flipIn = animation([
     animate(
         "{{time}} cubic-bezier(0.785, 0.135, 0.15, 0.86)",
@@ -58,19 +46,15 @@ export const flipIn = animation([
                 opacity: 1,
                 transform: "perspective(400px) rotate3d(1, 0, 0, 90deg)",
                 offset: 0
-            }), // start state
+            }),
             style({ transform: "perspective(400px)", offset: 1 })
         ])
     )
 ]);
 
 export const flipOut = animation([
-    // just hide it
 ]);
 
-// =========================
-// Jack in the box
-// =========================
 export const jackIn = animation([
     animate(
         "{{time}} ease-in",
@@ -98,5 +82,4 @@ export const jackIn = animation([
 ]);
 
 export const jackOut = animation([
-    // just hide it
 ]);
