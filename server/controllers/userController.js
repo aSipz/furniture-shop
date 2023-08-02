@@ -78,7 +78,7 @@ const deleteUser = async (req, res, next) => {
             userManager.delete(userId)
         ]);
 
-        res.clearCookie('auth')
+        res.clearCookie('auth', { httpOnly: true, sameSite: 'none', secure: true })
             .status(204)
             .send({ message: 'User removed!' });
     } catch (error) {

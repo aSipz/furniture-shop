@@ -7,7 +7,7 @@ exports.authentication = async (req, res, next) => {
 
     if (token) {
         try {
-            
+
             const [data, blacklistedToken] = await Promise.all([jwt.verifyToken(token), tokenManager.checkIfExists(token)]);
 
             if (blacklistedToken) {
@@ -19,7 +19,7 @@ exports.authentication = async (req, res, next) => {
         } catch (error) {
             if (error.message === 'blacklisted token') {
                 console.log(error);
-                res
+                res.clearCookie('auth', { httpOnly: true, sameSite: 'none', secure: true })
                     .status(401)
                     .send({ message: "Invalid token!" });
                 return;
