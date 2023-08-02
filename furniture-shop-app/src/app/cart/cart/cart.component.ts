@@ -17,7 +17,6 @@ import { ICartProduct, IProduct } from 'src/app/initial/interfaces';
 export class CartComponent implements OnDestroy {
 
   products: (IProduct & { cartCount: number })[] | null = null;
-  cart: ICartProduct[] | null = null;
   sub: Subscription;
   cartForm!: FormGroup;
   cartTotal: number = 0;
@@ -32,7 +31,6 @@ export class CartComponent implements OnDestroy {
     this.loaderService.showLoader();
     this.sub = this.cartService.cart$.pipe(
       tap((cart) => {
-        this.cart = cart;
         this.createForm({ products: [] });
         this.productService.getProducts({ search: { _id: { $in: cart ? cart?.map(p => p._id) : [] } } }).subscribe({
           next: (value) => {
