@@ -19,7 +19,7 @@ exports.authentication = async (req, res, next) => {
         } catch (error) {
             if (error.message === 'blacklisted token') {
                 console.log(error);
-                res.clearCookie('auth', { httpOnly: true, sameSite: 'none', secure: true })
+                res.clearCookie('auth', { httpOnly: true, sameSite: 'None', secure: true })
                     .status(401)
                     .send({ message: "Invalid token!" });
                 return;
