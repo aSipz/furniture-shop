@@ -12,7 +12,7 @@ This is an application for online furniture shop. The app allows visitors to bro
 
 A visitor can register, which allows him to rate product, add review for product and edit or delete all his reviews, like other users reviews, add a product to his favorites list, add product to his cart, make a order, view a list with all his orders and edit his profile info.
 
-Users with administrator rights additionally can add new products to shop, edit existing products, make products unavailable or deleting them, view list of all clients orders.
+Users with administrator rights additionally can add new products to shop, edit existing products, make products unavailable or delete them, view list of all clients orders.
 
 The functionality for administrators can be tested with already initialized user:
 
@@ -34,6 +34,9 @@ For database is used [MongoDB Atlas](https://www.mongodb.com/atlas/database)
 
 In the application, you can:
 
+<details>
+
+<summary>Register</summary>
 ### Register
 
 ![Register](https://github.com/aSipz/furniture-shop/blob/main/screenshots/03_register.jpg)
@@ -41,6 +44,8 @@ In the application, you can:
 There are validations implemented on frontend and backend for email, username, first name, last name and passwords.
 
 There can't be users with same email or username.
+
+</details>
 
 ### Login
 
