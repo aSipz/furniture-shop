@@ -1,12 +1,14 @@
 import { ActionReducerMap, createReducer, on } from "@ngrx/store";
 import { increment, setCounter } from "./actions";
+import { routerReducer } from "@ngrx/router-store";
 
 export interface IMainState {
     counter: number;
 };
 
 interface IAppState {
-    main: IMainState
+    main: IMainState,
+    router: ReturnType<typeof routerReducer>,
 };
 
 const mainInitialState: IMainState = {
@@ -26,5 +28,6 @@ const mainReducer = createReducer<IMainState>(
 );
 
 export const reducers: ActionReducerMap<IAppState> = {
-    main: mainReducer
+    main: mainReducer,
+    router: routerReducer
 };

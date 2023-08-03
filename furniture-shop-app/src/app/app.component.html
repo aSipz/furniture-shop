@@ -3,6 +3,10 @@
 <app-authenticate>
     <app-header />
 
+    {{url$ | async}}
+    {{params$ | async | json}}
+    {{query$ | async | json}}
+
     <div [@routeAnimations]="getRouteAnimationData()" class="body-container">
         <router-outlet />
     </div>

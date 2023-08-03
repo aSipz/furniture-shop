@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,8 +19,11 @@ import { environment } from 'src/environments/environment';
 import { InitialModule } from './initial/initial.module';
 import { API_ERROR } from './initial/constants';
 import { StoreModule } from '@ngrx/store';
+import { NavigationActionTiming, StoreRouterConnectingModule } from '@ngrx/router-store'
 
-import { reducers } from './+store'
+import { reducers } from './+store';
+import { CustomSerializer } from './+store/router';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,9 @@ import { reducers } from './+store'
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    StoreModule.forRoot(reducers)
+    StoreModule.forRoot(reducers),
+    StoreRouterConnectingModule.forRoot({ serializer: CustomSerializer, navigationActionTiming: NavigationActionTiming.PostActivation }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), trace: true })
   ],
   providers: [
     appInterceptorProvider,

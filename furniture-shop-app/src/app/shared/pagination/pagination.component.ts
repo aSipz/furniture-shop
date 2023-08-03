@@ -93,17 +93,28 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
 
   private changeQueryParams(queryParams: Params) {
 
+    const newQueryParams: Params = {};
+
     for (const key in queryParams) {
-      if (queryParams[key] === '{}') {
-        queryParams[key] = null;
+      if (queryParams[key] !== '{}' && queryParams[key] !== null) {
+        console.log(queryParams[key]);
+        
+        // delete queryParams[key];
+        // queryParams[key] = null;
+        Object.assign(newQueryParams, { [key]: queryParams[key] });
       }
     }
+
+    console.log(queryParams);
+    console.log(newQueryParams);
 
     this.router.navigate(
       [],
       {
         relativeTo: this.route,
         queryParams: queryParams,
+        queryParamsHandling: 'merge'
+        // queryParamsHandling: 'preserve'
       });
   }
 
