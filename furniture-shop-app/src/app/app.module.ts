@@ -18,6 +18,9 @@ import { HomeComponent } from './home/home.component';
 import { environment } from 'src/environments/environment';
 import { InitialModule } from './initial/initial.module';
 import { API_ERROR } from './initial/constants';
+import { StoreModule } from '@ngrx/store';
+
+import { reducers } from './+store'
 
 @NgModule({
   declarations: [
@@ -34,7 +37,8 @@ import { API_ERROR } from './initial/constants';
     CoreModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    StoreModule.forRoot(reducers)
   ],
   providers: [
     appInterceptorProvider,
