@@ -15,6 +15,10 @@ import { ReviewComponent } from './review/review.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AddEditReviewComponent } from './add-edit-review/add-edit-review.component';
 import { InitialModule } from '../initial/initial.module';
+import { StoreModule } from '@ngrx/store';
+import { productReducer } from './+store';
+import { EffectsModule } from '@ngrx/effects';
+import { ProductEffects } from './+store/effects';
 
 
 
@@ -37,7 +41,9 @@ import { InitialModule } from '../initial/initial.module';
     InitialModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forFeature('productDetails', productReducer),
+    EffectsModule.forFeature([ProductEffects]),
   ]
 })
 export class ProductsModule { }

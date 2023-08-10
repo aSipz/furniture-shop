@@ -1,9 +1,9 @@
 <div class="single-product-area section-padding-100 clearfix">
-    <div class="container-fluid" *ngIf="product">
+    <div class="container-fluid" *ngIf="(product$ | async)">
 
         <div class="row product-details">
 
-            <app-image-slider [slides]="product.images!" [changeInterval]="5000" [animationType]="'flip'"
+            <app-image-slider [slides]="(product$ | async)!.images!" [changeInterval]="5000" [animationType]="'flip'"
                 class="images"></app-image-slider>
 
             <div class="col-12 col-lg-5 details">
@@ -25,24 +25,26 @@
                         <div class="line"></div>
                         <div class="info-wrapper">
                             <div class="title">
-                                <p class="product-price" *ngIf="product.discount === 0">${{product.price}}</p>
-                                <p class="product-price" *ngIf="product.discount > 0">
-                                    <span class="old-price">${{product.price.toFixed(2)}}</span>
-                                    <span class="discount">-{{product.discount}}%</span>
-                                    <span class="new-price">${{product.discountPrice?.toFixed(2)}}</span>
+                                <p class="product-price" *ngIf="(product$ | async)!.discount === 0">${{(product$ |
+                                    async)!.price}}</p>
+                                <p class="product-price" *ngIf="(product$ | async)!.discount > 0">
+                                    <span class="old-price">${{(product$ | async)!.price.toFixed(2)}}</span>
+                                    <span class="discount">-{{(product$ | async)!.discount}}%</span>
+                                    <span class="new-price">${{(product$ | async)!.discountPrice?.toFixed(2)}}</span>
                                 </p>
-                                <h6>{{product.name}}</h6>
+                                <h6>{{(product$ | async)!.name}}</h6>
                             </div>
 
                             <app-like-product *ngIf="isLoggedIn" (favoriteEvent)="likeProduct($event)"
-                                [favorite]="favorite"></app-like-product>
+                                [favorite]="(favorite$ | async)"></app-like-product>
                         </div>
 
 
                         <div class=" ratings-review mb-15 d-flex align-items-center justify-content-between">
 
                             <div class="ratings">
-                                <app-rating [rating]="product.ratings" (rateEvent)="rateProduct($event)"></app-rating>
+                                <app-rating [rating]="(product$ | async)!.ratings"
+                                    (rateEvent)="rateProduct($event)"></app-rating>
                             </div>
 
                             <div class="review">
@@ -53,21 +55,21 @@
                         <app-review-list *ngIf="isShown" [productId]="productId"></app-review-list>
 
                         <p class="availability"><span class="status"
-                                [ngClass]="{'out-of-stock': product.quantity === 0 || product.deleted  || availableQty === 0}">●</span>
-                            {{product.quantity === 0 || product.deleted || availableQty === 0?'Out of Stock' : 'In
-                            Stock'}}
+                                [ngClass]="{'out-of-stock': (product$ | async)!.quantity === 0 || (product$ | async)!.deleted  || availableQty === 0}">●</span>
+                            {{(product$ | async)!.quantity === 0 || (product$ | async)!.deleted || availableQty === 0 ?
+                            'Out of Stock' : 'In Stock'}}
                         </p>
                     </div>
 
                     <div class="short_overview my-5">
-                        <p><span>Color: </span>{{product.color}}</p>
-                        <p><span>Material: </span>{{product.material}}</p>
-                        <p><span>Description: </span>{{product.description}}</p>
+                        <p><span>Color: </span>{{(product$ | async)!.color}}</p>
+                        <p><span>Material: </span>{{(product$ | async)!.material}}</p>
+                        <p><span>Description: </span>{{(product$ | async)!.description}}</p>
                     </div>
 
-                    <h3 *ngIf="product.deleted">Not available at the moment</h3>
-                    <form class="cart clearfix" *ngIf="!product.deleted && isLoggedIn && availableQty !== 0" #cartForm="ngForm"
-                        (ngSubmit)="cartHandler()">
+                    <h3 *ngIf="(product$ | async)!.deleted">Not available at the moment</h3>
+                    <form class="cart clearfix" *ngIf="!(product$ | async)!.deleted && isLoggedIn && availableQty !== 0"
+                        #cartForm="ngForm" (ngSubmit)="cartHandler()">
                         <div class="cart-btn d-flex mb-50">
                             <p>Qty</p>
                             <div class="quantity">

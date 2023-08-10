@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
-import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, mergeMap, of, switchMap } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, forkJoin, map, merge, mergeMap, tap, switchMap } from 'rxjs';
 
 
 import { ProductsService } from '../services/products.service';
@@ -16,6 +16,11 @@ import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { CartService } from 'src/app/cart/services/cart.service';
 import { IFavorite, IProduct, IRating } from 'src/app/initial/interfaces';
 import { FileUpload } from 'src/app/initial/constants';
+import { Store } from '@ngrx/store';
+import { Actions, act, ofType } from '@ngrx/effects';
+import { getParams } from 'src/app/+store/selectors';
+import { getFavorite, getProduct } from '../+store/selectors';
+import { addToFavorites, clearProduct, loadProduct, loadProductFailure, loadProductSuccess } from '../+store/actions';
 
 
 
@@ -26,7 +31,7 @@ import { FileUpload } from 'src/app/initial/constants';
 })
 export class ProductDetailsComponent implements OnInit, OnDestroy {
 
-  private sub!: Subscription;
+  private sub = new Subscription();
   private userRating$$ = new Subject<number>();
   private userFavorite$$ = new Subject<boolean>();
 
@@ -34,6 +39,36 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   product: IProduct | null = null;
   favorite: IFavorite | null = null;
   isShown = false;
+
+  product$ = this.store.select(getProduct);
+  favorite$ = this.store.select(getFavorite);
+  params$ = this.store.select(getParams);
+
+  isFetchingProduct$ = merge(
+    this.actions$.pipe(
+      ofType(loadProduct),
+      map(() => {
+        this.loaderService.showLoader();
+        return true;
+      })
+    ),
+    this.actions$.pipe(
+      ofType(loadProductSuccess),
+      map(() => {
+        this.loaderService.hideLoader();
+        return false;
+      })
+    ),
+    this.actions$.pipe(
+      ofType(loadProductFailure),
+      map((e) => {
+        console.log(e.error);
+        this.loaderService.hideLoader();
+        this.router.navigate(['/']);
+        return false;
+      })
+    ),
+  )
 
   @ViewChild('cartForm') cartForm!: NgForm;
 
@@ -67,33 +102,27 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private cartService: CartService,
-    public modal: MatDialog
-  ) {
-    this.loaderService.showLoader();
-  }
+    public modal: MatDialog,
+    private store: Store,
+    private actions$: Actions,
+  ) { }
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.productId = params['id'];
 
-      forkJoin([
-        this.productsService.getProduct(this.productId, { include: 'ratings' }),
-        this.isLoggedIn
-          ? this.favoritesService.getFavorite(this.productId)
-          : of(null)
-      ]).subscribe({
-        next: (value) => {
-          this.product = value[0];
-          this.favorite = value[1];
-          this.loaderService.hideLoader();
-        },
-        error: (err) => {
-          console.log(err);
-          this.loaderService.hideLoader();
-          this.router.navigate(['/']);
-        }
-      })
-    });
+    this.sub.add(this.isFetchingProduct$.subscribe());
+
+    this.sub.add(this.params$.subscribe(params => {
+      this.productId = params['id'];
+      this.store.dispatch(loadProduct({ productId: this.productId, isLoggedIn: this.isLoggedIn }));
+    }));
+
+    this.sub.add(this.favorite$.pipe(
+      tap(v => this.favorite = v)
+    ).subscribe());
+
+    this.sub.add(this.product$.pipe(
+      tap(v => this.product = v)
+    ).subscribe());
 
     this.userRating$$.pipe(
       debounceTime(500),
@@ -120,15 +149,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         if (favorite) {
           return this.favoritesService.addFavorite(this.productId);
         }
-
         return this.favoritesService.deleteFavorite(this.productId);
       })
     ).subscribe({
       next: (value) => {
-
-        const fav = value as IFavorite | null;
-        this.favorite = fav;
-
+        // this.store.dispatch(addToFavorites({ favorite: value as IFavorite | null }));
       },
       error: err => console.log(err)
     });
@@ -137,6 +162,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.store.dispatch(clearProduct());
   }
 
   editHandler(): void {
@@ -197,7 +223,12 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   likeProduct(like: boolean) {
-    this.userFavorite$$.next(like);
+    // this.userFavorite$$.next(like);
+    console.log(like);
+    console.log(this.productId);
+    
+    
+    this.store.dispatch(addToFavorites({ productId: this.productId, favorite: like }));
   }
 
   toggle() {

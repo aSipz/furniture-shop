@@ -60,7 +60,7 @@ const getOneProduct = async (req, res, next) => {
         res.status(200)
             .send(result);
     } catch (error) {
-        next(error);
+        res.status(404).end();
         console.log(error);
     }
 };

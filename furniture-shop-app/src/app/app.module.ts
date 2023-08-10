@@ -24,6 +24,8 @@ import { NavigationActionTiming, StoreRouterConnectingModule } from '@ngrx/route
 import { reducers } from './+store';
 import { CustomSerializer } from './+store/router';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { Effects } from './+store/effects';
 
 @NgModule({
   declarations: [
@@ -41,9 +43,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    StoreModule.forRoot(reducers),
     StoreRouterConnectingModule.forRoot({ serializer: CustomSerializer, navigationActionTiming: NavigationActionTiming.PostActivation }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), trace: true })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), trace: true }),
+    StoreModule.forRoot(reducers),
+    // StoreModule.forFeature('products', {}),
+    EffectsModule.forRoot([Effects]),
   ],
   providers: [
     appInterceptorProvider,

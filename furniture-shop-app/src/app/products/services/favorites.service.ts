@@ -18,7 +18,7 @@ export class FavoritesService {
   }
 
   deleteFavorite(id: string) {
-    return this.http.delete(`/api/favorites/${id}`);
+    return this.http.delete<null>(`/api/favorites/${id}`);
   }
 
   getAll(options?: { [key: string]: string | number | boolean | { [key: string]: any } }) {

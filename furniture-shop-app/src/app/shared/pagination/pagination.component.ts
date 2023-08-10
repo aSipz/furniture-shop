@@ -46,13 +46,15 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
       const skip = +val[0]['skip'];
       const limit = +val[0]['limit'];
 
-      if (limit !== this.pageSize || skip >= limit * this.totalPages || skip % limit !== 0) {
-
+      if (!isNaN(skip) && (limit !== this.pageSize || skip >= limit * this.totalPages || skip % limit !== 0)) {
         this.changePageUrl();
         this.currentPage = 1;
       } else {
         this.currentPage = skip / this.pageSize + 1;
+      }
 
+      if (isNaN(limit)) {
+        this.currentPage = 1;
       }
 
     })
@@ -93,28 +95,17 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
 
   private changeQueryParams(queryParams: Params) {
 
-    const newQueryParams: Params = {};
-
     for (const key in queryParams) {
-      if (queryParams[key] !== '{}' && queryParams[key] !== null) {
-        console.log(queryParams[key]);
-        
-        // delete queryParams[key];
-        // queryParams[key] = null;
-        Object.assign(newQueryParams, { [key]: queryParams[key] });
+      if (queryParams[key] === '{}') {
+        queryParams[key] = null;
       }
     }
-
-    console.log(queryParams);
-    console.log(newQueryParams);
 
     this.router.navigate(
       [],
       {
         relativeTo: this.route,
         queryParams: queryParams,
-        queryParamsHandling: 'merge'
-        // queryParamsHandling: 'preserve'
       });
   }
 

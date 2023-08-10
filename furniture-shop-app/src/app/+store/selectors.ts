@@ -10,3 +10,5 @@ export const getCounter = createSelector(mainSelector, s => s.counter);
 export const getURL = createSelector(routerSelector, s => s?.state?.url);
 export const getParams = createSelector(routerSelector, s => s?.state?.params);
 export const getQuery = createSelector(routerSelector, s => s?.state?.queryParams);
+
+export const getProduct = createSelector(mainSelector, s => s.product);
