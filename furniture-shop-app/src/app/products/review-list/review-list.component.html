@@ -4,7 +4,7 @@
         (onReview)="onReview($event)"></app-add-edit-review>
 
     <ng-container *ngIf="!errorFetchingData">
-        <app-review *ngFor="let review of reviews" [review]="review" (reviewChange)="onReview($event)"
+        <app-review *ngFor="let review of reviews$ | async" [review]="review" (reviewChange)="onReview($event)"
             (onReviewDelete)="onDelete($event)"></app-review>
     </ng-container>
 
@@ -15,7 +15,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="reviews.length === 0">
+    <ng-container *ngIf="(reviews$ | async)!.length === 0">
         <div class="error">
             <h2>No reviews</h2>
         </div>

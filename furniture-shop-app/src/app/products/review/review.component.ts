@@ -8,6 +8,8 @@ import { UserService } from 'src/app/user/user.service';
 import { ReviewsService } from '../services/reviews.service';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { IReview } from 'src/app/initial/interfaces';
+import { Store } from '@ngrx/store';
+import { dislikeReview, likeReview } from '../+store/actions';
 
 @Component({
   selector: 'app-review',
@@ -48,33 +50,18 @@ export class ReviewComponent {
 
   constructor(
     private userService: UserService,
+    private store: Store,
     private reviewsService: ReviewsService,
     public modal: MatDialog
   ) {
   }
 
   like() {
-    this.reviewsService.like(this.review._id).subscribe({
-      next: () => {
-        this.review.likes.push(this.user!._id);
-        this.reviewChange.emit(this.review);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+    this.store.dispatch(likeReview({ reviewId: this.review._id, userId: this.user!._id }));
   }
 
   dislike() {
-    this.reviewsService.dislike(this.review._id).subscribe({
-      next: () => {
-        this.review.likes = this.review.likes.filter(u => u !== this.user!._id);
-        this.reviewChange.emit(this.review);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+    this.store.dispatch(dislikeReview({ reviewId: this.review._id, userId: this.user!._id }));
   }
 
   toggle() {

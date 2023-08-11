@@ -18,7 +18,7 @@ import { InitialModule } from '../initial/initial.module';
 import { StoreModule } from '@ngrx/store';
 import { productReducer } from './+store';
 import { EffectsModule } from '@ngrx/effects';
-import { ProductEffects } from './+store/effects';
+import { ProductDetailsEffects } from './+store/effects';
 
 
 
@@ -43,7 +43,7 @@ import { ProductEffects } from './+store/effects';
     ReactiveFormsModule,
     FormsModule,
     StoreModule.forFeature('productDetails', productReducer),
-    EffectsModule.forFeature([ProductEffects]),
+    EffectsModule.forFeature([ProductDetailsEffects]),
   ]
 })
 export class ProductsModule { }

@@ -1,12 +1,15 @@
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { Component, HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 
 import { UserService } from 'src/app/user/user.service';
 import { ReviewsService } from '../services/reviews.service';
 import { IReview } from 'src/app/initial/interfaces';
 import { loadingReview } from 'src/app/initial/constants';
+import { Store } from '@ngrx/store';
+import { getProduct, getReviews, getReviewsError } from '../+store/selectors';
+import { clearReviews, loadReviews } from '../+store/actions';
 
 @Component({
   selector: 'app-review-list',
@@ -47,7 +50,7 @@ import { loadingReview } from 'src/app/initial/constants';
           stagger(50, [
             animate('300ms ease-out', style({ opacity: 0, width: 0 })),
           ]),
-        ])
+        ], { optional: true })
       ]),
     ]),
   ]
@@ -55,18 +58,24 @@ import { loadingReview } from 'src/app/initial/constants';
 
 
 
-export class ReviewListComponent implements OnChanges, OnInit, OnDestroy {
+export class ReviewListComponent implements OnDestroy {
 
   @HostBinding('@pageAnimations')
   // animatePage = true;
   isShown = false;
   errorFetchingData = false;
-  private sub!: Subscription;
+  private sub = new Subscription();
 
-  reviewsTotal = 3;
+  reviewsTotal!: number;
   reviews: IReview[] = [loadingReview, loadingReview, loadingReview];
 
-  @Input() productId!: string;
+  reviews$ = this.store.select(getReviews);
+  product$ = this.store.select(getProduct);
+  error$ = this.store.select(getReviewsError);
+
+  // @Input() productId!: string;
+
+  private productId!: string;
 
   get isLoggedIn() {
     return this.userService.isLoggedIn;
@@ -75,34 +84,27 @@ export class ReviewListComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private reviewSService: ReviewsService,
-  ) { }
+    private store: Store,
+  ) {
 
-  ngOnInit() {
+    this.sub.add(this.reviews$.pipe(
+      tap(r => this.reviewsTotal = r.length)
+    ).subscribe());
 
-    this.sub = this.reviewSService.getReviews({ search: { productId: this.productId }, include: 'ownerId' }).subscribe({
-      next: (value) => {
-        this.reviews = value.result;
-        this.reviewsTotal = value.count;
-      },
-      error: (err) => {
-        this.errorFetchingData = true;
-        this.reviewsTotal = -1;
-        console.log(err);
-      }
-    })
+    this.sub.add(this.product$.pipe(
+      tap(p => this.productId = p!._id)
+    ).subscribe());
 
-  }
+    this.sub.add(this.error$.pipe(
+      tap(e => this.errorFetchingData = !!e)
+    ).subscribe());
 
-  ngOnChanges(changes: SimpleChanges) {
-    const currentItem: SimpleChange = changes['productId'];
-
-    if (currentItem.currentValue !== this.productId) {
-      this.productId = currentItem.currentValue;
-    }
+    this.store.dispatch(loadReviews({ productId: this.productId }));
   }
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+    this.store.dispatch(clearReviews());
   }
 
   toggle() {
