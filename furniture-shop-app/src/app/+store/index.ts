@@ -1,7 +1,8 @@
 import { ActionReducerMap, createReducer, on } from "@ngrx/store";
 import { increment, loadProductSuccess, setCounter } from "./actions";
 import { routerReducer } from "@ngrx/router-store";
-import { IProduct } from "../initial/interfaces";
+import { IProduct, IUser } from "../initial/interfaces";
+import { IUserState, userReducer } from "./userReducer";
 
 export interface IMainState {
     counter: number;
@@ -9,8 +10,9 @@ export interface IMainState {
 };
 
 interface IAppState {
-    main: IMainState,
-    router: ReturnType<typeof routerReducer>,
+    main: IMainState;
+    router: ReturnType<typeof routerReducer>;
+    user: IUserState;
 };
 
 const mainInitialState: IMainState = {
@@ -35,5 +37,6 @@ const mainReducer = createReducer<IMainState>(
 
 export const reducers: ActionReducerMap<IAppState> = {
     main: mainReducer,
-    router: routerReducer
+    router: routerReducer,
+    user: userReducer,
 };

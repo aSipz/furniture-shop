@@ -1,22 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { faThumbsUp as faThumbSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import { UserService } from 'src/app/user/user.service';
-import { ReviewsService } from '../services/reviews.service';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { IReview } from 'src/app/initial/interfaces';
 import { Store } from '@ngrx/store';
-import { dislikeReview, likeReview } from '../+store/actions';
+import { deleteReview, deleteReviewFailure, deleteReviewSuccess, dislikeReview, likeReview } from '../+store/actions';
+import { Actions, ofType } from '@ngrx/effects';
+import { Subscription, filter, map, merge } from 'rxjs';
 
 @Component({
   selector: 'app-review',
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.css']
 })
-export class ReviewComponent {
+export class ReviewComponent implements OnDestroy {
 
   thumbSolid = faThumbSolid;
   thumb = faThumbsUp;
@@ -25,8 +26,37 @@ export class ReviewComponent {
   waitingForDelete = false;
 
   @Input() review!: IReview;
-  @Output() reviewChange = new EventEmitter<IReview>();
-  @Output() onReviewDelete = new EventEmitter<string>();
+
+  private sub = new Subscription();
+
+  delete_review$ = merge(
+    this.actions$.pipe(
+      ofType(deleteReview),
+      filter(({ reviewId }) => reviewId === this.review._id),
+      map(() => {
+        this.isDisabled = true;
+        this.waitingForDelete = true;
+        return true;
+      })
+    ),
+    this.actions$.pipe(
+      ofType(deleteReviewSuccess),
+      filter(({ reviewId }) => reviewId === this.review._id),
+      map(() => {
+        this.isDisabled = false;
+        return false;
+      })
+    ),
+    this.actions$.pipe(
+      ofType(deleteReviewFailure),
+      filter(({ reviewId }) => reviewId === this.review._id),
+      map(() => {
+        this.isDisabled = false;
+        this.waitingForDelete = false;
+        return false;
+      })
+    )
+  )
 
   get user() {
     return this.userService.user;
@@ -41,7 +71,6 @@ export class ReviewComponent {
       return this.user?._id === this.review.ownerId._id;
     }
     return false;
-
   }
 
   get isLiked() {
@@ -51,9 +80,14 @@ export class ReviewComponent {
   constructor(
     private userService: UserService,
     private store: Store,
-    private reviewsService: ReviewsService,
+    private actions$: Actions,
     public modal: MatDialog
   ) {
+    this.sub.add(this.delete_review$.subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 
   like() {
@@ -66,11 +100,6 @@ export class ReviewComponent {
 
   toggle() {
     this.isShown = !this.isShown;
-  }
-
-  onReview(review: IReview) {
-    this.review = review;
-    this.reviewChange.emit(review);
   }
 
   openModal() {
@@ -88,21 +117,8 @@ export class ReviewComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.isDisabled = true;
-        this.waitingForDelete = true;
-        this.reviewsService.deleteReview(this.review._id).subscribe({
-          next: () => {
-            this.onReviewDelete.emit(this.review._id);
-            this.isDisabled = false;
-          },
-          error: (err) => {
-            console.log(err);
-            this.isDisabled = false;
-            this.waitingForDelete = false;
-          }
-        });
+        this.store.dispatch(deleteReview({ reviewId: this.review._id }))
       }
-
     });
   }
 }

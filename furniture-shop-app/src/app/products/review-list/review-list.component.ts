@@ -66,14 +66,11 @@ export class ReviewListComponent implements OnDestroy {
   errorFetchingData = false;
   private sub = new Subscription();
 
-  reviewsTotal!: number;
   reviews: IReview[] = [loadingReview, loadingReview, loadingReview];
 
   reviews$ = this.store.select(getReviews);
   product$ = this.store.select(getProduct);
   error$ = this.store.select(getReviewsError);
-
-  // @Input() productId!: string;
 
   private productId!: string;
 
@@ -83,13 +80,8 @@ export class ReviewListComponent implements OnDestroy {
 
   constructor(
     private userService: UserService,
-    private reviewSService: ReviewsService,
     private store: Store,
   ) {
-
-    this.sub.add(this.reviews$.pipe(
-      tap(r => this.reviewsTotal = r.length)
-    ).subscribe());
 
     this.sub.add(this.product$.pipe(
       tap(p => this.productId = p!._id)
@@ -109,18 +101,5 @@ export class ReviewListComponent implements OnDestroy {
 
   toggle() {
     this.isShown = !this.isShown;
-  }
-
-  onReview(review: IReview) {
-    this.reviews.find(r => r._id === review._id)
-      ? this.reviews.map(r => r._id === review._id ? review : r)
-      : this.reviews.push(review);
-
-    this.reviews.find(r => r._id === review._id) && this.reviewsTotal++;
-  }
-
-  onDelete(id: string) {
-    this.reviews = this.reviews.filter(r => r._id !== id);
-    this.reviewsTotal--;
   }
 }

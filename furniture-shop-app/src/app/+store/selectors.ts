@@ -1,9 +1,13 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { IMainState } from ".";
 import { RouterStateUrl } from "./router";
+import { IUserState } from "./userReducer";
 
 const mainSelector = createFeatureSelector<IMainState>('main');
+const userSelector = createFeatureSelector<IUserState>('user');
 const routerSelector = createFeatureSelector<{ state: RouterStateUrl }>('router');
+
+export const getUser = createSelector(userSelector, s => s.user);
 
 export const getCounter = createSelector(mainSelector, s => s.counter);
 

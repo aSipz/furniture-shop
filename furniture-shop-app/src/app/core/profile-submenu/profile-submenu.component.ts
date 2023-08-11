@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { UserService } from 'src/app/user/user.service';
-import { LoaderService } from '../services/loader.service';
-import { CartService } from 'src/app/cart/services/cart.service';
+import { Store } from '@ngrx/store';
+import { logout } from 'src/app/+store/actions';
 
 @Component({
   selector: 'app-profile-submenu',
@@ -18,25 +17,10 @@ export class ProfileSubmenuComponent {
 
   constructor(
     private userService: UserService,
-    private loaderService: LoaderService,
-    private cartService: CartService,
-    private router: Router
+    private store: Store,
   ) { }
 
-
   logoutHandler() {
-    this.loaderService.showLoader();
-    this.userService.logout().subscribe({
-      next: () => {
-        this.loaderService.hideLoader();
-        this.cartService.clearCart();
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        console.log(err);
-        this.loaderService.hideLoader();
-        this.router.navigate(['/']);
-      }
-    });
+    this.store.dispatch(logout());
   }
 }

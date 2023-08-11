@@ -13,6 +13,9 @@ import {
     deleteProduct,
     deleteProductFailure,
     deleteProductSuccess,
+    deleteReview,
+    deleteReviewFailure,
+    deleteReviewSuccess,
     dislikeReview,
     dislikeReviewSuccess,
     editReview,
@@ -137,7 +140,7 @@ export class ProductDetailsEffects {
     loadReviews = createEffect(() => this.actions$.pipe(
         ofType(loadReviews),
         switchMap(({ productId }) => this.reviewsService.getReviews({ search: { productId }, include: 'ownerId' }).pipe(
-            map(({ result, count }) => loadReviewsSuccess({ count, reviews: result })),
+            map(({ result, count }) => loadReviewsSuccess({ reviews: result })),
             catchError(error => [loadReviewsFailure({ error })])
         ))
     ));
@@ -166,22 +169,33 @@ export class ProductDetailsEffects {
 
     addReview = createEffect(() => this.actions$.pipe(
         ofType(addReview),
-        switchMap(({ productId, text }) => this.reviewsService.addNewReview(text, productId).pipe(
-            map((review) => addReviewSuccess({ review })),
+        switchMap(({ productId, text, ownerId }) => this.reviewsService.addNewReview(text, productId).pipe(
+            map((review) => addReviewSuccess({ review, ownerId })),
             catchError(error => {
                 console.log(error);
-                return [addReviewFailure({ error })];
+                return [addReviewFailure({ error, reviewId: null })];
             })
         ))
     ));
 
     editReview = createEffect(() => this.actions$.pipe(
         ofType(editReview),
-        switchMap(({ productId, text }) => this.reviewsService.editReview(text, productId).pipe(
-            map((review) => editReviewSuccess({ review })),
+        switchMap(({ reviewId, text, ownerId }) => this.reviewsService.editReview(text, reviewId).pipe(
+            map((review) => editReviewSuccess({ review, ownerId })),
             catchError(error => {
                 console.log(error);
-                return [editReviewFailure({ error })];
+                return [editReviewFailure({ error, reviewId })];
+            })
+        ))
+    ));
+
+    deleteReview = createEffect(() => this.actions$.pipe(
+        ofType(deleteReview),
+        switchMap(({ reviewId }) => this.reviewsService.deleteReview(reviewId).pipe(
+            map(() => deleteReviewSuccess({ reviewId })),
+            catchError(error => {
+                console.log(error);
+                return [deleteReviewFailure({ error, reviewId })];
             })
         ))
     ));
@@ -198,31 +212,16 @@ export class ProductDetailsEffects {
     ) { }
 }
 
-// if (!this.review) {
-//     this.revSub = this.reviewsService.addNewReview(text!, this.productId).subscribe({
-//       next: (review) => {
-//         review.ownerId = this.user;
-//         this.onReview.emit(review);
-//         this.cancelHandler();
-//       },
-//       error: err => {
-//         console.log(err);
-//         this.serverError = err.error?.message;
-//         this.reviewForm.enable();
-//       }
-//     });
-//   } else {
-//     this.revSub = this.reviewsService.editReview(text!, this.review._id).subscribe({
-//       next: (review) => {
-//         review.ownerId = this.user;
-//         this.onReview.emit(review);
-//         this.cancelHandler();
-//       },
-//       error: err => {
-//         console.log(err);
-//         this.serverError = err.error?.message;
-//         this.reviewForm.enable();
-//       }
-//     });
-//   }
-// }
+// this.isDisabled = true;
+//         this.waitingForDelete = true;
+//         this.reviewsService.deleteReview(this.review._id).subscribe({
+//           next: () => {
+//             this.onReviewDelete.emit(this.review._id);
+//             this.isDisabled = false;
+//           },
+//           error: (err) => {
+//             console.log(err);
+//             this.isDisabled = false;
+//             this.waitingForDelete = false;
+//           }
+//         });

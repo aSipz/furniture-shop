@@ -26,6 +26,7 @@ import { CustomSerializer } from './+store/router';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { Effects } from './+store/effects';
+import { UserEffects } from './+store/userEffects';
 
 @NgModule({
   declarations: [
@@ -44,10 +45,9 @@ import { Effects } from './+store/effects';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
     StoreRouterConnectingModule.forRoot({ serializer: CustomSerializer, navigationActionTiming: NavigationActionTiming.PostActivation }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), trace: true }),
     StoreModule.forRoot(reducers),
-    // StoreModule.forFeature('products', {}),
-    EffectsModule.forRoot([Effects]),
+    EffectsModule.forRoot([Effects, UserEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), trace: true }),
   ],
   providers: [
     appInterceptorProvider,

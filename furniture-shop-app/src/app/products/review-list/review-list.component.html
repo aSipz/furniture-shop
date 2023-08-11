@@ -1,11 +1,9 @@
-<ul class="reviews" [@filterAnimation]="reviewsTotal">
+<ul class="reviews" [@filterAnimation]="(reviews$ | async)!.length">
     <app-primary-btn *ngIf="!isShown && isLoggedIn" text="Write a review" (btnClick)="toggle()"></app-primary-btn>
-    <app-add-edit-review *ngIf="isShown && isLoggedIn" (onCancel)="toggle()"
-        (onReview)="onReview($event)"></app-add-edit-review>
+    <app-add-edit-review *ngIf="isShown && isLoggedIn" (onCancel)="toggle()"></app-add-edit-review>
 
     <ng-container *ngIf="!errorFetchingData">
-        <app-review *ngFor="let review of reviews$ | async" [review]="review" (reviewChange)="onReview($event)"
-            (onReviewDelete)="onDelete($event)"></app-review>
+        <app-review *ngFor="let review of reviews$ | async" [review]="review"></app-review>
     </ng-container>
 
     <ng-container *ngIf="errorFetchingData">

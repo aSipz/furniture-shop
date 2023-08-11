@@ -33,6 +33,9 @@ const actionTypes = {
     editReview: 'EDIT_REVIEW',
     editReviewSuccess: 'EDIT_REVIEW_SUCCESS',
     editReviewFailure: 'EDIT_REVIEW_FAILURE',
+    deleteReview: 'DELETE_REVIEW',
+    deleteReviewSuccess: 'DELETE_REVIEW_SUCCESS',
+    deleteReviewFailure: 'DELETE_REVIEW_FAILURE',
 };
 
 export const loadProduct = createAction(actionTypes.loadProduct, props<{ productId: string, isLoggedIn: boolean }>());
@@ -57,7 +60,7 @@ export const setAvailableSuccess = createAction(actionTypes.setAvailableSuccess,
 export const setAvailableFailure = createAction(actionTypes.setAvailableFailure, props<{ error: any }>());
 
 export const loadReviews = createAction(actionTypes.loadReviews, props<{ productId: string }>());
-export const loadReviewsSuccess = createAction(actionTypes.loadReviewsSuccess, props<{ count: number, reviews: IReview[] }>());
+export const loadReviewsSuccess = createAction(actionTypes.loadReviewsSuccess, props<{ reviews: IReview[] }>());
 export const loadReviewsFailure = createAction(actionTypes.loadReviewsFailure, props<{ error: any }>());
 export const clearReviews = createAction(actionTypes.clearReviews);
 
@@ -66,38 +69,12 @@ export const likeReviewSuccess = createAction(actionTypes.likeReviewSuccess, pro
 export const dislikeReview = createAction(actionTypes.dislikeReview, props<{ reviewId: string, userId: string }>());
 export const dislikeReviewSuccess = createAction(actionTypes.dislikeReviewSuccess, props<{ reviewId: string, userId: string }>());
 
-export const addReview = createAction(actionTypes.addReview, props<{ productId: string, text: string }>());
-export const addReviewSuccess = createAction(actionTypes.addReviewSuccess, props<{ review: IReview }>());
-export const addReviewFailure = createAction(actionTypes.addReviewFailure, props<{ error: any }>());
-export const editReview = createAction(actionTypes.editReview, props<{ productId: string, text: string }>());
-export const editReviewSuccess = createAction(actionTypes.editReviewSuccess, props<{ review: IReview }>());
-export const editReviewFailure = createAction(actionTypes.editReviewFailure, props<{ error: any }>());
-
-// if (!this.review) {
-//     this.revSub = this.reviewsService.addNewReview(text!, this.productId).subscribe({
-//       next: (review) => {
-//         review.ownerId = this.user;
-//         this.onReview.emit(review);
-//         this.cancelHandler();
-//       },
-//       error: err => {
-//         console.log(err);
-//         this.serverError = err.error?.message;
-//         this.reviewForm.enable();
-//       }
-//     });
-//   } else {
-//     this.revSub = this.reviewsService.editReview(text!, this.review._id).subscribe({
-//       next: (review) => {
-//         review.ownerId = this.user;
-//         this.onReview.emit(review);
-//         this.cancelHandler();
-//       },
-//       error: err => {
-//         console.log(err);
-//         this.serverError = err.error?.message;
-//         this.reviewForm.enable();
-//       }
-//     });
-//   }
-// }
+export const addReview = createAction(actionTypes.addReview, props<{ productId: string, text: string, ownerId: { firstName: string; lastName: string, _id: string } }>());
+export const addReviewSuccess = createAction(actionTypes.addReviewSuccess, props<{ review: IReview, ownerId: { firstName: string; lastName: string, _id: string } }>());
+export const addReviewFailure = createAction(actionTypes.addReviewFailure, props<{ error: any, reviewId: null }>());
+export const editReview = createAction(actionTypes.editReview, props<{ reviewId: string, text: string, ownerId: { firstName: string; lastName: string, _id: string } }>());
+export const editReviewSuccess = createAction(actionTypes.editReviewSuccess, props<{ review: IReview, ownerId: { firstName: string; lastName: string, _id: string } }>());
+export const editReviewFailure = createAction(actionTypes.editReviewFailure, props<{ error: any, reviewId: string }>());
+export const deleteReview = createAction(actionTypes.deleteReview, props<{ reviewId: string }>());
+export const deleteReviewSuccess = createAction(actionTypes.deleteReviewSuccess, props<{ reviewId: string }>());
+export const deleteReviewFailure = createAction(actionTypes.deleteReviewFailure, props<{ error: any, reviewId: string }>());

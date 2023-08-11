@@ -1,19 +1,54 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { UserService } from '../user.service';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { emailValidator } from 'src/app/initial/validators';
+import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
+import { Subscription, map, merge } from 'rxjs';
+import { login, loginFailure, loginSuccess } from 'src/app/+store/actions';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
 
   serverError = '';
+
+  private sub = new Subscription();
+
+  isLoggingIn$ = merge(
+    this.actions$.pipe(
+      ofType(login),
+      map(() => {
+        this.loaderService.showLoader();
+        this.loginForm.disable();
+        return true;
+      })
+    ),
+    this.actions$.pipe(
+      ofType(loginSuccess),
+      map(() => {
+        const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+        this.router.navigate([returnUrl]);
+        this.loaderService.hideLoader();
+        return false;
+      })
+    ),
+    this.actions$.pipe(
+      ofType(loginFailure),
+      map(({ error }) => {
+        console.log(error);
+        this.serverError = error.error.message;
+        this.loginForm.enable();
+        this.loaderService.hideLoader();
+        return false;
+      })
+    ),
+  )
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, emailValidator()]],
@@ -22,11 +57,18 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
     private router: Router,
     private loaderService: LoaderService,
-    private activatedRoute: ActivatedRoute
-  ) { }
+    private activatedRoute: ActivatedRoute,
+    private store: Store,
+    private actions$: Actions,
+  ) {
+    this.sub.add(this.isLoggingIn$.subscribe());
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 
   loginHandler(): void {
 
@@ -36,23 +78,7 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.value;
 
-    this.loaderService.showLoader();
-
-    this.loginForm.disable();
-
-    this.userService.login(email!, password!).subscribe({
-      next: () => {
-        const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
-        this.router.navigate([returnUrl]);
-        this.loaderService.hideLoader();
-      },
-      error: err => {
-        console.log(err);
-        this.serverError = err.error?.message;
-        this.loginForm.enable();
-        this.loaderService.hideLoader();
-      }
-    });
+    this.store.dispatch(login({ email: (email as string), password: (password as string) }));
 
   }
 }

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { UserService } from '../user/user.service';
+import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
+import { merge, map } from 'rxjs';
 import { LoaderService } from '../core/services/loader.service';
-import { tap } from 'rxjs';
-import { CartService } from '../cart/services/cart.service';
+import { loadUser, loadUserFailure } from '../+store/actions';
+import { loadReviewsSuccess } from '../products/+store/actions';
 
 @Component({
   selector: 'app-authenticate',
@@ -11,31 +13,31 @@ import { CartService } from '../cart/services/cart.service';
 })
 export class AuthenticateComponent {
 
-  isAuthenticating = true;
+  isAuthenticating$ = merge(
+    this.actions$.pipe(
+      ofType(loadUser),
+      map(() => {
+        this.loaderService.showLoader();
+        return true;
+      })
+    ),
+    this.actions$.pipe(
+      ofType(loadReviewsSuccess, loadUserFailure),
+      map(() => {
+        this.loaderService.hideLoader();
+        return false;
+      })
+    ),
+  )
 
   constructor(
-    private userService: UserService,
     private loaderService: LoaderService,
-    private cartService: CartService
+    private store: Store,
+    private actions$: Actions,
   ) {
-    this.loaderService.showLoader();
 
-    this.userService.getProfile().pipe(
-      tap(u => {
-        !u && cartService.clearCart();
-        this.cartService.getCart();
-      })
-    )
-      .subscribe({
-        next: () => {
-          this.isAuthenticating = false;
-          this.loaderService.hideLoader();
-        },
-        error: (err) => {
-          this.isAuthenticating = false;
-          this.loaderService.hideLoader();
-        },
-      });
+    this.store.dispatch(loadUser());
+    this.isAuthenticating$.subscribe();
   }
 
 

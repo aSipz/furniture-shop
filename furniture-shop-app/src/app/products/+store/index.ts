@@ -7,6 +7,7 @@ import {
     clearReviews,
     deleteProductFailure,
     deleteProductSuccess,
+    deleteReviewSuccess,
     dislikeReviewSuccess,
     editReviewSuccess,
     likeReviewSuccess,
@@ -28,7 +29,6 @@ export interface IProductDetailsState {
     favorite: IFavorite | null;
     reviews: IReview[];
     error: any;
-    reviewsCount: number;
     reviewError: any;
 };
 
@@ -37,7 +37,6 @@ const initialState: IProductDetailsState = {
     favorite: null,
     reviews: [loadingReview, loadingReview, loadingReview],
     error: null,
-    reviewsCount: 3,
     reviewError: null,
 }
 
@@ -77,14 +76,14 @@ export const productReducer = createReducer<IProductDetailsState>(
     on(deleteProductFailure, (state, { error }) => {
         return { ...state, error };
     }),
-    on(loadReviewsSuccess, (state, { count, reviews }) => {
-        return { ...state, reviews, reviewsCount: count, reviewError: null };
+    on(loadReviewsSuccess, (state, { reviews }) => {
+        return { ...state, reviews, reviewError: null };
     }),
     on(loadReviewsFailure, (state, { error }) => {
         return { ...state, reviewError: error };
     }),
     on(clearReviews, (state) => {
-        return { ...state, reviews: initialState.reviews, reviewsCount: initialState.reviewsCount, reviewError: null };
+        return { ...state, reviews: initialState.reviews, reviewError: null };
     }),
     on(likeReviewSuccess, (state, { reviewId, userId }) => {
         return { ...state, reviews: state.reviews.map(r => r._id === reviewId ? { ...r, likes: [...r.likes, userId] } : r) };
@@ -92,10 +91,13 @@ export const productReducer = createReducer<IProductDetailsState>(
     on(dislikeReviewSuccess, (state, { reviewId, userId }) => {
         return { ...state, reviews: state.reviews.map(r => r._id === reviewId ? { ...r, likes: r.likes.filter(l => l !== userId) } : r) };
     }),
-    on(addReviewSuccess, (state, { review }) => {
-        return { ...state, reviews: { ...state.reviews, review } };
+    on(addReviewSuccess, (state, { review, ownerId }) => {
+        return { ...state, reviews: [...state.reviews, { ...review, ownerId }] };
     }),
-    on(editReviewSuccess, (state, { review }) => {
-        return { ...state, reviews: state.reviews.map(r => r._id === review._id ? review : r) };
+    on(editReviewSuccess, (state, { review, ownerId }) => {
+        return { ...state, reviews: state.reviews.map(r => r._id === review._id ? { ...review, ownerId } : r) };
+    }),
+    on(deleteReviewSuccess, (state, { reviewId }) => {
+        return { ...state, reviews: state.reviews.filter(r => r._id !== reviewId) };
     }),
 );
