@@ -28,6 +28,8 @@ The backend is developed with Express and deployed on [Render.com](https://rende
 
 For database is used [MongoDB Atlas](https://www.mongodb.com/atlas/database)
 
+[On ngrx branch](https://github.com/aSipz/furniture-shop/tree/ngrx) there is a version of the app refactored using [NgRx](https://v7.ngrx.io/docs)
+
 <details>
 
 <summary>Home screen</summary>
