@@ -1,9 +1,9 @@
 <div class="container">
-    <ng-container *ngIf="isLoggedIn">
+    <ng-container *ngIf="isLoggedIn$ | async">
         <a routerLink="/user/profile">Profile</a>
         <button (click)="logoutHandler()">Logout</button>
     </ng-container>
-    <ng-container *ngIf="!isLoggedIn">
+    <ng-container *ngIf="!(isLoggedIn$ | async)">
         <a routerLink="/user/login">Log in</a>
         <a routerLink="/user/register">Register</a>
     </ng-container>

@@ -25,8 +25,7 @@ import { reducers } from './+store';
 import { CustomSerializer } from './+store/router';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { Effects } from './+store/effects';
-import { UserEffects } from './+store/userEffects';
+import { UserEffects } from './+store/effects/userEffects';
 
 @NgModule({
   declarations: [
@@ -46,7 +45,7 @@ import { UserEffects } from './+store/userEffects';
     AngularFireStorageModule,
     StoreRouterConnectingModule.forRoot({ serializer: CustomSerializer, navigationActionTiming: NavigationActionTiming.PostActivation }),
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([Effects, UserEffects]),
+    EffectsModule.forRoot([UserEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), trace: true }),
   ],
   providers: [

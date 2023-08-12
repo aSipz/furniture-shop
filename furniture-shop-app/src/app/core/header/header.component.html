@@ -17,7 +17,7 @@
                     <a class="nav-link" routerLink="/products">Shop</a>
                 </li>
 
-                <ng-container *ngIf="isLoggedIn">
+                <ng-container *ngIf="isLoggedIn$ | async">
                     <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="routeMatchOptions">
                         <a class="nav-link" routerLink="/products/favorites">Favorites</a>
                     </li>
@@ -26,7 +26,7 @@
                     </li>
                 </ng-container>
 
-                <ng-container *ngIf="isAdmin">
+                <ng-container *ngIf="isAdmin$ | async">
                     <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link" routerLink="/admin/add-item">New Product</a>
                     </li>
@@ -48,7 +48,7 @@
 
                     </div>
                 </li>
-                <li *ngIf="isLoggedIn">
+                <li *ngIf="isLoggedIn$ | async">
                     <a class="nav-link" routerLink="/cart" (mouseenter)="show('cart')"
                         (mouseleave)="hideWithDelay('cart')"><img src="assets/images/cart.svg"></a>
 

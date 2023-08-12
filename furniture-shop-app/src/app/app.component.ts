@@ -4,9 +4,6 @@ import { Router, ActivationStart, ChildrenOutletContexts } from '@angular/router
 
 import { filter, map } from 'rxjs';
 import { slideInAnimation } from './initial/animations';
-import { Store } from '@ngrx/store';
-import { getCounter, getParams, getQuery, getURL } from './+store/selectors';
-import { increment, setCounter } from './+store/actions';
 
 
 @Component({
@@ -20,18 +17,11 @@ import { increment, setCounter } from './+store/actions';
 export class AppComponent {
   title = 'furni.SHOP';
 
-  counter$ = this.store.select(getCounter);
-  url$ = this.store.select(getURL);
-  params$ = this.store.select(getParams);
-  query$ = this.store.select(getQuery);
-
   constructor(
     private router: Router,
     private pageTitle: Title,
     private contexts: ChildrenOutletContexts,
-    private store: Store
   ) {
-
     this.router.events.pipe(
       filter((e): e is ActivationStart => e instanceof ActivationStart),
       map(e => e.snapshot.data['title'])
@@ -42,17 +32,6 @@ export class AppComponent {
       }
       this.pageTitle.setTitle(title);
     });
-
-    this.incrementHandler();
-
-  }
-
-  incrementHandler() {
-    this.store.dispatch(increment());
-  }
-
-  setCounterHandler(newValue: number) {
-    this.store.dispatch(setCounter({ counter: newValue }));
   }
 
   getRouteAnimationData() {

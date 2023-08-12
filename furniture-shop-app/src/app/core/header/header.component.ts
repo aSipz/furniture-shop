@@ -1,32 +1,17 @@
 import { trigger, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 import { IsActiveMatchOptions, NavigationEnd, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { pairwise, tap } from 'rxjs';
+import { isAdmin, isLoggedIn } from 'src/app/+store/selectors';
 
 import { CartService } from 'src/app/cart/services/cart.service';
 import { routeMatchOptions } from 'src/app/initial/constants';
 import { ICartProduct } from 'src/app/initial/interfaces';
-import { UserService } from 'src/app/user/user.service';
 
 @Component({
   selector: 'app-header',
   animations: [
-    // trigger('openClose', [
-    //   state('open', style({
-    //     transform: 'translateY(100%)',
-    //     'z-index': 20,
-    //   })),
-    //   state('closed', style({
-    //     transform: 'translateY(0%)',
-    //     // 'z-index': -3
-    //   })),
-    //   transition('open => closed', [
-    //     animate('0.5s 0s ease-in-out')
-    //   ]),
-    //   transition('closed => open', [
-    //     animate('0.3s 0s ease-in-out')
-    //   ]),
-    // ]),
     trigger('openClose', [
       transition(':enter', [
         style({
@@ -67,9 +52,9 @@ export class HeaderComponent {
   readonly routeMatchOptions: IsActiveMatchOptions = routeMatchOptions;
 
   constructor(
-    private userService: UserService,
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private store: Store,
   ) {
     this.router.events.subscribe((event) => {
 
@@ -102,13 +87,8 @@ export class HeaderComponent {
 
   }
 
-  get isLoggedIn() {
-    return this.userService.isLoggedIn;
-  }
-
-  get isAdmin() {
-    return this.userService.isAdmin;
-  }
+  isLoggedIn$ = this.store.select(isLoggedIn);
+  isAdmin$ = this.store.select(isAdmin);
 
   show(submenu: string) {
     this.stayOpened(submenu);

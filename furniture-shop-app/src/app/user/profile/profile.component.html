@@ -6,13 +6,13 @@
     <div class="border bg-white">
 
         <h3 class="text-black">Email:</h3>
-        <p>{{user?.email}}</p>
+        <p>{{(user$ | async)?.email}}</p>
         <h3 class="text-black">Username:</h3>
-        <p>{{user?.username}}</p>
+        <p>{{(user$ | async)?.username}}</p>
         <h3 class="text-black">First Name:</h3>
-        <p>{{user?.firstName}}</p>
+        <p>{{(user$ | async)?.firstName}}</p>
         <h3 class="text-black">Last Name:</h3>
-        <p>{{user?.lastName}}</p>
+        <p>{{(user$ | async)?.lastName}}</p>
 
         <div class="btn-container">
             <app-primary-btn type="submit" text="Edit" btnClass="blue" (btnClick)="onEditClick()"></app-primary-btn>

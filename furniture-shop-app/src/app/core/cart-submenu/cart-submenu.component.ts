@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { updateCart } from 'src/app/+store/actions/cartActions';
 
 import { CartService } from 'src/app/cart/services/cart.service';
 import { ICartProduct } from 'src/app/initial/interfaces';
@@ -27,6 +29,7 @@ export class CartSubmenuComponent implements OnChanges {
   constructor(
     private cartService: CartService,
     private router: Router,
+    private store: Store,
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -45,7 +48,8 @@ export class CartSubmenuComponent implements OnChanges {
   }
 
   removeProduct(productId: string) {
-    this.cartService.updateCart({ _id: productId, count: 0 });
+    const cart = this.cartService.updateCart({ _id: productId, count: 0 });
+    this.store.dispatch(updateCart({ cart }));
   }
 
   goToCart() {

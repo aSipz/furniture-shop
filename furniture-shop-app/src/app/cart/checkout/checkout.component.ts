@@ -8,6 +8,8 @@ import { ProductsService } from 'src/app/products/services/products.service';
 import { OrdersService } from 'src/app/orders/services/orders.service';
 import { IProduct } from 'src/app/initial/interfaces';
 import { emailValidator, nameValidator, phoneValidator } from 'src/app/initial/validators';
+import { Store } from '@ngrx/store';
+import { updateCart } from 'src/app/+store/actions/cartActions';
 
 @Component({
   selector: 'app-checkout',
@@ -49,6 +51,7 @@ export class CheckoutComponent {
     private cartService: CartService,
     private productService: ProductsService,
     private orderService: OrdersService,
+    private store: Store,
   ) {
 
     this.productService.getProducts({ search: { _id: { $in: this.cart?.map(p => p._id) } } }).subscribe({
@@ -95,13 +98,14 @@ export class CheckoutComponent {
       .subscribe({
         next: () => {
           this.cartService.clearCart();
+          this.store.dispatch(updateCart({ cart: null }));
           this.loaderService.hideLoader();
           this.orderReceived = true;
         },
         error: (err) => {
           console.log(err);
           this.serverError = err.error?.message;
-          if(err.status == 409) {
+          if (err.status == 409) {
             this.serverError = 'Insufficient quantity!';
           }
           this.billingForm.enable();

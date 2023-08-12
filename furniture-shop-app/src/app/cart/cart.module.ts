@@ -22,7 +22,7 @@ import { InitialModule } from '../initial/initial.module';
     CartRoutingModule,
     SharedModule,
     InitialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class CartModule { }

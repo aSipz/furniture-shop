@@ -2,12 +2,14 @@ import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { LoaderService } from 'src/app/core/services/loader.service';
-import { emailValidator } from 'src/app/initial/validators';
+import { Subscription, map, merge } from 'rxjs';
+
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
-import { Subscription, map, merge } from 'rxjs';
-import { login, loginFailure, loginSuccess } from 'src/app/+store/actions';
+
+import { LoaderService } from 'src/app/core/services/loader.service';
+import { emailValidator } from 'src/app/initial/validators';
+import { login, loginFailure, loginSuccess } from 'src/app/+store/actions/userActions';
 
 @Component({
   selector: 'app-login',

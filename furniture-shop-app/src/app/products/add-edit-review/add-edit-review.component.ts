@@ -3,12 +3,13 @@ import { Validators, FormBuilder } from '@angular/forms';
 
 import { Subscription, tap, merge, map, filter } from 'rxjs';
 
-import { UserService } from 'src/app/user/user.service';
-import { IReview } from 'src/app/initial/interfaces';
-import { Store } from '@ngrx/store';
-import { getProduct } from '../+store/selectors';
 import { Actions, ofType } from '@ngrx/effects';
-import { addReview, addReviewFailure, addReviewSuccess, editReview, editReviewFailure, editReviewSuccess } from '../+store/actions';
+import { Store } from '@ngrx/store';
+
+import { IReview, IUser } from 'src/app/initial/interfaces';
+import { getProduct } from '../+store/selectors';
+import { addReview, addReviewFailure, addReviewSuccess, editReview, editReviewFailure, editReviewSuccess } from '../+store/actions/detailsActions';
+import { getUser } from 'src/app/+store/selectors';
 
 @Component({
   selector: 'app-add-edit-review',
@@ -29,11 +30,8 @@ export class AddEditReviewComponent implements OnInit, OnDestroy {
   @Output() onCancel = new EventEmitter<boolean>();
   @Input() review: IReview | null = null;
 
-  get user() {
-    const { firstName, lastName, _id } = this.userService.user!;
-
-    return { firstName, lastName, _id };
-  }
+  user$ = this.store.select(getUser);
+  user!: { firstName: string; lastName: string; _id: string };
 
   add_edit_review$ = merge(
     this.actions$.pipe(
@@ -52,8 +50,16 @@ export class AddEditReviewComponent implements OnInit, OnDestroy {
       })
     ),
     this.actions$.pipe(
-      ofType(addReviewSuccess, editReviewSuccess),
-      filter((review) => review.review._id === this.review?._id),
+      ofType(editReviewSuccess),
+      filter(({ review }) => review._id === this.review?._id),
+      map(() => {
+        this.cancelHandler();
+        return false;
+      })
+    ),
+    this.actions$.pipe(
+      ofType(addReviewSuccess),
+      filter(() => !this.review),
       map(() => {
         this.cancelHandler();
         return false;
@@ -81,7 +87,6 @@ export class AddEditReviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
     private store: Store,
     private actions$: Actions,
   ) { }
@@ -92,6 +97,13 @@ export class AddEditReviewComponent implements OnInit, OnDestroy {
     ).subscribe());
 
     this.sub.add(this.add_edit_review$.subscribe());
+
+    this.sub.add(this.user$.pipe(
+      tap(u => {
+        const { firstName, lastName, _id } = u as IUser;
+        this.user = { firstName, lastName, _id }
+      })
+    ).subscribe())
 
     if (this.review) {
       const text = this.review.text as string;

@@ -1,11 +1,11 @@
 <div class="wrapper">
     <div class="rating-holder">
         <div class="c-rating c-rating--big" [attr.data-rating-value]="(ratings$ | async)! | calcRating : 0.25">
-            <button (click)="rateHandler(1)" [disabled]="!isLoggedIn">1</button>
-            <button (click)="rateHandler(2)" [disabled]="!isLoggedIn">2</button>
-            <button (click)="rateHandler(3)" [disabled]="!isLoggedIn">3</button>
-            <button (click)="rateHandler(4)" [disabled]="!isLoggedIn">4</button>
-            <button (click)="rateHandler(5)" [disabled]="!isLoggedIn">5</button>
+            <button (click)="rateHandler(1)" [disabled]="!(isLoggedIn$ | async)">1</button>
+            <button (click)="rateHandler(2)" [disabled]="!(isLoggedIn$ | async)">2</button>
+            <button (click)="rateHandler(3)" [disabled]="!(isLoggedIn$ | async)">3</button>
+            <button (click)="rateHandler(4)" [disabled]="!(isLoggedIn$ | async)">4</button>
+            <button (click)="rateHandler(5)" [disabled]="!(isLoggedIn$ | async)">5</button>
         </div>
         <p *ngIf="((ratings$ | async)! | calcRating) === 0">No ratings yet</p>
         <p *ngIf="((ratings$ | async)!| calcRating) !== 0">Rating: {{(ratings$ | async)! | calcRating : 0.01}}/5</p>

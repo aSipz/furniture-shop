@@ -2,9 +2,9 @@ import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, debounceTime, distinctUntilChanged, switchMap, Subscription, tap } from 'rxjs';
 import { IRating } from 'src/app/initial/interfaces';
-import { UserService } from 'src/app/user/user.service';
 import { getProduct, getRatings } from '../+store/selectors';
-import { rateProduct } from '../+store/actions';
+import { rateProduct } from '../+store/actions/detailsActions';
+import { getUser, isLoggedIn } from 'src/app/+store/selectors';
 
 
 @Component({
@@ -13,7 +13,6 @@ import { rateProduct } from '../+store/actions';
   styleUrls: ['./rating.component.css']
 })
 export class RatingComponent implements OnDestroy {
-  
 
   userRating: number | null = null;
   private rate$$ = new Subject<number>();
@@ -23,12 +22,11 @@ export class RatingComponent implements OnDestroy {
   ratings$ = this.store.select(getRatings);
   private product$ = this.store.select(getProduct);
 
-  get isLoggedIn() {
-    return this.userService.isLoggedIn;
-  }
+  isLoggedIn$ = this.store.select(isLoggedIn);
+  private user$ = this.store.select(getUser);
+  private userId!: string | null;
 
   constructor(
-    private userService: UserService,
     private store: Store,
   ) {
     this.sub.add(this.rate$$.pipe(
@@ -37,16 +35,22 @@ export class RatingComponent implements OnDestroy {
       switchMap(async (rating) => this.store.dispatch(rateProduct({ productId: this.productId, rating })))
     ).subscribe());
 
+    this.sub.add(this.user$.pipe(
+      tap(u => this.userId = u ? u._id : null)
+    ).subscribe());
+
     this.sub.add(this.ratings$.pipe(
       tap(r => {
         const ratings = r as IRating[];
-        this.userRating = ratings.find(r => r.ownerId === this.userService.user?._id)?.rating ?? null;
+        this.userRating = ratings.find(r => r.ownerId === this.userId)?.rating ?? null;
       })
     ).subscribe())
 
     this.sub.add(this.product$.pipe(
       tap(p => this.productId = p!._id)
     ).subscribe());
+
+    
   }
 
   ngOnDestroy(): void {

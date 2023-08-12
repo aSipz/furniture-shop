@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-
-import { UserService } from '../user.service';
 import { Router } from '@angular/router';
-import { LoaderService } from 'src/app/core/services/loader.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+
 import { ModalComponent } from 'src/app/core/modal/modal.component';
+import { getUser } from 'src/app/+store/selectors';
+import { deleteProfile } from 'src/app/+store/actions/userActions';
 
 @Component({
   selector: 'app-profile',
@@ -13,15 +14,12 @@ import { ModalComponent } from 'src/app/core/modal/modal.component';
 })
 export class ProfileComponent {
 
-  get user() {
-    return this.userService.user;
-  }
+  user$ = this.store.select(getUser);
 
   constructor(
-    private userService: UserService,
     private router: Router,
-    private loaderService: LoaderService,
-    public modal: MatDialog
+    public modal: MatDialog,
+    private store: Store,
   ) { }
 
   onEditClick(): void {
@@ -43,17 +41,7 @@ export class ProfileComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loaderService.showLoader()
-        this.userService.deleteProfile().subscribe({
-          next: () => {
-            this.router.navigate(['/']);
-            this.loaderService.hideLoader();
-          },
-          error: (err) => {
-            console.log(err);
-            this.loaderService.hideLoader();
-          }
-        });
+        this.store.dispatch(deleteProfile());
       }
 
     });

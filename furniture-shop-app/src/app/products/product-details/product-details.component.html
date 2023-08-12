@@ -8,7 +8,7 @@
 
             <div class="col-12 col-lg-5 details">
 
-                <div class="control-btns" *ngIf="isAdmin">
+                <div class="control-btns" *ngIf="isAdmin$ | async">
                     <app-primary-btn text="Edit" type="button" btnClass="blue"
                         (btnClick)="editHandler()"></app-primary-btn>
 
@@ -35,7 +35,7 @@
                                 <h6>{{(product$ | async)!.name}}</h6>
                             </div>
 
-                            <app-like-product *ngIf="isLoggedIn"></app-like-product>
+                            <app-like-product *ngIf="isLoggedIn$ | async"></app-like-product>
                         </div>
 
 
@@ -66,7 +66,7 @@
                     </div>
 
                     <h3 *ngIf="(product$ | async)!.deleted">Not available at the moment</h3>
-                    <form class="cart clearfix" *ngIf="!(product$ | async)!.deleted && isLoggedIn && availableQty !== 0"
+                    <form class="cart clearfix" *ngIf="!(product$ | async)!.deleted && (isLoggedIn$ | async) && availableQty !== 0"
                         #cartForm="ngForm" (ngSubmit)="cartHandler()">
                         <div class="cart-btn d-flex mb-50">
                             <p>Qty</p>

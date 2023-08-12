@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Subscription, tap } from 'rxjs';
 
 import { getFavorite, getProduct } from '../+store/selectors';
-import { addToFavorites } from '../+store/actions';
+import { addToFavorites } from '../+store/actions/detailsActions';
 
 @Component({
   selector: 'app-like-product',

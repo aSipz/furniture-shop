@@ -29,13 +29,15 @@ export class CartService implements OnDestroy {
     this.sub = this.cart$.subscribe(cart => this.cart = cart);
   }
 
-  getCart() {
-    this.user
-      ? this.cart$$.next(this.localDataService.getData('cart') as ICartProduct[] | null)
-      : this.cart$$.next(null);
+  getCart(): ICartProduct[] | null {
+    const cart = this.user
+      ? this.localDataService.getData('cart') as ICartProduct[] | null
+      : null;
+    this.cart$$.next(cart);
+    return cart;
   }
 
-  addToCart(product: ICartProduct) {
+  addToCart(product: ICartProduct): ICartProduct[] {
     let newCart: ICartProduct[] = [];
     if (this.cart) {
       newCart = JSON.parse(JSON.stringify(this.cart));
@@ -53,9 +55,10 @@ export class CartService implements OnDestroy {
 
     this.cart$$.next(newCart);
     this.localDataService.saveData('cart', newCart);
+    return newCart;
   }
 
-  updateCart(product: ICartProduct) {
+  updateCart(product: ICartProduct): ICartProduct[] | null {
     const newCart = (JSON.parse(JSON.stringify(this.cart as ICartProduct[])) as ICartProduct[])
       .map(p => {
         if (p._id === product._id) {
@@ -67,6 +70,7 @@ export class CartService implements OnDestroy {
 
     this.cart$$.next(newCart.length > 0 ? newCart : null);
     this.localDataService.saveData('cart', newCart.length > 0 ? newCart : null);
+    return newCart.length > 0 ? newCart : null;
   }
 
   clearCart() {

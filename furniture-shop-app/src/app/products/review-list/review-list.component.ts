@@ -1,15 +1,14 @@
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
-import { Component, HostBinding, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, HostBinding, OnDestroy } from '@angular/core';
 
 import { Subscription, tap } from 'rxjs';
 
-import { UserService } from 'src/app/user/user.service';
-import { ReviewsService } from '../services/reviews.service';
 import { IReview } from 'src/app/initial/interfaces';
 import { loadingReview } from 'src/app/initial/constants';
 import { Store } from '@ngrx/store';
 import { getProduct, getReviews, getReviewsError } from '../+store/selectors';
-import { clearReviews, loadReviews } from '../+store/actions';
+import { clearReviews, loadReviews } from '../+store/actions/detailsActions';
+import { isLoggedIn } from 'src/app/+store/selectors';
 
 @Component({
   selector: 'app-review-list',
@@ -74,12 +73,9 @@ export class ReviewListComponent implements OnDestroy {
 
   private productId!: string;
 
-  get isLoggedIn() {
-    return this.userService.isLoggedIn;
-  }
+  isLoggedIn$ = this.store.select(isLoggedIn);
 
   constructor(
-    private userService: UserService,
     private store: Store,
   ) {
 

@@ -1,23 +1,23 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-
+import { Component, Input, OnDestroy, AfterContentInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { Subscription, filter, map, merge, tap } from 'rxjs';
+
+import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
 
 import { faThumbsUp as faThumbSolid } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { UserService } from 'src/app/user/user.service';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { IReview } from 'src/app/initial/interfaces';
-import { Store } from '@ngrx/store';
-import { deleteReview, deleteReviewFailure, deleteReviewSuccess, dislikeReview, likeReview } from '../+store/actions';
-import { Actions, ofType } from '@ngrx/effects';
-import { Subscription, filter, map, merge } from 'rxjs';
+import { deleteReview, deleteReviewFailure, deleteReviewSuccess, dislikeReview, likeReview } from '../+store/actions/detailsActions';
+import { getUser, isLoggedIn } from 'src/app/+store/selectors';
 
 @Component({
   selector: 'app-review',
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.css']
 })
-export class ReviewComponent implements OnDestroy {
+export class ReviewComponent implements OnDestroy, AfterContentInit {
 
   thumbSolid = faThumbSolid;
   thumb = faThumbsUp;
@@ -58,32 +58,30 @@ export class ReviewComponent implements OnDestroy {
     )
   )
 
-  get user() {
-    return this.userService.user;
-  }
+  isLoggedIn$ = this.store.select(isLoggedIn);
+  user$ = this.store.select(getUser);
 
-  get isLoggedIn() {
-    return this.userService.isLoggedIn;
-  }
-
-  get isOwner() {
-    if (this.review.ownerId) {
-      return this.user?._id === this.review.ownerId._id;
-    }
-    return false;
-  }
-
-  get isLiked() {
-    return this.user?._id && this.review.likes.includes(this.user?._id);
-  }
+  isOwner!: boolean;
+  isLiked!: boolean;
+  userId!: string | null;
 
   constructor(
-    private userService: UserService,
     private store: Store,
     private actions$: Actions,
     public modal: MatDialog
   ) {
     this.sub.add(this.delete_review$.subscribe());
+
+  }
+
+  ngAfterContentInit(): void {
+    this.sub.add(this.user$.pipe(
+      tap(u => {
+        this.isOwner = u?._id === this.review.ownerId._id;
+        this.isLiked = !!(u?._id && this.review.likes.includes(u?._id));
+        this.userId = u ? u._id : null;
+      })
+    ).subscribe());
   }
 
   ngOnDestroy(): void {
@@ -91,11 +89,11 @@ export class ReviewComponent implements OnDestroy {
   }
 
   like() {
-    this.store.dispatch(likeReview({ reviewId: this.review._id, userId: this.user!._id }));
+    this.store.dispatch(likeReview({ reviewId: this.review._id, userId: this.userId! }));
   }
 
   dislike() {
-    this.store.dispatch(dislikeReview({ reviewId: this.review._id, userId: this.user!._id }));
+    this.store.dispatch(dislikeReview({ reviewId: this.review._id, userId: this.userId! }));
   }
 
   toggle() {

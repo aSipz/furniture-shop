@@ -1,14 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, AfterContentInit } from '@angular/core';
 
 import { IProduct } from '../interfaces';
 import { CartService } from 'src/app/cart/services/cart.service';
+import { Store } from '@ngrx/store';
+import { updateCart } from 'src/app/+store/actions/cartActions';
+import { getCart } from 'src/app/+store/selectors';
+import { Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.css']
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnDestroy, AfterContentInit {
 
   private _product!: IProduct;
 
@@ -20,18 +24,32 @@ export class ProductCardComponent {
     return this._product;
   }
 
-  get cartProduct() {
-    return this.cartService.cart?.find(p => p._id === this.product._id);
+  private sub = new Subscription();
+
+  cartProducts$ = this.store.select(getCart);
+  availableQty!: number;
+
+  constructor(
+    private cartService: CartService,
+    private store: Store,
+  ) { }
+
+  ngAfterContentInit(): void {
+    this.sub.add(this.cartProducts$.pipe(
+      tap(cart => {
+        const currentProduct = cart?.find(p => p._id === this.product._id);
+        this.availableQty = (this.product?.quantity ?? 0) - (currentProduct?.count ?? 0);
+      })
+    ).subscribe())
   }
 
-  get availableQty() {
-    return (this.product?.quantity ?? 0) - (this.cartProduct?.count ?? 0);
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
-
-  constructor(private cartService: CartService) { }
 
   addToCart() {
     const imageUrl = this.product!.images![0].url;
-    this.cartService.addToCart({ _id: this.product._id, count: 1, imageUrl, name: this.product!.name, price: this.product?.discountPrice });
+    const cart = this.cartService.addToCart({ _id: this.product._id, count: 1, imageUrl, name: this.product!.name, price: this.product?.discountPrice });
+    this.store.dispatch(updateCart({ cart }));
   }
 }

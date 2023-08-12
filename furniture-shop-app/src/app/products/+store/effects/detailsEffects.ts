@@ -35,13 +35,13 @@ import {
     setAvailable,
     setAvailableFailure,
     setAvailableSuccess
-} from "./actions";
-import { ProductsService } from "../services/products.service";
-import { FavoritesService } from "../services/favorites.service";
-import { RatingService } from "../services/rating.service";
+} from "../actions/detailsActions";
+import { ProductsService } from "../../services/products.service";
+import { FavoritesService } from "../../services/favorites.service";
+import { RatingService } from "../../services/rating.service";
 import { LoaderService } from "src/app/core/services/loader.service";
 import { FileUploadService } from "src/app/admin/services/file-upload.service";
-import { ReviewsService } from "../services/reviews.service";
+import { ReviewsService } from "../../services/reviews.service";
 
 @Injectable({
     providedIn: 'root'
@@ -211,17 +211,3 @@ export class ProductDetailsEffects {
         private router: Router,
     ) { }
 }
-
-// this.isDisabled = true;
-//         this.waitingForDelete = true;
-//         this.reviewsService.deleteReview(this.review._id).subscribe({
-//           next: () => {
-//             this.onReviewDelete.emit(this.review._id);
-//             this.isDisabled = false;
-//           },
-//           error: (err) => {
-//             console.log(err);
-//             this.isDisabled = false;
-//             this.waitingForDelete = false;
-//           }
-//         });

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
-import { UserService } from 'src/app/user/user.service';
 import { Store } from '@ngrx/store';
-import { logout } from 'src/app/+store/actions';
+import { logout } from 'src/app/+store/actions/userActions';
+import { isLoggedIn } from 'src/app/+store/selectors';
 
 @Component({
   selector: 'app-profile-submenu',
@@ -11,12 +11,9 @@ import { logout } from 'src/app/+store/actions';
 })
 export class ProfileSubmenuComponent {
 
-  get isLoggedIn() {
-    return this.userService.isLoggedIn;
-  }
+  isLoggedIn$ = this.store.select(isLoggedIn);
 
   constructor(
-    private userService: UserService,
     private store: Store,
   ) { }
 

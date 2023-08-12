@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
-import { merge, map } from 'rxjs';
+import { merge, map, tap } from 'rxjs';
 import { LoaderService } from '../core/services/loader.service';
-import { loadUser, loadUserFailure } from '../+store/actions';
-import { loadReviewsSuccess } from '../products/+store/actions';
+import { loadUser, loadUserFailure, loadUserSuccess } from '../+store/actions/userActions';
+import { CartService } from '../cart/services/cart.service';
+import { updateCart } from '../+store/actions/cartActions';
 
 @Component({
   selector: 'app-authenticate',
@@ -16,17 +17,22 @@ export class AuthenticateComponent {
   isAuthenticating$ = merge(
     this.actions$.pipe(
       ofType(loadUser),
-      map(() => {
-        this.loaderService.showLoader();
-        return true;
-      })
+      tap(() => this.loaderService.showLoader()),
+      map(() => true)
     ),
     this.actions$.pipe(
-      ofType(loadReviewsSuccess, loadUserFailure),
-      map(() => {
+      ofType(loadUserSuccess),
+      tap(() => {
+        const cart = this.cartService.getCart();
+        this.store.dispatch(updateCart({ cart }));
         this.loaderService.hideLoader();
-        return false;
-      })
+      }),
+      map(() => false)
+    ),
+    this.actions$.pipe(
+      ofType(loadUserFailure),
+      tap(() => this.loaderService.showLoader()),
+      map(() => false)
     ),
   )
 
@@ -34,10 +40,10 @@ export class AuthenticateComponent {
     private loaderService: LoaderService,
     private store: Store,
     private actions$: Actions,
+    private cartService: CartService
   ) {
-
-    this.store.dispatch(loadUser());
     this.isAuthenticating$.subscribe();
+    this.store.dispatch(loadUser());
   }
 
 

@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { Subscription, merge, map, tap } from 'rxjs';
 
-import { FavoritesService } from '../services/favorites.service';
+import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
+
 import { loadingProduct, pageSize } from 'src/app/initial/constants';
 import { IProduct } from 'src/app/initial/interfaces';
+import { getQuery } from 'src/app/+store/selectors';
+import { clearFavorites, loadFavorites, loadFavoritesFailure, loadFavoritesSuccess } from '../+store/actions/favoritesActions';
 
 @Component({
   selector: 'app-favorites',
@@ -14,45 +17,73 @@ import { IProduct } from 'src/app/initial/interfaces';
 })
 export class FavoritesComponent implements OnInit, OnDestroy {
 
-  products: IProduct[] = [loadingProduct, loadingProduct, loadingProduct];
+  products!: IProduct[];
   pages!: number;
   pageSize = pageSize;
   errorFetchingData = false;
-  private sub!: Subscription;
+  private sub = new Subscription();
+
+  query$ = this.store.select(getQuery);
+  query!: string;
+
+  loadingFavorites$ = merge(
+    this.actions$.pipe(
+      ofType(loadFavorites),
+      map(() => {
+        this.products = [loadingProduct, loadingProduct, loadingProduct];
+        this.pages = 1;
+        this.errorFetchingData = false;
+        return true;
+      }),
+    ),
+    this.actions$.pipe(
+      ofType(loadFavoritesSuccess),
+      map(({ result, count }) => {
+        this.products = result;
+        this.pages = Math.ceil(count / this.pageSize);
+        return false;
+      }),
+    ),
+    this.actions$.pipe(
+      ofType(loadFavoritesFailure),
+      map(() => {
+        this.products = [];
+        this.pages = 0;
+        this.errorFetchingData = true;
+        return false;
+      }),
+    ),
+  );
 
   constructor(
-    private favoritesService: FavoritesService,
-    private route: ActivatedRoute,
+    private store: Store,
+    private actions$: Actions,
   ) { }
 
   ngOnInit() {
-    this.sub = this.route.queryParams.subscribe(query => {
-     
-      const changedQuery = JSON.parse(JSON.stringify(query));
-      if (!query['skip']) {
-        changedQuery['skip'] = 0;
-        changedQuery['limit'] = this.pageSize;
-      }
 
-      query['search']
-        ? changedQuery['search'] = JSON.parse(changedQuery['search'])
-        : changedQuery['search'] = {};
+    this.sub.add(this.loadingFavorites$.subscribe());
 
-      this.favoritesService.getAll(changedQuery).subscribe({
-        next: value => {
-          this.products = value.result;
-          this.pages = Math.ceil(value.count / this.pageSize);
-        },
-        error: err => {
-          this.errorFetchingData = true;
-          console.log(err);
+    this.sub.add(this.query$.pipe(
+      tap(query => {
+        const changedQuery = JSON.parse(JSON.stringify(query));
+        if (!query['skip']) {
+          changedQuery['skip'] = 0;
+          changedQuery['limit'] = this.pageSize;
         }
-      });
-    });
+
+        query['search']
+          ? changedQuery['search'] = JSON.parse(changedQuery['search'])
+          : changedQuery['search'] = {};
+
+        this.store.dispatch(loadFavorites({ options: changedQuery }));
+      })
+    ).subscribe());
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.store.dispatch(clearFavorites());
   }
 
 }

@@ -4,16 +4,16 @@ import { NgForm } from '@angular/forms';
 
 import { Subscription, tap } from 'rxjs';
 
-import { UserService } from 'src/app/user/user.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ModalComponent } from 'src/app/core/modal/modal.component';
 import { CartService } from 'src/app/cart/services/cart.service';
-import { IProduct } from 'src/app/initial/interfaces';
+import { ICartProduct, IProduct } from 'src/app/initial/interfaces';
 import { FileUpload } from 'src/app/initial/constants';
 import { Store } from '@ngrx/store';
-import { getParams } from 'src/app/+store/selectors';
+import { getCart, getParams, isAdmin, isLoggedIn } from 'src/app/+store/selectors';
 import { getProduct } from '../+store/selectors';
-import { clearProduct, deleteProduct, loadProduct, setAvailable } from '../+store/actions';
+import { clearProduct, deleteProduct, loadProduct, setAvailable } from '../+store/actions/detailsActions';
+import { updateCart } from 'src/app/+store/actions/cartActions';
 
 
 
@@ -32,27 +32,17 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   product$ = this.store.select(getProduct);
   params$ = this.store.select(getParams);
+  isLoggedIn$ = this.store.select(isLoggedIn);
+  isAdmin$ = this.store.select(isAdmin);
+  cartProducts$ = this.store.select(getCart);
+  cart!: ICartProduct[] | null;
+
+  availableQty!: number;
+  isLoggedIn!: boolean;
 
   @ViewChild('cartForm') cartForm!: NgForm;
 
-  get isAdmin() {
-    return this.userService.isAdmin;
-  }
-
-  get isLoggedIn() {
-    return this.userService.isLoggedIn;
-  }
-
-  get cartProduct() {
-    return this.cartService.cart?.find(p => p._id === this.product?._id);
-  }
-
-  get availableQty() {
-    return (this.product?.quantity ?? 0) - (this.cartProduct?.count ?? 0);
-  }
-
   constructor(
-    private userService: UserService,
     private router: Router,
     private cartService: CartService,
     public modal: MatDialog,
@@ -61,13 +51,31 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.sub.add(this.params$.subscribe(params => {
-      this.productId = params['id'];
-      this.store.dispatch(loadProduct({ productId: this.productId, isLoggedIn: this.isLoggedIn }));
-    }));
+    this.sub.add(this.isLoggedIn$.pipe(
+      tap(v => this.isLoggedIn = v)
+    ).subscribe());
+
+    this.sub.add(this.params$.pipe(
+      tap(params => {
+        this.productId = params['id'];
+        this.store.dispatch(loadProduct({ productId: this.productId, isLoggedIn: this.isLoggedIn }));
+      })
+    ).subscribe());
+
+    this.sub.add(this.cartProducts$.pipe(
+      tap(cart => {
+        this.cart = cart;
+        const currentProduct = this.cart?.find(p => p._id === this.productId);
+        this.availableQty = (this.product?.quantity ?? 0) - (currentProduct?.count ?? 0);
+      })
+    ).subscribe());
 
     this.sub.add(this.product$.pipe(
-      tap(p => this.product = p)
+      tap(p => {
+        this.product = p;
+        const currentProduct = this.cart?.find(p => p._id === this.productId);
+        this.availableQty = (this.product?.quantity ?? 0) - (currentProduct?.count ?? 0);
+      })
     ).subscribe());
 
   }
@@ -128,7 +136,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
     const imageUrl = this.product!.images![0].url;
 
-    count > 0 && this.cartService.addToCart({ _id: this.product!._id, count, imageUrl, name: this.product!.name, price: this.product?.discountPrice });
+    const cart = count > 0 && this.cartService.addToCart({ _id: this.product!._id, count, imageUrl, name: this.product!.name, price: this.product?.discountPrice });
+    cart && this.store.dispatch(updateCart({ cart }));
     this.cartForm.resetForm({ quantity: 1 });
   }
 }

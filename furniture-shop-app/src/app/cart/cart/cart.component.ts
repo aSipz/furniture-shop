@@ -8,6 +8,8 @@ import { ProductsService } from 'src/app/products/services/products.service';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { ICartProduct, IProduct } from 'src/app/initial/interfaces';
+import { Store } from '@ngrx/store';
+import { updateCart } from 'src/app/+store/actions/cartActions';
 
 @Component({
   selector: 'app-cart',
@@ -26,7 +28,8 @@ export class CartComponent implements OnDestroy {
     private productService: ProductsService,
     private router: Router,
     private fb: FormBuilder,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private store: Store,
   ) {
     this.loaderService.showLoader();
     this.sub = this.cartService.cart$.pipe(
@@ -72,7 +75,8 @@ export class CartComponent implements OnDestroy {
       currentFormGroup.controls['count'].setValue = count as any;
     }
 
-    this.cartService.updateCart({ _id: productId, count });
+    const cart = this.cartService.updateCart({ _id: productId, count });
+    this.store.dispatch(updateCart({ cart }));
 
   }
 
@@ -87,7 +91,8 @@ export class CartComponent implements OnDestroy {
   }
 
   removeProduct(productId: string) {
-    this.cartService.updateCart({ _id: productId, count: 0 });
+    const cart = this.cartService.updateCart({ _id: productId, count: 0 });
+    this.store.dispatch(updateCart({ cart }));
   }
 
   ngOnDestroy(): void {
@@ -112,7 +117,8 @@ export class CartComponent implements OnDestroy {
 
   updateCart() {
     this.products?.forEach(p => {
-      this.cartService.updateCart({ _id: p._id, count: p.cartCount });
+      const cart = this.cartService.updateCart({ _id: p._id, count: p.cartCount });
+      this.store.dispatch(updateCart({ cart }));
     });
   }
 }
